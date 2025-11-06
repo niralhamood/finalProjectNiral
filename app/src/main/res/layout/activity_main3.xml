@@ -5,82 +5,71 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity2">
+    tools:context=".MainActivity3">
 
     <TextView
-        android:id="@+id/Wc"
+        android:id="@+id/SignInn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="welcome back!"
-        tools:layout_editor_absoluteX="152dp"
-        tools:layout_editor_absoluteY="52dp"
-        tools:ignore="MissingConstraints" />
-
-    <EditText
-        android:id="@+id/ed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword"
-        tools:layout_editor_absoluteX="155dp"
-        tools:layout_editor_absoluteY="141dp"
-        tools:ignore="MissingConstraints" />
-
-    <EditText
-        android:id="@+id/ed2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword"
-        tools:layout_editor_absoluteX="152dp"
-        tools:layout_editor_absoluteY="204dp"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/Un"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="User name"
-        tools:layout_editor_absoluteX="49dp"
-        tools:layout_editor_absoluteY="161dp"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/Pw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="password"
-        tools:layout_editor_absoluteX="48dp"
-        tools:layout_editor_absoluteY="221dp"
-        tools:ignore="MissingConstraints" />
-
-    <Button
-        android:id="@+id/SignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onClickGo2"
-        android:text="Sign Up"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="137dp"
-        tools:layout_editor_absoluteY="272dp" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="198dp"
-        android:layout_height="23dp"
-        android:text="I already have an account?-->"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="391dp"
-        tools:ignore="MissingConstraints" />
-
-    <Button
-        android:id="@+id/SignIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onClickGo"
         android:text="Sign In"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="272dp"
-        tools:layout_editor_absoluteY="375dp" />
+        tools:layout_editor_absoluteX="171dp"
+        tools:layout_editor_absoluteY="45dp"
+        tools:ignore="MissingConstraints" />
 
+    <EditText
+        android:id="@+id/edt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        tools:layout_editor_absoluteX="158dp"
+        tools:layout_editor_absoluteY="115dp"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/edt2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        tools:layout_editor_absoluteX="157dp"
+        tools:layout_editor_absoluteY="202dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/Un2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Name"
+        tools:layout_editor_absoluteX="39dp"
+        tools:layout_editor_absoluteY="135dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/Pw2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password"
+        tools:layout_editor_absoluteX="41dp"
+        tools:layout_editor_absoluteY="227dp"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/Enter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClickGo22"
+        android:text="Enter"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="147dp"
+        tools:layout_editor_absoluteY="298dp" />
+
+    <TextView
+        android:id="@+id/FG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forgot your password?"
+        tools:layout_editor_absoluteX="117dp"
+        tools:layout_editor_absoluteY="365dp"
+        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>
