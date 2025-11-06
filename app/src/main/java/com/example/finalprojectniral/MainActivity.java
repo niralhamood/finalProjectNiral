@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.TextView;
-import android.window.SplashScreen;
-import android.window.SplashScreenView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                Intent intent = new Intent(MainActivity.this, Signup.class);
                 startActivity(intent);
                 finish(); // אם רוצים לסגור את המסך הנוכחי
             }

@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity2">
+    tools:context=".Signup">
 
     <TextView
         android:id="@+id/Wc"
@@ -76,7 +76,7 @@
         android:id="@+id/SignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="27dp"
+        android:layout_marginStart="44dp"
         android:layout_marginBottom="71dp"
         android:onClick="onClickGo2"
         android:text="Sign Up"

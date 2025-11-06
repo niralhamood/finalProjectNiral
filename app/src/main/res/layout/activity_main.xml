@@ -11,9 +11,11 @@
         android:id="@+id/tvLoading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="112dp"
+        android:layout_marginBottom="41dp"
         android:text="Loading.."
         android:textSize="24sp"
-        tools:layout_editor_absoluteX="112dp"
-        tools:layout_editor_absoluteY="658dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

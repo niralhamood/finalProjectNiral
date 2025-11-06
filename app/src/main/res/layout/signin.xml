@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity3">
+    tools:context=".Signin">
 
     <TextView
         android:id="@+id/SignInn"
@@ -20,8 +20,8 @@
 
     <EditText
         android:id="@+id/edt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="162dp"
+        android:layout_height="27dp"
         android:layout_marginTop="115dp"
         android:layout_marginEnd="4dp"
         android:ems="10"
@@ -33,9 +33,9 @@
 
     <EditText
         android:id="@+id/edt2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="41dp"
+        android:layout_width="157dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="56dp"
         android:layout_marginEnd="3dp"
         android:ems="10"
         android:inputType="textPassword"
@@ -58,8 +58,8 @@
 
     <TextView
         android:id="@+id/Pw2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="75dp"
+        android:layout_height="21dp"
         android:layout_marginEnd="13dp"
         android:layout_marginBottom="2dp"
         android:text="Password"
@@ -76,6 +76,7 @@
         android:layout_marginBottom="19dp"
         android:onClick="onClickGo22"
         android:text="Enter"
+        android:textColorLink="#FF86AF"
         app:layout_constraintBottom_toTopOf="@+id/FG"
         app:layout_constraintEnd_toEndOf="@+id/FG"
         tools:ignore="MissingConstraints" />
