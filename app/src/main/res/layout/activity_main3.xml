@@ -11,65 +11,83 @@
         android:id="@+id/SignInn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="45dp"
         android:text="Sign In"
-        tools:layout_editor_absoluteX="171dp"
-        tools:layout_editor_absoluteY="45dp"
+        app:layout_constraintStart_toStartOf="@+id/edt"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/edt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="115dp"
+        android:layout_marginEnd="4dp"
         android:ems="10"
         android:inputType="textPassword"
-        tools:layout_editor_absoluteX="158dp"
-        tools:layout_editor_absoluteY="115dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Un2"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/edt2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="41dp"
+        android:layout_marginEnd="3dp"
         android:ems="10"
         android:inputType="textPassword"
-        tools:layout_editor_absoluteX="157dp"
-        tools:layout_editor_absoluteY="202dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Pw2"
+        app:layout_constraintTop_toBottomOf="@+id/edt"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/Un2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="7dp"
         android:text="User Name"
-        tools:layout_editor_absoluteX="39dp"
-        tools:layout_editor_absoluteY="135dp"
+        app:layout_constraintBottom_toBottomOf="@+id/edt"
+        app:layout_constraintEnd_toStartOf="@+id/edt"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/Pw2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="2dp"
         android:text="Password"
-        tools:layout_editor_absoluteX="41dp"
-        tools:layout_editor_absoluteY="227dp"
+        app:layout_constraintBottom_toBottomOf="@+id/edt2"
+        app:layout_constraintEnd_toStartOf="@+id/edt2"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/Enter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="19dp"
         android:onClick="onClickGo22"
         android:text="Enter"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="147dp"
-        tools:layout_editor_absoluteY="298dp" />
+        app:layout_constraintBottom_toTopOf="@+id/FG"
+        app:layout_constraintEnd_toEndOf="@+id/FG"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/FG"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="117dp"
         android:text="Forgot your password?"
-        tools:layout_editor_absoluteX="117dp"
-        tools:layout_editor_absoluteY="365dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

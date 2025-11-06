@@ -11,76 +11,104 @@
         android:id="@+id/Wc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:layout_marginBottom="70dp"
         android:text="welcome back!"
-        tools:layout_editor_absoluteX="152dp"
-        tools:layout_editor_absoluteY="52dp"
+        app:layout_constraintBottom_toTopOf="@+id/ed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/ed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="7dp"
+        android:layout_marginBottom="34dp"
         android:ems="10"
         android:inputType="textPassword"
-        tools:layout_editor_absoluteX="155dp"
-        tools:layout_editor_absoluteY="141dp"
+        app:layout_constraintBottom_toTopOf="@+id/Pw"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Un"
+        app:layout_constraintTop_toBottomOf="@+id/Wc"
         tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/ed2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="7dp"
         android:ems="10"
         android:inputType="textPassword"
-        tools:layout_editor_absoluteX="152dp"
-        tools:layout_editor_absoluteY="204dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Pw"
+        app:layout_constraintTop_toBottomOf="@+id/ed"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/Un"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="7dp"
         android:text="User name"
-        tools:layout_editor_absoluteX="49dp"
-        tools:layout_editor_absoluteY="161dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ed"
+        app:layout_constraintEnd_toStartOf="@+id/ed"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/Pw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginBottom="32dp"
         android:text="password"
-        tools:layout_editor_absoluteX="48dp"
-        tools:layout_editor_absoluteY="221dp"
+        app:layout_constraintBottom_toTopOf="@+id/SignUp"
+        app:layout_constraintEnd_toStartOf="@+id/ed2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ed"
         tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/SignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginBottom="71dp"
         android:onClick="onClickGo2"
         android:text="Sign Up"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="137dp"
-        tools:layout_editor_absoluteY="272dp" />
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintStart_toEndOf="@+id/Pw"
+        app:layout_constraintTop_toBottomOf="@+id/Pw"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="198dp"
-        android:layout_height="23dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="58dp"
+        android:layout_marginBottom="317dp"
         android:text="I already have an account?-->"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="391dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/SignIn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SignUp"
         tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/SignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="47dp"
         android:onClick="onClickGo"
         android:text="Sign In"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="272dp"
-        tools:layout_editor_absoluteY="375dp" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
