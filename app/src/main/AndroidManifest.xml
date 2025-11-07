@@ -12,6 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProjectNiral">
         <activity
+            android:name=".ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NotesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TasksActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Mainalmain"
+            android:exported="false" />
+        <activity
+            android:name=".mainalmain"
+            android:exported="false" />
+        <activity
             android:name=".Signin"
             android:exported="false" />
         <activity
@@ -23,9 +38,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Mainalmain"
-            android:exported="false" />
         <activity
             android:name=".Signup"
             android:exported="false" />
