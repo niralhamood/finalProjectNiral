@@ -1,69 +1,67 @@
 package com.example.finalprojectniral;
 
-import android.annotation.SuppressLint;
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
-import org.w3c.dom.Text;
+import com.example.finalprojectniral.Mainalmain;
+import com.example.finalprojectniral.R;
 
 public class Signup extends AppCompatActivity {
-    private TextView ed;
-    private TextView ed2;
-    private TextView Un;
-    private TextView Pw;
-    private Button SignUp;
-    private TextView textView4;
-    private Button SignIn;
 
-    @SuppressLint("WrongViewCast")
+    // تعريف العناصر اللي موجودة في واجهة XML
+    EditText username, password;
+    Button signUp, signIn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.signup);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+        setContentView(R.layout.signup); // ربط الجافا بملف XML
+
+        // ربط المتغيرات بالعناصر من التصميم
+        username = findViewById(R.id.username);
+        password = findViewById(R.id.password);
+        signUp = findViewById(R.id.signUp);
+        signIn = findViewById(R.id.signIn);
+
+        // حدث الضغط على زر Sign Up
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String user = username.getText().toString();
+                String pass = password.getText().toString();
+
+                if (user.isEmpty() || pass.isEmpty()) {
+                    Toast.makeText(com.example.finalprojectniral.Signup.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(com.example.finalprojectniral.Signup.this, "Account created for " + user, Toast.LENGTH_SHORT).show();
+                    // مثال: الانتقال لشاشة رئيسية بعد التسجيل
+                    Intent intent = new Intent(com.example.finalprojectniral.Signup.this, Mainalmain.class);
+                    startActivity(intent);
+                }
+            }
         });
-        ed=findViewById(R.id.ed);
-        ed2=findViewById(R.id.ed2);
-        Un=findViewById(R.id.Un);
-        Pw=findViewById(R.id.Pw);
-        SignUp=findViewById(R.id.SignUp);
-        SignIn=findViewById(R.id.SignIn);
-        textView4=findViewById(R.id.textView4);
-    }
 
-    /**
-     * Called when pointer capture is enabled or disabled for the current window.
-     *
-     * @param hasCapture True if the window has pointer capture.
-     */
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-        super.onPointerCaptureChanged(hasCapture);
-    }
+        // حدث الضغط على زر Sign In
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String user = username.getText().toString();
+                String pass = password.getText().toString();
 
-    public void onClickGo(View v){
-        Intent intent = new Intent(Signup.this, Signin.class);
-        startActivity(intent);
-        finish();
-
-    }
-    public void onClickGo2(View v){
-        Intent intent = new Intent(Signup.this, Mainalmain.class);
-        startActivity(intent);
-        finish();
+                if (user.isEmpty() || pass.isEmpty()) {
+                    Toast.makeText(com.example.finalprojectniral.Signup.this, "Enter your username and password", Toast.LENGTH_SHORT).show();
+                } else {
+                    // مثال: الانتقال إلى الشاشة الرئيسية بعد تسجيل الدخول
+                    Intent intent = new Intent(com.example.finalprojectniral.Signup.this, Mainalmain.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
 }
