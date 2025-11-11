@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StayInspiredActivity">
+    <?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#FFF8F8"
+        android:padding="24dp">
+
+        <!-- زر العودة -->
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="Back"
+            android:layout_marginBottom="16dp" />
+
+        <!-- عنوان الصفحة -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="City Inspired"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#1E1E1E"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- النص الرئيسي -->
+        <TextView
+            android:id="@+id/tvHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="A Boost of\nMotivation, Delivered."
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#000"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:id="@+id/tvSubHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Activating this mode will send periodic uplifting notifications to help you stay motivated and positive throughout your day."
+            android:textAlignment="center"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="32dp"/>
+
+        <!-- ثلاثة خيارات -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:weightSum="3"
+            android:layout_marginBottom="40dp">
+
+            <!-- خيار Boost Focus -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="12dp"
+                android:background="@drawable/rounded_button_bg">
+
+                <TextView
+                    android:text="💪"
+                    android:textSize="24sp"
+                    android:layout_marginBottom="6dp"/>
+
+                <TextView
+                    android:text="Boost Focus"
+                    android:textSize="14sp"
+                    android:textColor="#000"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- خيار Stay Positive -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="12dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/rounded_button_bg">
+
+                <TextView
+                    android:text="😊"
+                    android:textSize="24sp"
+                    android:layout_marginBottom="6dp"/>
+
+                <TextView
+                    android:text="Stay Positive"
+                    android:textSize="14sp"
+                    android:textColor="#000"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- خيار Reduce Stress -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="12dp"
+                android:background="@drawable/rounded_button_bg">
+
+                <TextView
+                    android:text="🧘"
+                    android:textSize="24sp"
+                    android:layout_marginBottom="6dp"/>
+
+                <TextView
+                    android:text="Reduce Stress"
+                    android:textSize="14sp"
+                    android:textColor="#000"
+                    android:gravity="center"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- زر البدء -->
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:backgroundTint="#FF8FA3"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- حالة الوضع -->
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Status: Inactive"
+            android:textAlignment="center"
+            android:textColor="#666666"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

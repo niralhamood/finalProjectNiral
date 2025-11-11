@@ -27,12 +27,23 @@
         android:textColor="#666666"
         android:paddingBottom="20dp"/>
 
-    <!-- أقسام رئيسية -->
+    <!-- زر المهام أو الإلهام -->
     <Button
         android:id="@+id/btnTasks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="📘  My Tasks"
+        android:textSize="16sp"
+        android:backgroundTint="#FFE0E0"
+        android:textColor="#000"
+        android:layout_marginBottom="12dp"/>
+
+    <!-- الزر الجديد: Stay Inspired -->
+    <Button
+        android:id="@+id/btnStayInspired"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="💡  Stay Inspired"
         android:textSize="16sp"
         android:backgroundTint="#FFE0E0"
         android:textColor="#000"
@@ -78,27 +89,21 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="vertical">
-
-        </LinearLayout>
+            android:orientation="vertical" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="vertical">
-
-        </LinearLayout>
+            android:orientation="vertical" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="vertical">
-
-        </LinearLayout>
-
+            android:orientation="vertical" />
     </LinearLayout>
+
 </LinearLayout>

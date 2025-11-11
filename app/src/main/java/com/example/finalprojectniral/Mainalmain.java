@@ -1,6 +1,5 @@
 package com.example.finalprojectniral;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -13,7 +12,7 @@ import java.util.Calendar;
 public class Mainalmain extends AppCompatActivity {
 
     TextView greetingText, subGreetingText;
-    Button btnTasks, btnNotes, btnChat;
+    Button btnTasks, btnNotes, btnChat, btnStayInspired; // ← أضفنا الزر الجديد
     String username = "User"; // قيمة افتراضية
 
     @SuppressLint("MissingInflatedId")
@@ -28,6 +27,7 @@ public class Mainalmain extends AppCompatActivity {
         btnTasks = findViewById(R.id.btnTasks);
         btnNotes = findViewById(R.id.btnNotes);
         btnChat = findViewById(R.id.btnChat);
+        btnStayInspired = findViewById(R.id.btnStayInspired); // ← ربط الزر الجديد
 
         // استقبال اسم المستخدم من شاشة تسجيل الدخول (إن وجد)
         Bundle extras = getIntent().getExtras();
@@ -69,7 +69,11 @@ public class Mainalmain extends AppCompatActivity {
             Intent intent = new Intent(Mainalmain.this, ChatActivity.class);
             startActivity(intent);
         });
+
+        // 🔹 الزر الجديد: Stay Inspired
+        btnStayInspired.setOnClickListener(v -> {
+            Intent intent = new Intent(Mainalmain.this, StayInspiredActivity.class);
+            startActivity(intent);
+        });
     }
 }
-
-
