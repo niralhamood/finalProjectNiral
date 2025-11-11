@@ -9,11 +9,12 @@
 
     <TextView
         android:id="@+id/SignInn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="45dp"
+        android:layout_width="80dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="36dp"
         android:text="Sign In"
+        app:autoSizeTextType="uniform"
         app:layout_constraintStart_toStartOf="@+id/edt"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
@@ -46,11 +47,12 @@
 
     <TextView
         android:id="@+id/Un2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="85dp"
+        android:layout_height="31dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="7dp"
         android:text="User Name"
+        app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="@+id/edt"
         app:layout_constraintEnd_toStartOf="@+id/edt"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,11 +60,12 @@
 
     <TextView
         android:id="@+id/Pw2"
-        android:layout_width="75dp"
-        android:layout_height="21dp"
+        android:layout_width="98dp"
+        android:layout_height="30dp"
         android:layout_marginEnd="13dp"
         android:layout_marginBottom="2dp"
         android:text="Password"
+        app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="@+id/edt2"
         app:layout_constraintEnd_toStartOf="@+id/edt2"
         app:layout_constraintStart_toStartOf="parent"
