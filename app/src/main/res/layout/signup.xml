@@ -1,96 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF9F9"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:padding="24dp"
     tools:context=".Signup">
 
-    <!-- Welcome text -->
     <TextView
-        android:id="@+id/welcomeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome back!"
-        android:textSize="20sp"
+        android:id="@+id/Wc"
+        android:layout_width="129dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginBottom="70dp"
+        android:text="welcome back!"
+        android:textAlignment="inherit"
         android:textStyle="bold"
-        android:textColor="#3E3E3E"
-        android:layout_marginBottom="40dp"/>
-
-    <!-- Username field -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="User name"
-        android:textSize="16sp"
-        android:textColor="#333333"/>
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/ed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
     <EditText
-        android:id="@+id/username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#E4B4B4"
-        android:hint="Enter your name"
-        android:inputType="textPersonName"
-        android:layout_marginBottom="16dp"/>
-
-    <!-- Password field -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Password"
-        android:textSize="16sp"
-        android:textColor="#333333"/>
-
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#E4B4B4"
-        android:hint="Enter your password"
-        android:inputType="textPassword"
-        android:layout_marginBottom="32dp"/>
-
-    <!-- Sign Up button -->
-    <Button
-        android:id="@+id/signUp"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="Sign Up"
-        android:textAllCaps="false"
-        android:backgroundTint="#9B6B9E"
-        android:textColor="#FFFFFF"
-        android:layout_gravity="center"
-        android:layout_marginBottom="30dp"/>
-
-    <!-- Sign In section -->
-    <LinearLayout
+        android:id="@+id/ed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:layout_marginEnd="7dp"
+        android:layout_marginBottom="34dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/Pw"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Un"
+        app:layout_constraintTop_toBottomOf="@+id/Wc"
+        tools:ignore="MissingConstraints" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="I already have an account? -->"
-            android:textColor="#555555"
-            android:textSize="14sp"
-            android:layout_gravity="center_vertical"/>
+    <EditText
+        android:id="@+id/ed2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="7dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Pw"
+        app:layout_constraintTop_toBottomOf="@+id/ed"
+        tools:ignore="MissingConstraints" />
 
-        <Button
-            android:id="@+id/signIn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sign In"
-            android:textAllCaps="false"
-            android:backgroundTint="#9B6B9E"
-            android:textColor="#FFFFFF"
-            android:layout_marginStart="8dp"/>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/Un"
+        android:layout_width="93dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="12dp"
+        android:text="User name"
+        android:textAlignment="textEnd"
+        android:textStyle="normal"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@+id/ed"
+        app:layout_constraintEnd_toStartOf="@+id/ed"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/Pw"
+        android:layout_width="88dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginBottom="32dp"
+        android:text="password"
+        android:textStyle="normal"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/SignUp"
+        app:layout_constraintEnd_toStartOf="@+id/ed2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ed"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/SignUp"
+        android:layout_width="148dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="71dp"
+        android:onClick="onClickGo2"
+        android:text="Sign Up"
+        android:textColorLink="#E2A5BA"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintStart_toEndOf="@+id/Pw"
+        app:layout_constraintTop_toBottomOf="@+id/Pw"
+        tools:ignore="MissingConstraints" />
+
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="190dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="58dp"
+        android:layout_marginBottom="317dp"
+        android:text="I already have an account?-->"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/SignIn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SignUp"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/SignIn"
+        android:layout_width="122dp"
+        android:layout_height="46dp"
+        android:layout_marginEnd="47dp"
+        android:onClick="onClickGo"
+        android:text="Sign In"
+        android:textColorLink="#E99BB5"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        tools:ignore="MissingConstraints" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

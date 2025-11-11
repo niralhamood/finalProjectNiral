@@ -1,11 +1,12 @@
 package com.example.finalprojectniral;
 
 import android.annotation.SuppressLint;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -17,10 +18,15 @@ import androidx.core.view.WindowInsetsCompat;
 import org.w3c.dom.Text;
 
 public class Signup extends AppCompatActivity {
-    EditText username, password;
-    Button signUp, signIn;
+    private TextView ed;
+    private TextView ed2;
+    private TextView Un;
+    private TextView Pw;
+    private Button SignUp;
+    private TextView textView4;
+    private Button SignIn;
 
-    @SuppressLint({"WrongViewCast", "MissingInflatedId"})
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,10 +37,13 @@ public class Signup extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        username = findViewById(R.id.username);
-        password = findViewById(R.id.password);
-        signUp = findViewById(R.id.signUp);
-        signIn = findViewById(R.id.signIn);
+        ed=findViewById(R.id.ed);
+        ed2=findViewById(R.id.ed2);
+        Un=findViewById(R.id.Un);
+        Pw=findViewById(R.id.Pw);
+        SignUp=findViewById(R.id.SignUp);
+        SignIn=findViewById(R.id.SignIn);
+        textView4=findViewById(R.id.textView4);
     }
 
     /**
