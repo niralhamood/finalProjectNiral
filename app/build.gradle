@@ -38,4 +38,9 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
+    def room_versin = "2.5.2"
+    implementation "androidx.room:room-rutime;$room_versin"
+    annotationProcessor "androidx.room:room-compiler:$room_versin"
+    implementation "androidx.room:room-rxjava2:$room_versin"
+
 }
