@@ -22,7 +22,7 @@ public interface MyTaskQuery {
     @Query("SELECT * FROM MyTask WHERE userld=:userid_p, ORDER BY time DES")
     List<MyTask> getAlLTaskOrederBy(long userid_p);
 
-    @Query(SELECT * FROM MyTask WHERE userld=:userid_p AND isCompleted=:isCompleted_p" + "ORDER BY importance DESC")
+    @Query(SELECT * FROM MyTask WHERE userld=:userid_p AND isCompleted=:isCompleted_p"+"ORDER BY importance DESC")
 
     List<MyTask> getAllTaskOrederBy(long userid_p, boolean isCompleted_p);
 

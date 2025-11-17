@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProjectNiral">
         <activity
+            android:name=".NotificationWorker"
+            android:exported="false" />
+        <activity
             android:name=".StayInspiredActivity"
             android:exported="false" />
         <activity
