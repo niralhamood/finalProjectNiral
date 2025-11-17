@@ -50,16 +50,6 @@
         android:layout_marginBottom="12dp"/>
 
     <Button
-        android:id="@+id/btnNotes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="📝  My Notes"
-        android:textSize="16sp"
-        android:backgroundTint="#FFE0E0"
-        android:textColor="#000"
-        android:layout_marginBottom="12dp"/>
-
-    <Button
         android:id="@+id/btnChat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

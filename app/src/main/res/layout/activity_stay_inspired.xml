@@ -127,7 +127,7 @@
                 android:text="Reduce Stress"
                 android:textSize="14sp"
                 android:textColor="#000"
-                android:gravity="center"/>
+                android:gravity="center" android:layout_width="" android:layout_height=""/>
         </LinearLayout>
 
     </LinearLayout>

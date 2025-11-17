@@ -1,7 +1,5 @@
 package com.example.finalprojectniral.data.myTasksTable;
 
-import static android.icu.text.MessagePattern.ArgType.SELECT;
-
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -10,35 +8,38 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import kotlinx.coroutines.scheduling.Task;
-
 @Dao
 public interface MyTaskQuery {
 
+    // 1) كل التسك حسب الأهمية
+    @Query("SELECT * FROM TasksActivity ORDER BY importance DESC")
+    List<TasksActivity> getAllTasks();
 
-    @Query("SELECT * FROM MyTask ORDER BY Importance DESC")
-    List<MyTask> getAllTasks();
+    // 2) كل التسك حسب userId ومرتبة حسب الوقت
+    @Query("SELECT * FROM TasksActivity WHERE userId = :userid_p ORDER BY time DESC")
+    List<TasksActivity> getAllTaskOrderBy(long userid_p);
 
-    @Query("SELECT * FROM MyTask WHERE userld=:userid_p, ORDER BY time DES")
-    List<MyTask> getAlLTaskOrederBy(long userid_p);
+    // 3) حسب userId + هل مكتملة + ترتيب بالأهمية
+    @Query("SELECT * FROM TasksActivity WHERE userId = :userid_p AND isCompleted = :isCompleted_p ORDER BY importance DESC")
+    List<TasksActivity> getAllTaskOrderBy(long userid_p, boolean isCompleted_p);
 
-    @Query(SELECT * FROM MyTask WHERE userld=:userid_p AND isCompleted=:isCompleted_p"+"ORDER BY importance DESC")
-
-    List<MyTask> getAllTaskOrederBy(long userid_p, boolean isCompleted_p);
-
+    // 4) إدخال مهمة
     @Insert
-    void insertTask(MyTask... tasks);
+    void insertTask(TasksActivity... tasks);
 
+    // 5) تحديث مهمة
     @Update
-    void updateTask(MyTask... tasks);
+    void updateTask(TasksActivity... tasks);
 
+    // 6) حذف مهمة
     @Delete
-    void deleteTask(MyTask... tasks);
+    void deleteTask(TasksActivity... tasks);
 
-    @Query("DELETE FROM MyTask WHERE keyId=kid");
+    // 7) حذف حسب المفتاح
+    @Query("DELETE FROM TasksActivity WHERE keyId = :kid")
     void deleteTask(long kid);
 
-    @Query("SELECT * FROM MyTask WHERE subjId=key_id" + "ORDER BY importance DESC");
-
-    List<MyTask> getTaskBySubjId(long key_id);
+    // 8) جلب تسكات حسب subject id
+    @Query("SELECT * FROM TasksActivity WHERE subjId = :key_id ORDER BY importance DESC")
+    List<TasksActivity> getTaskBySubjId(long key_id);
 }

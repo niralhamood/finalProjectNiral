@@ -1,24 +1,64 @@
 package com.example.finalprojectniral;
 
-import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class TasksActivity extends AppCompatActivity {
+import android.os.Bundle;
+import android.view.View;
+
+import com.example.finalprojectniral.data.myTasksTable.MyDataBase;
+import com.example.finalprojectniral.data.myTasksTable.MyTaskQuery;
+import com.example.finalprojectniral.data.myTasksTable.TasksActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
+
+public class TaskActivity extends AppCompatActivity {
+
+    private RecyclerView rvTasks;
+    private FloatingActionButton btnAddTask;
+
+    private MyTaskAdapter adapter;
+    private MyTaskQuery taskDao;
+    private List<TasksActivity> taskList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_tasks);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+        setContentView(R.layout.activity_task);
+
+        rvTasks = findViewById(R.id.rvTasks);
+        btnAddTask = findViewById(R.id.btnAddTask);
+
+        // بناء قاعدة البيانات
+        MyDataBase db = MyDataBase.getDb(getApplicationContext());
+        taskDao = db.myTaskQuery();
+
+        // جلب المهام من الداتا
+        taskList = taskDao.getAllTasks();
+
+        // إعداد الريسايكلر
+        adapter = new MyTaskAdapter(taskList, this);
+        rvTasks.setAdapter(adapter);
+        rvTasks.setLayoutManager(new LinearLayoutManager(this));
+
+        // إضافة مهمة جديدة
+        btnAddTask.setOnClickListener(view -> {
+            TasksActivity t = new TasksActivity();
+            t.title = "New Task";
+            t.importance = 1;
+            t.isCompleted = false;
+
+            taskDao.insertTask(t);
+
+            refreshList();
         });
+    }
+
+    private void refreshList() {
+        taskList.clear();
+        taskList.addAll(taskDao.getAllTasks());
+        adapter.notifyDataSetChanged();
     }
 }

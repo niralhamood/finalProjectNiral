@@ -13,7 +13,7 @@ import java.util.Calendar;
 public class Mainalmain extends AppCompatActivity {
 
     TextView greetingText, subGreetingText;
-    Button btnTasks, btnNotes, btnChat, btnStayInspired; // ← أضفنا الزر الجديد
+    Button btnTasks, btnChat, btnStayInspired; // ← أضفنا الزر الجديد
     String username = "User"; // قيمة افتراضية
 
     @SuppressLint("MissingInflatedId")
@@ -26,7 +26,7 @@ public class Mainalmain extends AppCompatActivity {
         greetingText = findViewById(R.id.greetingText);
         subGreetingText = findViewById(R.id.subGreetingText);
         btnTasks = findViewById(R.id.btnTasks);
-        btnNotes = findViewById(R.id.btnNotes);
+
         btnChat = findViewById(R.id.btnChat);
         btnStayInspired = findViewById(R.id.btnStayInspired); // ← ربط الزر الجديد
 
@@ -61,10 +61,6 @@ public class Mainalmain extends AppCompatActivity {
             startActivity(intent);
         });
 
-        btnNotes.setOnClickListener(v -> {
-            Intent intent = new Intent(Mainalmain.this, NotesActivity.class);
-            startActivity(intent);
-        });
 
         btnChat.setOnClickListener(v -> {
             Intent intent = new Intent(Mainalmain.this, ChatActivity.class);

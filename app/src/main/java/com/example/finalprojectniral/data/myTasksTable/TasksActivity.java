@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 
 @Entity
 
-public class MyTask {
+public class TasksActivity {
     @PrimaryKey(autoGenerate = true)
     public long keyId;
     public int importance;
