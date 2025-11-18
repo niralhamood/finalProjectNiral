@@ -1,124 +1,103 @@
 package com.example.finalprojectniral;
 
-
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
-import androidx.work.Worker;
+
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.concurrent.TimeUnit;
 
 public class StayInspiredActivity extends AppCompatActivity {
 
-    LinearLayout optionFocus, optionPositive, optionStress;
+    RadioGroup modeRadioGroup;
+    RadioButton rbMotivational, rbGuiltDriven;
     Button btnStart;
     TextView tvStatus;
 
-    String selectedMode = "";
-    boolean isActive = false;
+    SharedPreferences preferences;
 
-    SharedPreferences prefs;
+    boolean isActive = false;  // حالة التفعيل
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stay_inspired);
 
-        prefs = getSharedPreferences("settings", MODE_PRIVATE);
-
-        optionFocus = findViewById(R.id.boost_focus_layout);
-        optionPositive = findViewById(R.id.stay_positive_layout);
-        optionStress = findViewById(R.id.reduce_stress_layout);
+        modeRadioGroup = findViewById(R.id.modeRadioGroup);
+        rbMotivational = findViewById(R.id.rbMotivational);
+        rbGuiltDriven = findViewById(R.id.rbGuiltDriven);
         btnStart = findViewById(R.id.btnStart);
         tvStatus = findViewById(R.id.tvStatus);
 
-        ImageView btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(v -> finish());
+        preferences = getSharedPreferences("settings", MODE_PRIVATE);
 
-        // تحميل الوضع القديم
-        loadSavedData();
+        // إذا سبق وشغل المستخدم المود
+        isActive = preferences.getBoolean("active", false);
+        updateStatusUI();
 
-        optionFocus.setOnClickListener(v -> selectMode("Boost Focus"));
-        optionPositive.setOnClickListener(v -> selectMode("Stay Positive"));
-        optionStress.setOnClickListener(v -> selectMode("Reduce Stress"));
+        btnStart.setOnClickListener(v -> {
 
-        btnStart.setOnClickListener(v -> toggleActivation());
+            // يجب اختيار مود
+            if (modeRadioGroup.getCheckedRadioButtonId() == -1) {
+                Toast.makeText(this, "Please choose a message mode first", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!isActive) {
+                startMotivationWorker();
+            } else {
+                stopMotivationWorker();
+            }
+
+            isActive = !isActive;
+            preferences.edit().putBoolean("active", isActive).apply();
+            updateStatusUI();
+        });
     }
 
-    private void selectMode(String mode) {
-        selectedMode = mode;
-        resetBackgrounds();
+    private void startMotivationWorker() {
 
-        if (mode.equals("Boost Focus")) optionFocus.setBackgroundResource(R.drawable.rounded_button_selected);
-        if (mode.equals("Stay Positive")) optionPositive.setBackgroundResource(R.drawable.rounded_button_selected);
-        if (mode.equals("Reduce Stress")) optionStress.setBackgroundResource(R.drawable.rounded_button_selected);
+        // حفظ المود المختار في SharedPreferences
+        String mode;
 
-        saveData();
-    }
-
-    private void resetBackgrounds() {
-        optionFocus.setBackgroundResource(R.drawable.rounded_button_bg);
-        optionPositive.setBackgroundResource(R.drawable.rounded_button_bg);
-        optionStress.setBackgroundResource(R.drawable.rounded_button_bg);
-    }
-
-    private void toggleActivation() {
-
-        if (selectedMode.isEmpty()) {
-            tvStatus.setText("Please select a mode first");
-            return;
+        if (rbMotivational.isChecked()) {
+            mode = "motivational";
+        } else {
+            mode = "guilt";
         }
 
-        isActive = !isActive;
+        preferences.edit().putString("mode", mode).apply();
 
+        // WorkManager: كل 6 ساعات (يمكن تغييره)
+        PeriodicWorkRequest request =
+                new PeriodicWorkRequest.Builder(MotivationWorker.class, 6, TimeUnit.HOURS)
+                        .build();
+
+        WorkManager.getInstance(this).enqueue(request);
+
+        Toast.makeText(this, "Notifications Activated", Toast.LENGTH_SHORT).show();
+    }
+
+    private void stopMotivationWorker() {
+        WorkManager.getInstance(this).cancelAllWork();
+        Toast.makeText(this, "Notifications Stopped", Toast.LENGTH_SHORT).show();
+    }
+
+    private void updateStatusUI() {
         if (isActive) {
-            tvStatus.setText("Status: Active (" + selectedMode + ")");
+            tvStatus.setText("Status: Active");
             btnStart.setText("Stop");
-            btnStart.setBackgroundTintList(ContextCompat.getColorStateList(this, android.R.color.holo_red_light));
-
-            // تشغيل الإشعارات كل 30 دقيقة
-            PeriodicWorkRequest request =
-                    new PeriodicWorkRequest.Builder(NotificationWorker.class, 30, TimeUnit.MINUTES)
-                            .build();
-            WorkManager.getInstance(this).enqueue(request);
-
         } else {
             tvStatus.setText("Status: Inactive");
             btnStart.setText("Start");
-            btnStart.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.pink_300));
-
-            WorkManager.getInstance(this).cancelAllWork();
-        }
-
-        saveData();
-    }
-
-    private void saveData() {
-        prefs.edit()
-                .putString("mode", selectedMode)
-                .putBoolean("active", isActive)
-                .apply();
-    }
-
-    private void loadSavedData() {
-        selectedMode = prefs.getString("mode", "");
-        isActive = prefs.getBoolean("active", false);
-
-        if (!selectedMode.isEmpty()) selectMode(selectedMode);
-
-        if (isActive) {
-            tvStatus.setText("Status: Active (" + selectedMode + ")");
-            btnStart.setText("Stop");
-            btnStart.setBackgroundTintList(ContextCompat.getColorStateList(this, android.R.color.holo_red_light));
         }
     }
 }
