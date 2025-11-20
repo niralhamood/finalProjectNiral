@@ -13,7 +13,8 @@
         android:theme="@style/Theme.FinalProjectNiral">
         <activity
             android:name=".NotificationWorker"
-            android:exported="false" />
+            android:exported="false"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".StayInspiredActivity"
             android:exported="false" />
@@ -23,15 +24,11 @@
         <activity
             android:name=".NotesActivity"
             android:exported="false" />
-        <activity
-            android:name=".TasksActivity"
-            android:exported="false" />
+
         <activity
             android:name=".Mainalmain"
             android:exported="false" />
-        <activity
-            android:name=".mainalmain"
-            android:exported="false" />
+
         <activity
             android:name=".Signin"
             android:exported="false" />
