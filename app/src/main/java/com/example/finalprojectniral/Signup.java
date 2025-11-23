@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +34,36 @@ public class Signup extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+
+            SignUp.setOnClickListener(v -> {
+
+                String username = ed.getText().toString();
+                String password = ed2.getText().toString();
+
+                // أولاً نفحص هل الحقول فارغة
+                if(username.isEmpty() || password.isEmpty()){
+                    Toast.makeText(this, "الرجاء تعبئة جميع الحقول", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // ثانياً نفحص هل المستخدم موجود أصلاً
+                boolean exists = check(username);
+
+                if(exists){
+                    Toast.makeText(this, "هذا الحساب موجود بالفعل", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    // إذا ليس موجود → نسجل الحساب الجديد
+                    saveUser(username, password);
+                    Toast.makeText(this, "تم إنشاء الحساب بنجاح!", Toast.LENGTH_SHORT).show();
+
+                    // الانتقال لصفحة تسجيل الدخول
+                    Intent intent = new Intent(Signup.this, Signin.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+
         });
         ed=findViewById(R.id.ed);
         ed2=findViewById(R.id.ed2);
@@ -64,5 +95,29 @@ public class Signup extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+    private boolean check(String username){
+
+        boolean userExists = false;   // متغير بولياني مساعد
+
+        // استرجاع اسم المستخدم المحفوظ
+        String savedUsername = getSharedPreferences("UserData", MODE_PRIVATE)
+                .getString("username", null);
+
+        // إذا كان اسم المستخدم موجود في الذاكرة
+        if (savedUsername != null && savedUsername.equals(username)) {
+            userExists = true;
+        }
+
+        return userExists;
+    }
+    private void saveUser(String username, String password){
+        getSharedPreferences("UserData", MODE_PRIVATE)
+                .edit()
+                .putString("username", username)
+                .putString("password", password)
+                .apply();
+    }
+
+
 
 }
