@@ -7,4 +7,10 @@ public class MySubject {
     @PrimaryKey(autoGenerate = true)
     public long key_id;
     public String title;
+
+    public long getKey_id()
+    {
+        return key_id;
+    }
+
 }

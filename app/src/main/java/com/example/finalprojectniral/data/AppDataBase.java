@@ -7,7 +7,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.finalprojectniral.data.mySubjectTable.MySubject;
-import com.example.finalprojectniral.data.mySubjectTable.MySubjectQuery;
 import com.example.finalprojectniral.data.myTasksTable.MyTaskQuery;
 import com.example.finalprojectniral.data.myTasksTable.TasksActivity;
 import com.example.finalprojectniral.data.myUserTable.MyUser;
@@ -39,7 +38,7 @@ public class AppDataBase {
          * يعيد كائن لعمليات جدول الموضيع *
          * " @return
          */
-        public abstract MySubjectQuery getMySubjectQuery();
+        public abstract MySubjectQuery1 getMySubjectQuery();
         /**
          يعيد كانن لعمليات جدول المهمات *
          * @return
