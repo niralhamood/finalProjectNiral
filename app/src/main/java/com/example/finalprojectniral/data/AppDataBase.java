@@ -7,6 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.finalprojectniral.data.mySubjectTable.MySubject;
+import com.example.finalprojectniral.data.mySubjectTable.MySubjectQuery;
 import com.example.finalprojectniral.data.myTasksTable.MyTaskQuery;
 import com.example.finalprojectniral.data.myTasksTable.TasksActivity;
 import com.example.finalprojectniral.data.myUserTable.MyUser;
@@ -26,11 +27,11 @@ public class AppDataBase {
      يعيد كانن لعمليات جدول المستعملين *
      * @return
      */
-    public abstract  class AppDataBase extends RoomDatabase {
+    public abstract static class appDataBase extends RoomDatabase {
         /**
          * كائن لتعامل كع قاعدة البينات
          */
-        private static AppDataBase db;
+        private static appDataBase db;
 
         public abstract MyUserQuery getMyUserQuery();
 
@@ -38,7 +39,7 @@ public class AppDataBase {
          * يعيد كائن لعمليات جدول الموضيع *
          * " @return
          */
-        public abstract MySubjectQuery1 getMySubjectQuery();
+        public abstract MySubjectQuery getMySubjectQuery();
         /**
          يعيد كانن لعمليات جدول المهمات *
          * @return
@@ -50,10 +51,10 @@ public class AppDataBase {
          "@param context
           * @return
           */
-        public static AppDataBase getDB(Context context) {
+        public static appDataBase getDB(Context context) {
             if (db == null) {
                 db = Room.databaseBuilder(context,
-                                AppDataBase.class,
+                                appDataBase.class,
                                 "samihDataBase")
                         .fallbackToDestructiveMigration()
                         .allowMainThreadQueries()

@@ -49,19 +49,19 @@
         android:textColor="#000"
         android:layout_marginBottom="12dp"/>
 
+    <!-- مساحة فارغة قبل الشريط السفلي -->
+
+    <!-- شريط تنقل سفلي بسيط -->
+
     <Button
         android:id="@+id/btnChat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="💬  Chat with AI"
-        android:textSize="16sp"
+        android:layout_marginBottom="12dp"
         android:backgroundTint="#FFE0E0"
+        android:text="💬  Chat with AI"
         android:textColor="#000"
-        android:layout_marginBottom="12dp"/>
-
-    <!-- مساحة فارغة قبل الشريط السفلي -->
-
-    <!-- شريط تنقل سفلي بسيط -->
+        android:textSize="16sp" />
 
     <View
         android:layout_width="match_parent"
