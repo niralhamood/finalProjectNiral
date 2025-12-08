@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.finalprojectniral.data.myTasksTable.TasksActivity;
+import com.example.finalprojectniral.data.myTasksTable.MyTassk;
 
 import java.util.Calendar;
 
@@ -59,7 +59,7 @@ public class Mainalmain extends AppCompatActivity {
 
         // معالجة أحداث الأزرار
         btnTasks.setOnClickListener(v -> {
-            Intent intent = new Intent(Mainalmain.this, TasksActivity.class);
+            Intent intent = new Intent(Mainalmain.this, MyTassk.class);
             startActivity(intent);
         });
 

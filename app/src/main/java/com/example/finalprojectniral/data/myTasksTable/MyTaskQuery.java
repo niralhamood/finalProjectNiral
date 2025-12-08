@@ -12,34 +12,34 @@ import java.util.List;
 public interface MyTaskQuery {
 
     // 1) كل التسك حسب الأهمية
-    @Query("SELECT * FROM TasksActivity ORDER BY importance DESC")
-    List<TasksActivity> getAllTasks();
+    @Query("SELECT * FROM MyTassk ORDER BY importance DESC")
+    List<MyTassk> getAllTasks();
 
     // 2) كل التسك حسب userId ومرتبة حسب الوقت
-    @Query("SELECT * FROM TasksActivity WHERE userId = :userid_p ORDER BY time DESC")
-    List<TasksActivity> getAllTaskOrderBy(long userid_p);
+    @Query("SELECT * FROM MyTassk WHERE userId = :userid_p ORDER BY time DESC")
+    List<MyTassk> getAllTaskOrderBy(long userid_p);
 
     // 3) حسب userId + هل مكتملة + ترتيب بالأهمية
-    @Query("SELECT * FROM TasksActivity WHERE userId = :userid_p AND isCompleted = :isCompleted_p ORDER BY importance DESC")
-    List<TasksActivity> getAllTaskOrderBy(long userid_p, boolean isCompleted_p);
+    @Query("SELECT * FROM MyTassk WHERE userId = :userid_p AND isCompleted = :isCompleted_p ORDER BY importance DESC")
+    List<MyTassk> getAllTaskOrderBy(long userid_p, boolean isCompleted_p);
 
     // 4) إدخال مهمة
     @Insert
-    void insertTask(TasksActivity... tasks);
+    void insertTask(MyTassk... tasks);
 
     // 5) تحديث مهمة
     @Update
-    void updateTask(TasksActivity... tasks);
+    void updateTask(MyTassk... tasks);
 
     // 6) حذف مهمة
     @Delete
-    void deleteTask(TasksActivity... tasks);
+    void deleteTask(MyTassk... tasks);
 
     // 7) حذف حسب المفتاح
-    @Query("DELETE FROM TasksActivity WHERE keyId = :kid")
+    @Query("DELETE FROM MyTassk WHERE keyId = :kid")
     void deleteTask(long kid);
 
     // 8) جلب تسكات حسب subject id
-    @Query("SELECT * FROM TasksActivity WHERE subjId = :key_id ORDER BY importance DESC")
-    List<TasksActivity> getTaskBySubjId(long key_id);
+    @Query("SELECT * FROM MyTassk WHERE subjId = :key_id ORDER BY importance DESC")
+    List<MyTassk> getTaskBySubjId(long key_id);
 }

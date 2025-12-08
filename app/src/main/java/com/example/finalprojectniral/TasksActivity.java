@@ -5,11 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.view.View;
 
 import com.example.finalprojectniral.data.myTasksTable.MyDataBase;
 import com.example.finalprojectniral.data.myTasksTable.MyTaskQuery;
-import com.example.finalprojectniral.data.myTasksTable.TasksActivity;
+import com.example.finalprojectniral.data.myTasksTable.MyTassk;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class TaskActivity extends AppCompatActivity {
 
     private MyTaskAdapter adapter;
     private MyTaskQuery taskDao;
-    private List<TasksActivity> taskList;
+    private List<MyTassk> taskList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +44,7 @@ public class TaskActivity extends AppCompatActivity {
 
         // إضافة مهمة جديدة
         btnAddTask.setOnClickListener(view -> {
-            TasksActivity t = new TasksActivity();
+            MyTassk t = new MyTassk();
             t.title = "New Task";
             t.importance = 1;
             t.isCompleted = false;

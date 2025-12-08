@@ -1,12 +1,19 @@
 package com.example.finalprojectniral.data.mySubjectTable;
 
+import android.content.Context;
+
 import androidx.room.Dao;
+import androidx.room.Database;
 import androidx.room.Delete;
 import androidx.room.Entity;
 import androidx.room.Insert;
 import androidx.room.PrimaryKey;
 import androidx.room.Query;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 import androidx.room.Update;
+
+import java.util.List;
 
 @Entity
 public class MySubject {
@@ -54,25 +61,61 @@ public class MySubject {
         public String user_message;
         public String ai_response;
         public String timestamp;  // الوقت الذي تم فيه إرسال الرسالة
+
+        @Override
+        public String toString() {
+            return "Chat{" +
+                    "chat_id=" + chat_id +
+                    ", user_message='" + user_message + '\'' +
+                    ", ai_response='" + ai_response + '\'' +
+                    ", timestamp='" + timestamp + '\'' +
+                    '}';
+        }
     }
-    @Dao
-    public interface UserDao {
-        @Insert
-        void insertUser(User user);
+        @Dao
+        public interface MySubjectDao {
 
-        @Update
-        void updateUser(User user);
+            @Insert
+            long insert(MySubject subject);
 
-        @Delete
-        void deleteUser(User user);
+            @Update
+            int update(MySubject subject);
 
-        @Query("SELECT * FROM User WHERE user_id = :userId")
-        User getUserById(long userId);
+            @Delete
+            int delete(MySubject subject);
+
+            @Query("SELECT * FROM MySubject ORDER BY title ASC")
+            List<MySubject> getAllSubjects();
+        }
+    @Database(entities = {MySubject.class}, version = 1)
+    public abstract static class AppDatabase extends RoomDatabase {
+
+        private static volatile AppDatabase INSTANCE;
+
+        public abstract MySubjectDao mySubjectDao();
+
+        public static AppDatabase getDatabase(Context context) {
+            if (INSTANCE == null) {
+                synchronized (AppDatabase.class) {
+                    if (INSTANCE == null) {
+                        INSTANCE = Room.databaseBuilder(
+                                context.getApplicationContext(),
+                                AppDatabase.class,
+                                "my_database"
+                        ).allowMainThreadQueries().build();
+                    }
+                }
+            }
+            return INSTANCE;
+        }
     }
-
-
-
-
 
 
 }
+
+
+
+
+
+
+
