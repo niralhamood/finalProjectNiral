@@ -6,8 +6,6 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.example.finalprojectniral.data.mySubjectTable.MySubject;
-
 public class AppDatabase {
     @Database(entities = {MySubject.class}, version = 1)
     public abstract static class appDatabase extends RoomDatabase {

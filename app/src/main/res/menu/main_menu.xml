@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/itemSettings"
+        android:onClick="onCreateOptionMenu"
+        android:title="Settings" />
+    <item
+        android:id="@+id/itemHistory"
+        android:onClick="onCreateOptionMenu"
+        android:title="History" />
+    <item
+        android:id="@+id/itemSignUp"
+        android:onClick="onCreateOptionMenu"
+        android:title="SignUp" />
+</menu>

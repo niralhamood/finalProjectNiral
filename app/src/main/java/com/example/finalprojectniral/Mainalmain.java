@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.finalprojectniral.data.myTasksTable.MyTassk;
 
@@ -73,6 +76,27 @@ public class Mainalmain extends AppCompatActivity {
         btnStayInspired.setOnClickListener(v -> {
             Intent intent = new Intent(Mainalmain.this, StayInspiredActivity.class);
             startActivity(intent);
-        });
+
+            @Override
+            public boolean onCreateOptionMenu (Menu menu){
+                getMenuInflater().inflate(R.menu.main_menu, menu);
+                return true;
+            }
+            @Override
+            public boolean onOptionsItemSelected (MenuItem item){
+                if (item.getItemId() == R.id.itemSettings) {
+                    Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();
+                }
+                if (item.getItemId() == R.id.itemSignUp) {
+                    Toast.makeText(this, "Sign out", Toast.LENGTH_SHORT).show();
+                }
+                if (item.getItemId() == R.id.itemHistory) {
+                    Toast.makeText(this, "History", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            }
+        }
     }
 }
+
+
