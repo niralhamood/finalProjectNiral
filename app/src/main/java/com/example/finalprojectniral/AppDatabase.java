@@ -7,12 +7,10 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 public class AppDatabase {
-    @Database(entities = {MySubject.class}, version = 1)
     public abstract static class appDatabase extends RoomDatabase {
 
         private static volatile appDatabase INSTANCE;
 
-        public abstract MySubject.MySubjectDao mySubjectDao();
 
         public static appDatabase getDatabase(Context context) {
             if (INSTANCE == null) {
