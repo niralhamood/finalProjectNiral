@@ -5,15 +5,10 @@ import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 
-public class MyTaskAdapter extends ArrayAdapter<MyTassk> {
-    public MyTaskAdapter(@NonNull Context context, int resource) {
-        super(context, resource);
-    }
-}
-
 public class MyTaskAdapter extends ArrayAdapter<MyTask> {
     //המזהה של קובץ עיצוב הפריט
     private final int itemLayout;
+    
     /**
      * פעולה בונה מתאם
      * @param context קישור להקשר (מסך- אקטיביטי)
@@ -21,9 +16,9 @@ public class MyTaskAdapter extends ArrayAdapter<MyTask> {
      */
     public MyTaskAdapter(@NonNull Context context, int resource) {
         super(context, resource);
-        this.itemLayout =resource;
+        this.itemLayout = resource;
     }
-    }
+}
 
 
 

@@ -48,8 +48,8 @@
                 android:textSize="14sp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:backgroundTint="#FFA726"
-                android:textColor="#FFFFFF"
+                android:backgroundTint="#FFE0E0"
+                android:textColor="#000"
                 android:layout_marginEnd="10dp" />
 
             <Button
