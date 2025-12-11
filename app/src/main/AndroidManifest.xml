@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProjectNiral">
         <activity
+            android:name=".addAsibmentActivity"
+            android:exported="false" />
+        <activity
             android:name=".NotificationWorker"
             android:exported="false"
             tools:ignore="Instantiatable" />
@@ -24,11 +27,9 @@
         <activity
             android:name=".NotesActivity"
             android:exported="false" />
-
         <activity
             android:name=".Mainalmain"
             android:exported="false" />
-
         <activity
             android:name=".Signin"
             android:exported="false" />
