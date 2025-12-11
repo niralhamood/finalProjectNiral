@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 
 import com.example.finalprojectniral.data.myTasksTable.MyDataBase;
+import com.example.finalprojectniral.data.myTasksTable.MyTaskAdapter;
 import com.example.finalprojectniral.data.myTasksTable.MyTaskQuery;
 import com.example.finalprojectniral.data.myTasksTable.MyAsignment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

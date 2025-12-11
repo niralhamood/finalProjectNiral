@@ -14,7 +14,6 @@ public class MyAsignment {
     public long time;
     public boolean isCompleted;
     public long subjId;
-    public long userId;
     public String file;
 
     public long getKeyId() {
@@ -72,15 +71,6 @@ public class MyAsignment {
     public void setSubjId(long subjId) {
         this.subjId = subjId;
     }
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
     public String getFile() {
         return file;
     }

@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProjectNiral">
         <activity
-            android:name=".addAsibmentActivity"
+            android:name=".addAsigment"
             android:exported="false" />
         <activity
             android:name=".NotificationWorker"
