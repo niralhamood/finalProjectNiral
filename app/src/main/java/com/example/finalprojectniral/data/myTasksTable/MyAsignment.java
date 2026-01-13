@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey;
 public class MyAsignment {
     @PrimaryKey(autoGenerate = true)
     public long keyId;
+    public  long userId;
     public int importance;
     public String shortTitle;
     public String text;
