@@ -1,64 +1,68 @@
 package com.example.finalprojectniral;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-
-import com.example.finalprojectniral.data.myTasksTable.MyDataBase;
 import com.example.finalprojectniral.data.myTasksTable.MyTaskAdapter;
-import com.example.finalprojectniral.data.myTasksTable.MyTaskQuery;
-import com.example.finalprojectniral.data.myTasksTable.MyAsignment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.List;
+import java.util.ArrayList;
 
-public class TaskActivity extends AppCompatActivity {
+public class TasksActivity extends AppCompatActivity {
 
-    private RecyclerView rvTasks;
-    private FloatingActionButton btnAddTask;
+    ImageView btnBack;
+    ImageButton btnAddTask;
+    ListView listTasks;
 
-    private MyTaskAdapter adapter;
-    private MyTaskQuery taskDao;
-    private List<MyAsignment> taskList;
+    ArrayList<String> tasksList;
+    ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task);
+        setContentView(R.layout.activity_tasksactivity);
+        // ⚠️ غيري الاسم حسب اسم ملف XML عندك
 
-        rvTasks = findViewById(R.id.rvTasks);
-        btnAddTask = findViewById(R.id.btnAddTask);
+        btnBack = findViewById(R.id.btn_back);
+        btnAddTask = findViewById(R.id.btn_add_task);
+        listTasks = findViewById(R.id.list_tasks);
 
-        // بناء قاعدة البيانات
-        MyDataBase db = MyDataBase.getDb(getApplicationContext());
-        taskDao = db.myTaskQuery();
+        // قائمة تجريبية للمهام
+        tasksList = new ArrayList<>();
+        tasksList.add("Finish homework");
+        tasksList.add("Study math");
+        tasksList.add("Read book");
 
-        // جلب المهام من الداتا
-        taskList = taskDao.getAllTasks();
+        adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                tasksList
+        );
 
-        // إعداد الريسايكلر
-        adapter = new MyTaskAdapter(taskList, this);
-        rvTasks.setAdapter(adapter);
-        rvTasks.setLayoutManager(new LinearLayoutManager(this));
+        listTasks.setAdapter(adapter);
 
-        // إضافة مهمة جديدة
-        btnAddTask.setOnClickListener(view -> {
-            MyAsignment t = new MyAsignment();
-            t.title = "New Task";
-            t.importance = 1;
-            t.isCompleted = false;
+        // زر الرجوع
+        btnBack.setOnClickListener(v -> finish());
 
-            taskDao.insertTask(t);
+        // زر إضافة مهمة
+        btnAddTask.setOnClickListener(v -> {
+            tasksList.add("New Task");
+            adapter.notifyDataSetChanged();
+            ArrayList<MyTask> tasks;
+            MyTaskAdapter adapter;
 
-            refreshList();
+            tasks = new ArrayList<>();
+            tasks.add(new MyTask("Study Math", "High"));
+            tasks.add(new MyTask("Clean Room", "Medium"));
+            tasks.add(new MyTask("Read Book", "Low"));
+
+            adapter = new MyTaskAdapter(this, tasks);
+            listTasks.setAdapter(adapter);
+
         });
-    }
-
-    private void refreshList() {
-        taskList.clear();
-        taskList.addAll(taskDao.getAllTasks());
-        adapter.notifyDataSetChanged();
     }
 }
