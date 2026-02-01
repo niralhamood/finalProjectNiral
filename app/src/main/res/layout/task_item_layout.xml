@@ -60,7 +60,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:backgroundTint="#EF5350"
-                android:textColor="#FFFFFF" />
+                android:textColor="#000" />
 
         </LinearLayout>
 
