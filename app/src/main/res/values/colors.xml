@@ -2,5 +2,5 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="pink_300">pimk_300</color>
+    <color name="pink_300">#FFFF0000</color>
 </resources>

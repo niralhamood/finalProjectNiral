@@ -1,5 +1,6 @@
 package com.example.finalprojectniral;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -10,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class addAsigment extends AppCompatActivity {
 /// تعريف
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

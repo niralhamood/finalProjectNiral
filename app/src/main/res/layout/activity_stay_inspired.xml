@@ -87,16 +87,16 @@
         <!-- Start Button -->
         <Button
             android:id="@+id/btnStart"
+            android:textColor="#000"
+            android:backgroundTint="#FFE0E0"
+
             android:layout_width="250dp"
             android:layout_height="50dp"
-            android:backgroundTint="#FF8FA8"
             android:text="Start"
-            android:textColor="#FFF"
             android:textSize="18sp"
             android:layout_marginTop="30dp"
             android:gravity="center"
-            android:padding="10dp"
-            android:background="@drawable/rounded_button" />
+            android:padding="10dp"/>
 
         <!-- Status -->
         <TextView

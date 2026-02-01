@@ -92,6 +92,8 @@
         app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintStart_toEndOf="@+id/Pw"
         app:layout_constraintTop_toBottomOf="@+id/Pw"
+        android:backgroundTint="#FFE0E0"
+        android:textColor="#000"
         tools:ignore="MissingConstraints" />
 
 
@@ -121,6 +123,8 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView4"
+        android:textColor="#000"
+        android:backgroundTint="#FFE0E0"
         tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

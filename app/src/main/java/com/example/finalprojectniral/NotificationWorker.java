@@ -36,7 +36,7 @@ public class NotificationWorker extends Worker {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channelId)
                 .setContentTitle("Stay Inspired 🌟")
                 .setContentText("A little boost of motivation to brighten your day!")
-                .setSmallIcon(R.drawable.ic_arrow_back)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setAutoCancel(true);
 
         manager.notify((int) System.currentTimeMillis(), builder.build());

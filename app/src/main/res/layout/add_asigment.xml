@@ -85,6 +85,8 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_select_time"
             android:layout_width="match_parent"
+            android:backgroundTint="#FFE0E0"
+            android:textColor="#000"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="Select Due Date and Time" />
@@ -109,6 +111,8 @@
             android:id="@+id/button_save_assignment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="#FFE0E0"
+            android:textColor="#000"
             android:text="Save New Assignment" />
 
 

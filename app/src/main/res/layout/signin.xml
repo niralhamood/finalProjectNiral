@@ -82,6 +82,8 @@
         android:backgroundTint="#FFE0E0"
         app:layout_constraintBottom_toTopOf="@+id/FG"
         app:layout_constraintEnd_toEndOf="@+id/FG"
+        android:textColor="#000"
+
         tools:ignore="MissingConstraints" />
 
 

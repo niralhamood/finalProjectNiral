@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal">
-    <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
         android:background="#FFFFFF"
-        android:layout_marginBottom="10dp"
         android:elevation="3dp">
 
         <!-- عنوان المهمة -->
@@ -68,10 +66,5 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?>&#xA;&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&#xA;    android:layout_width=&quot;match_parent&quot;&#xA;    android:layout_height=&quot;wrap_content&quot;&#xA;    android:orientation=&quot;vertical&quot;&#xA;    android:padding=&quot;16dp&quot;&#xA;    android:background=&quot;#FFFFFF&quot;&#xA;    android:layout_marginBottom=&quot;10dp&quot;&#xA;    android:elevation=&quot;3dp&quot;>&#xA;&#xA;    &lt;!-- عنوان المهمة -->&#xA;    &lt;TextView&#xA;        android:id=&quot;@+id/tv_task_title&quot;&#xA;        android:layout_width=&quot;match_parent&quot;&#xA;        android:layout_height=&quot;wrap_content&quot;&#xA;        android:text=&quot;Task Title&quot;&#xA;        android:textColor=&quot;#333333&quot;&#xA;        android:textSize=&quot;18sp&quot;&#xA;        android:textStyle=&quot;bold&quot; />&#xA;&#xA;    &lt;!-- السطر الثاني: الذكاء الاصطناعي يحدد الأولوية -->&#xA;    &lt;TextView&#xA;        android:id=&quot;@+id/tv_priority&quot;&#xA;        android:layout_width=&quot;match_parent&quot;&#xA;        android:layout_height=&quot;wrap_content&quot;&#xA;        android:text=&quot;Priority: \&quot;المشروع يقرر بذكائه الاصطناعي\&quot;&quot;&#xA;        android:textColor=&quot;#666666&quot;&#xA;        android:textSize=&quot;14sp&quot;&#xA;        android:layout_marginTop=&quot;4dp&quot; />&#xA;&#xA;    &lt;!-- أزرار edit + delete -->&#xA;    &lt;LinearLayout&#xA;        android:layout_width=&quot;match_parent&quot;&#xA;        android:layout_height=&quot;wrap_content&quot;&#xA;        android:orientation=&quot;horizontal&quot;&#xA;        android:gravity=&quot;end&quot;&#xA;        android:layout_marginTop=&quot;10dp&quot;>&#xA;&#xA;        &lt;Button&#xA;            android:id=&quot;@+id/btn_edit&quot;&#xA;            android:layout_width=&quot;wrap_content&quot;&#xA;            android:layout_height=&quot;wrap_content&quot;&#xA;            android:text=&quot;Edit&quot;&#xA;            android:textSize=&quot;14sp&quot;&#xA;            android:paddingLeft=&quot;16dp&quot;&#xA;            android:paddingRight=&quot;16dp&quot;&#xA;            android:backgroundTint=&quot;#FFA726&quot;&#xA;            android:textColor=&quot;#FFFFFF&quot;&#xA;            android:layout_marginEnd=&quot;10dp&quot; />&#xA;&#xA;        &lt;Button&#xA;            android:id=&quot;@+id/btn_delete&quot;&#xA;            android:layout_width=&quot;wrap_content&quot;&#xA;            android:layout_height=&quot;wrap_content&quot;&#xA;            android:text=&quot;Delete&quot;&#xA;            android:textSize=&quot;14sp&quot;&#xA;            android:paddingLeft=&quot;16dp&quot;&#xA;            android:paddingRight=&quot;16dp&quot;&#xA;            android:backgroundTint=&quot;#EF5350&quot;&#xA;            android:textColor=&quot;#FFFFFF&quot; />&#xA;&#xA;    &lt;/LinearLayout>&#xA;&#xA;&lt;/LinearLayout>" />
+
 </LinearLayout>

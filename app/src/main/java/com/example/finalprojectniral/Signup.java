@@ -34,44 +34,44 @@ public class Signup extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
-
-            SignUp.setOnClickListener(v -> {
-
-                String username = ed.getText().toString();
-                String password = ed2.getText().toString();
-
-                // أولاً نفحص هل الحقول فارغة
-                if(username.isEmpty() || password.isEmpty()){
-                    Toast.makeText(this, "الرجاء تعبئة جميع الحقول", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                // ثانياً نفحص هل المستخدم موجود أصلاً
-                boolean exists = check(username);
-
-                if(exists){
-                    Toast.makeText(this, "هذا الحساب موجود بالفعل", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    // إذا ليس موجود → نسجل الحساب الجديد
-                    saveUser(username, password);
-                    Toast.makeText(this, "تم إنشاء الحساب بنجاح!", Toast.LENGTH_SHORT).show();
-
-                    // الانتقال لصفحة تسجيل الدخول
-                    Intent intent = new Intent(Signup.this, Signin.class);
-                    startActivity(intent);
-                    finish();
-                }
-            });
-
         });
-        ed=findViewById(R.id.ed);
-        ed2=findViewById(R.id.ed2);
-        Un=findViewById(R.id.Un);
-        Pw=findViewById(R.id.Pw);
-        SignUp=findViewById(R.id.SignUp);
-        SignIn=findViewById(R.id.SignIn);
-        textView4=findViewById(R.id.textView4);
+
+        SignUp.setOnClickListener(v -> {
+
+            String username = ed.getText().toString();
+            String password = ed2.getText().toString();
+
+            // أولاً نفحص هل الحقول فارغة
+            if (username.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "الرجاء تعبئة جميع الحقول", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // ثانياً نفحص هل المستخدم موجود أصلاً
+            boolean exists = check(username);
+
+            if (exists) {
+                Toast.makeText(this, "هذا الحساب موجود بالفعل", Toast.LENGTH_SHORT).show();
+            } else {
+                // إذا ليس موجود → نسجل الحساب الجديد
+                saveUser(username, password);
+                Toast.makeText(this, "تم إنشاء الحساب بنجاح!", Toast.LENGTH_SHORT).show();
+
+                // الانتقال لصفحة تسجيل الدخول
+                Intent intent = new Intent(Signup.this, Signin.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
+        ed = findViewById(R.id.ed);
+        ed2 = findViewById(R.id.ed2);
+        Un = findViewById(R.id.Un);
+        Pw = findViewById(R.id.Pw);
+        SignUp = findViewById(R.id.SignUp);
+        SignIn = findViewById(R.id.SignIn);
+        textView4 = findViewById(R.id.textView4);
     }
 
     /**
@@ -84,18 +84,20 @@ public class Signup extends AppCompatActivity {
         super.onPointerCaptureChanged(hasCapture);
     }
 
-    public void onClickGo(View v){
+    public void onClickGo(View v) {
         Intent intent = new Intent(Signup.this, Signin.class);
         startActivity(intent);
         finish();
 
     }
-    public void onClickGo2(View v){
+
+    public void onClickGo2(View v) {
         Intent intent = new Intent(Signup.this, Mainalmain.class);
         startActivity(intent);
         finish();
     }
-    private boolean check(String username){
+
+    private boolean check(String username) {
 
         boolean userExists = false;   // متغير بولياني مساعد
 
@@ -110,14 +112,14 @@ public class Signup extends AppCompatActivity {
 
         return userExists;
     }
-    private void saveUser(String username, String password){
+
+    private void saveUser(String username, String password) {
         getSharedPreferences("UserData", MODE_PRIVATE)
                 .edit()
                 .putString("username", username)
                 .putString("password", password)
                 .apply();
     }
-
 
 
 }
