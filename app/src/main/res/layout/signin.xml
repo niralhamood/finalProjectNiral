@@ -15,12 +15,12 @@
         android:layout_marginTop="36dp"
         android:text="Sign In"
         app:autoSizeTextType="uniform"
-        app:layout_constraintStart_toStartOf="@+id/edt"
+        app:layout_constraintStart_toStartOf="@+id/etUserNmaeEmail"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <EditText
-        android:id="@+id/edt"
+        android:id="@+id/etUserNmaeEmail"
         android:layout_width="162dp"
         android:layout_height="27dp"
         android:layout_marginTop="132dp"
@@ -33,7 +33,7 @@
         tools:ignore="MissingConstraints" />
 
     <EditText
-        android:id="@+id/edt2"
+        android:id="@+id/etPassword"
         android:layout_width="157dp"
         android:layout_height="28dp"
         android:layout_marginTop="76dp"
@@ -42,7 +42,7 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Pw2"
-        app:layout_constraintTop_toBottomOf="@+id/edt"
+        app:layout_constraintTop_toBottomOf="@+id/etUserNmaeEmail"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -53,8 +53,8 @@
         android:layout_marginBottom="7dp"
         android:text="User Name"
         app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="@+id/edt"
-        app:layout_constraintEnd_toStartOf="@+id/edt"
+        app:layout_constraintBottom_toBottomOf="@+id/etUserNmaeEmail"
+        app:layout_constraintEnd_toStartOf="@+id/etUserNmaeEmail"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
 
@@ -66,8 +66,8 @@
         android:layout_marginBottom="2dp"
         android:text="Password"
         app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="@+id/edt2"
-        app:layout_constraintEnd_toStartOf="@+id/edt2"
+        app:layout_constraintBottom_toBottomOf="@+id/etPassword"
+        app:layout_constraintEnd_toStartOf="@+id/etPassword"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
 
@@ -80,15 +80,15 @@
         android:onClick="onClickGo22"
         android:text="Enter"
         android:backgroundTint="#FFE0E0"
-        app:layout_constraintBottom_toTopOf="@+id/FG"
-        app:layout_constraintEnd_toEndOf="@+id/FG"
+        app:layout_constraintBottom_toTopOf="@+id/tvFrogotPassword"
+        app:layout_constraintEnd_toEndOf="@+id/tvFrogotPassword"
         android:textColor="#000"
 
         tools:ignore="MissingConstraints" />
 
 
     <TextView
-        android:id="@+id/FG"
+        android:id="@+id/tvFrogotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="120dp"

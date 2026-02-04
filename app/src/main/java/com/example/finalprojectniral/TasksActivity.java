@@ -1,68 +1,55 @@
 package com.example.finalprojectniral;
+
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.finalprojectniral.data.myTasksTable.MyTaskAdapter;
+import com.example.finalprojectniral.data.myTasksTable.MyAssignment;
+import com.example.finalprojectniral.data.myTasksTable.MyAssignmentQuery;
+import com.example.finalprojectniral.data.myTasksTable.MyAssigmentAdapter;
 
 import java.util.ArrayList;
 
 public class TasksActivity extends AppCompatActivity {
 
-    ImageView btnBack;
-    ImageButton btnAddTask;
-    ListView listTasks;
+    private ImageView btnBack;
+    private ImageButton btnAddTask;
+    private ListView listTasks;
 
-    ArrayList<String> tasksList;
-    ArrayAdapter<String> adapter;
+    private ArrayList<MyAssignment> tasksList;
+    private MyAssigmentAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tasksactivity);
-        // ⚠️ غيري الاسم حسب اسم ملف XML عندك
+        setContentView(R.layout.activity_tasksactivity); // تأكدي من اسم ملف XML
 
+        // ربط العناصر
         btnBack = findViewById(R.id.btn_back);
         btnAddTask = findViewById(R.id.btn_add_task);
         listTasks = findViewById(R.id.list_tasks);
 
-        // قائمة تجريبية للمهام
+        // إنشاء قائمة المهام
         tasksList = new ArrayList<>();
-        tasksList.add("Finish homework");
-        tasksList.add("Study math");
-        tasksList.add("Read book");
+        tasksList.add(new MyAssignment("Finish homework", "High"));
+        tasksList.add(new MyAssignment("Study Math", "Medium"));
+        tasksList.add(new MyAssignment("Read Book", "Low"));
 
-        adapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                tasksList
-        );
-
+        // ربط Adapter مع ListView
+        adapter = new MyAssigmentAdapter(this, tasksList);
         listTasks.setAdapter(adapter);
 
         // زر الرجوع
         btnBack.setOnClickListener(v -> finish());
 
-        // زر إضافة مهمة
+        // زر إضافة مهمة جديدة
         btnAddTask.setOnClickListener(v -> {
-            tasksList.add("New Task");
-            adapter.notifyDataSetChanged();
-            ArrayList<MyTask> tasks;
-            MyTaskAdapter adapter;
-
-            tasks = new ArrayList<>();
-            tasks.add(new MyTask("Study Math", "High"));
-            tasks.add(new MyTask("Clean Room", "Medium"));
-            tasks.add(new MyTask("Read Book", "Low"));
-
-            adapter = new MyTaskAdapter(this, tasks);
-            listTasks.setAdapter(adapter);
-
+            // إضافة مهمة جديدة (يمكن لاحقًا تفتح شاشة لإدخال الاسم والأولوية)
+            tasksList.add(new MyAssignment("New Task", "Low"));
+            adapter.notifyDataSetChanged(); // تحديث القائمة
         });
     }
 }

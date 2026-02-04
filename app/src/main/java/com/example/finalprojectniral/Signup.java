@@ -101,7 +101,7 @@ public class Signup extends AppCompatActivity {
 
         boolean userExists = false;   // متغير بولياني مساعد
 
-        // استرجاع اسم المستخدم المحفوظ
+        // جلب اسم المستخدم المخزن
         String savedUsername = getSharedPreferences("UserData", MODE_PRIVATE)
                 .getString("username", null);
 

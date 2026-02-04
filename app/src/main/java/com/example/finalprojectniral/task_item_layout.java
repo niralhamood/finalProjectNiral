@@ -1,11 +1,11 @@
 package com.example.finalprojectniral;
 
-public class MyTask {
+public class task_item_layout {
 
     private String title;
     private String priority;
 
-    public MyTask(String title, String priority) {
+    public task_item_layout(String title, String priority) {
         this.title = title;
         this.priority = priority;
     }

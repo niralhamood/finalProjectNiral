@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey;
 
 @Entity
 
-public class MyAsignment {
+public class MyAssignment {
     @PrimaryKey(autoGenerate = true)
     public long keyId;
     public  long userId;
@@ -14,8 +14,31 @@ public class MyAsignment {
     public String text;
     public long time;
     public boolean isCompleted;
-    public long subjId;
     public String file;
+
+    public MyAssignment() {
+    }
+
+    public MyAssignment(String title, String priority) {
+        this.shortTitle = title;
+        this.text = title;
+        this.importance = convertPriorityToInt(priority);
+        this.time = System.currentTimeMillis();
+        this.isCompleted = false;
+    }
+
+    private int convertPriorityToInt(String priority) {
+        switch (priority.toLowerCase()) {
+            case "high":
+                return 3;
+            case "medium":
+                return 2;
+            case "low":
+                return 1;
+            default:
+                return 2;
+        }
+    }
 
     public long getKeyId() {
         return keyId;
@@ -63,14 +86,6 @@ public class MyAsignment {
 
     public void setCompleted(boolean completed) {
         isCompleted = completed;
-    }
-
-    public long getSubjId() {
-        return subjId;
-    }
-
-    public void setSubjId(long subjId) {
-        this.subjId = subjId;
     }
     public String getFile() {
         return file;
