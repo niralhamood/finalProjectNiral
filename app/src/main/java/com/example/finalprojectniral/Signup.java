@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,13 +17,16 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class Signup extends AppCompatActivity {
-    private TextView ed;
-    private TextView ed2;
+    private TextView WB;
+    private EditText edUsername2;
     private TextView Un;
     private TextView Pw;
     private Button SignUp;
-    private TextView textView4;
+    private EditText edPassW;
     private Button SignIn;
+    private TextView textView4;
+    private Button signIn;
+
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -65,12 +69,12 @@ public class Signup extends AppCompatActivity {
         });
 
 
-        ed = findViewById(R.id.ed);
-        ed2 = findViewById(R.id.ed2);
+        edUsername2 = findViewById(R.id.edUsername2);
+        edPassW = findViewById(R.id.edPassW);
         Un = findViewById(R.id.Un);
         Pw = findViewById(R.id.Pw);
         SignUp = findViewById(R.id.SignUp);
-        SignIn = findViewById(R.id.SignIn);
+        signIn = findViewById(R.id.signIn);
         textView4 = findViewById(R.id.textView4);
     }
 

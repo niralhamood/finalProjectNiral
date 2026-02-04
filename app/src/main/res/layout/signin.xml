@@ -89,13 +89,21 @@
 
     <TextView
         android:id="@+id/tvFrogotPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="166dp"
+        android:layout_height="25dp"
         android:layout_marginStart="120dp"
-        android:text="Forgot your password?"
+        android:text="Forgot your password?->"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.551"
+        app:layout_constraintVertical_bias="0.539"
         tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="171dp"
+        tools:layout_editor_absoluteY="416dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

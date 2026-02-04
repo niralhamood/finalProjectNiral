@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProjectNiral">
-
+        <activity
+            android:name=".ForgetUrPW"
+            android:exported="false" />
         <activity
             android:name=".addAsigment"
             android:exported="false" />
@@ -25,13 +27,12 @@
         <activity
             android:name=".ChatActivity"
             android:exported="false" />
-
         <activity
             android:name=".Mainalmain"
             android:exported="false" />
         <activity
             android:name=".Signin"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

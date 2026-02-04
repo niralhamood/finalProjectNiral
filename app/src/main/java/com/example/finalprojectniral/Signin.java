@@ -16,11 +16,11 @@ import androidx.core.view.WindowInsetsCompat;
 public class Signin extends AppCompatActivity {
     private TextView SignInn;
     private EditText etUserNmaeEmail;     // هنا المستخدم يدخل ال Username أو الايميل
-    private TextView edt2;    // هنا يدخل ال Password
+    private EditText etPassword;    // هنا يدخل ال Password
     private TextView Un2;
     private TextView Psw2;
     private Button Enter;
-    private TextView FG;
+    private TextView tvFrogotPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +34,11 @@ public class Signin extends AppCompatActivity {
         });
 
         etUserNmaeEmail =findViewById(R.id.etUserNmaeEmail);
-        edt2=findViewById(R.id.etPassword);
+        etPassword=findViewById(R.id.etPassword);
         Un2=findViewById(R.id.Un2);
         Psw2=findViewById(R.id.Pw2);
         Enter=findViewById(R.id.Enter);
-        FG=findViewById(R.id.tvFrogotPassword);
+        tvFrogotPassword=findViewById(R.id.tvFrogotPassword);
 
         // ⚠ معالجة الضغط على زر Enter
         Enter.setOnClickListener(v -> {

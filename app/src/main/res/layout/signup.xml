@@ -8,7 +8,7 @@
     tools:context=".Signup">
 
     <TextView
-        android:id="@+id/Wc"
+        android:id="@+id/WB"
         android:layout_width="129dp"
         android:layout_height="42dp"
         android:layout_marginTop="52dp"
@@ -17,14 +17,14 @@
         android:textAlignment="inherit"
         android:textStyle="bold"
         app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toTopOf="@+id/ed"
+        app:layout_constraintBottom_toTopOf="@+id/edUsername2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <EditText
-        android:id="@+id/ed"
+        android:id="@+id/edUsername2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="7dp"
@@ -34,11 +34,11 @@
         app:layout_constraintBottom_toTopOf="@+id/Pw"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Un"
-        app:layout_constraintTop_toBottomOf="@+id/Wc"
+        app:layout_constraintTop_toBottomOf="@+id/WB"
         tools:ignore="MissingConstraints" />
 
     <EditText
-        android:id="@+id/ed2"
+        android:id="@+id/edPassW"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -47,7 +47,7 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Pw"
-        app:layout_constraintTop_toBottomOf="@+id/ed"
+        app:layout_constraintTop_toBottomOf="@+id/edUsername2"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -60,8 +60,8 @@
         android:textAlignment="textEnd"
         android:textStyle="normal"
         app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="@+id/ed"
-        app:layout_constraintEnd_toStartOf="@+id/ed"
+        app:layout_constraintBottom_toBottomOf="@+id/edUsername2"
+        app:layout_constraintEnd_toStartOf="@+id/edUsername2"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
 
@@ -75,9 +75,9 @@
         android:textStyle="normal"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/SignUp"
-        app:layout_constraintEnd_toStartOf="@+id/ed2"
+        app:layout_constraintEnd_toStartOf="@+id/edPassW"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ed"
+        app:layout_constraintTop_toBottomOf="@+id/edUsername2"
         tools:ignore="MissingConstraints" />
 
     <Button
@@ -107,13 +107,13 @@
         android:text="I already have an account?-->"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/SignIn"
+        app:layout_constraintEnd_toStartOf="@+id/signIn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SignUp"
         tools:ignore="MissingConstraints" />
 
     <Button
-        android:id="@+id/SignIn"
+        android:id="@+id/signIn"
         android:layout_width="122dp"
         android:layout_height="46dp"
         android:layout_marginEnd="47dp"
