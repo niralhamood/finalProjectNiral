@@ -1,4 +1,4 @@
-package com.example.yourapp;
+package com.example.finalprojectniral;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,9 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.finalprojectniral.R;
-
-public class ForgotPasswordActivity extends AppCompatActivity {
+public class ForgetUrPW extends AppCompatActivity {
 
     private EditText etEmail;
     private Button btnSend;
@@ -21,7 +19,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_ur_pw);
+        setContentView(R.layout.activity_forget_ur_pw);
 
         // ربط العناصر
         etEmail = findViewById(R.id.etEmail);
@@ -40,7 +38,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 } else {
                     // هنا تقدر تربطه بـ Firebase أو API
                     Toast.makeText(
-                            ForgotPasswordActivity.this,
+                            ForgetUrPW.this,
                             "Reset link sent to " + email,
                             Toast.LENGTH_LONG
                     ).show();

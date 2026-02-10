@@ -18,11 +18,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class Signup extends AppCompatActivity {
     private TextView WB;
-    private EditText edUsername2;
-    private TextView Un;
+    private EditText edUsername2, edPassW;
+    private TextView UserName;
     private TextView Pw;
     private Button SignUp;
-    private EditText edPassW;
     private Button SignIn;
     private TextView textView4;
     private Button signIn;
@@ -42,8 +41,8 @@ public class Signup extends AppCompatActivity {
 
         SignUp.setOnClickListener(v -> {
 
-            String username = ed.getText().toString();
-            String password = ed2.getText().toString();
+            String username = edUsername2.getText().toString();
+            String password = edPassW.getText().toString();
 
             // أولاً نفحص هل الحقول فارغة
             if (username.isEmpty() || password.isEmpty()) {
@@ -71,7 +70,7 @@ public class Signup extends AppCompatActivity {
 
         edUsername2 = findViewById(R.id.edUsername2);
         edPassW = findViewById(R.id.edPassW);
-        Un = findViewById(R.id.Un);
+        UserName = findViewById(R.id.UserName);
         Pw = findViewById(R.id.Pw);
         SignUp = findViewById(R.id.SignUp);
         signIn = findViewById(R.id.signIn);

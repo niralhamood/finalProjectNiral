@@ -19,8 +19,7 @@ public class Signin extends AppCompatActivity {
     private EditText etPassword;    // هنا يدخل ال Password
     private TextView Un2;
     private TextView Psw2;
-    private Button Enter;
-    private TextView tvFrogotPassword;
+    private Button Enter,forgetyourpw ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,7 @@ public class Signin extends AppCompatActivity {
         Un2=findViewById(R.id.Un2);
         Psw2=findViewById(R.id.Pw2);
         Enter=findViewById(R.id.Enter);
-        tvFrogotPassword=findViewById(R.id.tvFrogotPassword);
+        forgetyourpw=findViewById(R.id.forgetyourpw);
 
         // ⚠ معالجة الضغط على زر Enter
         Enter.setOnClickListener(v -> {
