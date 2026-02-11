@@ -89,6 +89,7 @@
         android:id="@+id/forgetyourpw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onClickForget"
         android:text="Forgot your password?"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="108dp"

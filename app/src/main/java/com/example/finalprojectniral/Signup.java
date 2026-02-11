@@ -33,6 +33,13 @@ public class Signup extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.signup);
+        edUsername2 = findViewById(R.id.edUsername2);
+        edPassW = findViewById(R.id.edPassW);
+        UserName = findViewById(R.id.UserName);
+        Pw = findViewById(R.id.Pw);
+        SignUp = findViewById(R.id.SignUp);
+        signIn = findViewById(R.id.signIn);
+        textView4 = findViewById(R.id.textView4);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -68,13 +75,7 @@ public class Signup extends AppCompatActivity {
         });
 
 
-        edUsername2 = findViewById(R.id.edUsername2);
-        edPassW = findViewById(R.id.edPassW);
-        UserName = findViewById(R.id.UserName);
-        Pw = findViewById(R.id.Pw);
-        SignUp = findViewById(R.id.SignUp);
-        signIn = findViewById(R.id.signIn);
-        textView4 = findViewById(R.id.textView4);
+
     }
 
     /**

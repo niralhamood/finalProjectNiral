@@ -71,6 +71,10 @@ public class Signin extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+    public void onClickForget(View v){
+        Intent intent = new Intent(Signin.this, ForgetUrPW.class);
+        startActivity(intent);
+    }
 
 
 }

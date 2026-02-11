@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish(); // אם רוצים לסגור את המסך הנוכחי
             }
-        }, 300); // 300 ملِّي = ثلث ثانية
+        }, 3000); // 3000 ملِّي = ثلث ثانية
     }
 }
 
