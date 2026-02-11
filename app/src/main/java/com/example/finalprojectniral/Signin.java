@@ -26,18 +26,17 @@ public class Signin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.signin);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
         etUserNmaeEmail =findViewById(R.id.etUserNmaeEmail);
         etPassword=findViewById(R.id.etPassword);
         Un2=findViewById(R.id.Un2);
         Psw2=findViewById(R.id.Pw2);
         Enter=findViewById(R.id.Enter);
         forgetyourpw=findViewById(R.id.forgetyourpw);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         // ⚠ معالجة الضغط على زر Enter
         Enter.setOnClickListener(v -> {

@@ -93,5 +93,7 @@
         android:text="Forgot your password?"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="108dp"
+        android:backgroundTint="#FFE0E0"
+        android:textColor="#000"
         tools:layout_editor_absoluteY="550dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
