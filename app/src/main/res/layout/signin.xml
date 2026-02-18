@@ -35,14 +35,16 @@
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="275dp"
-        android:layout_height="86dp"
-        android:layout_marginTop="76dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="275dp"
         android:layout_marginEnd="3dp"
+        android:layout_marginBottom="69dp"
         android:ems="10"
         android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/Enter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Pw2"
-        app:layout_constraintTop_toBottomOf="@+id/etUserNmaeEmail"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -76,24 +78,26 @@
         android:id="@+id/Enter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="253dp"
         android:backgroundTint="#FFE0E0"
-        android:onClick="onClickGo22"
         android:text="Enter"
-        android:textColor="#000"
 
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="430dp" />
+        android:textColor="#000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/forgetyourpw"
+        app:layout_constraintStart_toStartOf="@+id/forgetyourpw"
+        app:layout_constraintTop_toBottomOf="@+id/etPassword"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/forgetyourpw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onClickForget"
-        android:text="Forgot your password?"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="108dp"
         android:backgroundTint="#FFE0E0"
+        android:text="Forgot your password?"
         android:textColor="#000"
-        tools:layout_editor_absoluteY="550dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Enter"
+        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

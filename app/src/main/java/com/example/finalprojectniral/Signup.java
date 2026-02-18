@@ -45,7 +45,14 @@ public class Signup extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Signup.this, Signin.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         SignUp.setOnClickListener(v -> {
 
             String username = edUsername2.getText().toString();

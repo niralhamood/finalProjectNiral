@@ -62,7 +62,7 @@ public class Mainalmain extends AppCompatActivity {
 
         // معالجة أحداث الأزرار
         btnTasks.setOnClickListener(v -> {
-            Intent intent = new Intent(Mainalmain.this, MyAssignment.class);
+            Intent intent = new Intent(Mainalmain.this, TasksActivity.class);
             startActivity(intent);
         });
 
