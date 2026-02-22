@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "221817092447",
+    "project_id": "finalprojectniral1",
+    "storage_bucket": "finalprojectniral1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:221817092447:android:3774b5bff22ae857165eea",
+        "android_client_info": {
+          "package_name": "com.example.finalprojectniral"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBXGiVw2D0C1Al8z6SQv8Be1dBzzCLD-U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
