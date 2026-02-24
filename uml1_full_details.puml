@@ -1,0 +1,269 @@
+@startuml
+class com.example.finalprojectniral.NotificationHelper {
+- {static} String CHANNEL_ID
++ {static} void showNotification(Context,String,String)
+}
+
+
+class com.example.finalprojectniral.Mainalmain {
+~ TextView greetingText
+~ Button btnTasks
+~ String username
+# void onCreate(Bundle)
++ boolean onCreateOptionMenu(Menu)
++ boolean onOptionsItemSelected(MenuItem)
+}
+note left of com.example.finalprojectniral.Mainalmain::btnTasks
+ ← أضفنا الزر الجديد
+end note
+note right of com.example.finalprojectniral.Mainalmain::username
+ قيمة افتراضية
+end note
+
+
+interface com.example.finalprojectniral.data.myTasksTable.MyAssignmentQuery {
+~ List<MyAssignment> getAllTasks()
+~ List<MyAssignment> getAllTasksByUser(long)
+~ List<MyAssignment> getTasksByUserAndStatus(long,boolean)
+~ void insertTask(MyAssignment)
+~ void updateTask(MyAssignment)
+~ void deleteTask(MyAssignment)
+~ void deleteTaskByKey(long)
+}
+note left of com.example.finalprojectniral.data.myTasksTable.MyAssignmentQuery::getAllTasks()
+ 1) جلب كل المهام مرتبة حسب الأهمية
+end note
+note right of com.example.finalprojectniral.data.myTasksTable.MyAssignmentQuery::getAllTasksByUser(long)
+ 2) جلب المهام حسب userId مرتبة حسب الوقت
+end note
+note left of com.example.finalprojectniral.data.myTasksTable.MyAssignmentQuery::getTasksByUserAndStatus(long,boolean)
+ 3) جلب المهام حسب userId + حالة الإنجاز + ترتيب حسب الأهمية
+end note
+note right of com.example.finalprojectniral.data.myTasksTable.MyAssignmentQuery::insertTask(MyAssignment)
+ 4) إدخال مهمة أو أكثر
+end note
+note left of com.example.finalprojectniral.data.myTasksTable.MyAssignmentQuery::updateTask(MyAssignment)
+ 5) تحديث مهمة أو أكثر
+end note
+note right of com.example.finalprojectniral.data.myTasksTable.MyAssignmentQuery::deleteTask(MyAssignment)
+ 6) حذف مهمة أو أكثر
+end note
+note left of com.example.finalprojectniral.data.myTasksTable.MyAssignmentQuery::deleteTaskByKey(long)
+ 7) حذف مهمة حسب المفتاح الأساسي
+end note
+
+class com.example.finalprojectniral.MainActivity {
+- TextView tvLoading
++ void onPointerCaptureChanged(boolean)
+# void onCreate(Bundle)
+}
+
+
+class com.example.finalprojectniral.StayInspiredActivity {
+~ RadioGroup modeRadioGroup
+~ RadioButton rbMotivational
+~ Button btnStart
+~ TextView tvStatus
+~ SharedPreferences preferences
+~ boolean isActive
+# void onCreate(Bundle)
+- void startMotivationWorker()
+- void stopMotivationWorker()
+- void updateStatusUI()
+}
+note left of com.example.finalprojectniral.StayInspiredActivity::isActive
+ حالة التفعيل
+end note
+
+
+class com.example.finalprojectniral.Signup {
+- TextView WB
+- EditText edUsername2
+- TextView UserName
+- TextView Pw
+- Button SignUp
+- Button SignIn
+- TextView textView4
+- Button signIn
+# void onCreate(Bundle)
++ void onPointerCaptureChanged(boolean)
++ void onClickGo(View)
++ void onClickGo2(View)
+- boolean check(String)
+- void saveUser(String,String)
+}
+
+note left of com.example.finalprojectniral.Signup::onPointerCaptureChanged(boolean)
+
+     * Called when pointer capture is enabled or disabled for the current window.
+     *
+     * @param hasCapture True if the window has pointer capture.
+     
+end note
+
+class com.example.finalprojectniral.MotivationWorker {
++ Result doWork()
+}
+
+class com.example.finalprojectniral.Signin {
+- TextView SignInn
+- EditText etUserNmaeEmail
+- EditText etPassword
+- TextView Un2
+- TextView Psw2
+- Button btnSignUp
+# void onCreate(Bundle)
+- boolean validateSignIn()
++ void onClickGo22(View)
+}
+note left of com.example.finalprojectniral.Signin::etUserNmaeEmail
+ هنا المستخدم يدخل ال Username أو الايميل
+end note
+note right of com.example.finalprojectniral.Signin::etPassword
+ هنا يدخل ال Password
+end note
+
+note left of com.example.finalprojectniral.Signin::validateSignIn()
+ -----------------------------------------------------------
+end note
+
+class com.example.finalprojectniral.addAsigment {
+# void onCreate(Bundle)
+}
+note left of com.example.finalprojectniral.addAsigment::onCreate(Bundle)
+/ تعريف
+end note
+
+class com.example.finalprojectniral.NotificationWorker {
++ Result doWork()
+}
+
+class com.example.finalprojectniral.data.myTasksTable.MyAssigmentAdapter {
+- Context context
+- ArrayList<MyAssignment> assignmentList
+- LayoutInflater inflater
++ int getCount()
++ Object getItem(int)
++ long getItemId(int)
++ View getView(int,View,ViewGroup)
+}
+
+
+class com.example.finalprojectniral.data.myTasksTable.MyAssigmentAdapter$ViewHolder {
+~ TextView tvTitle
+~ Button btnEdit
+}
+
+class com.example.finalprojectniral.task_item_layout {
+- String title
+- String priority
++ String getTitle()
++ String getPriority()
+}
+
+
+class com.example.finalprojectniral.AppDatabase {
+}
+abstract class com.example.finalprojectniral.AppDatabase$appDatabase {
+- {static} appDatabase INSTANCE
++ {static} appDatabase getDatabase(Context)
+}
+
+
+interface com.example.finalprojectniral.data.myUserTable.MyUserQuery {
+~ List<MyUser> getAll()
+~ List<MyUser> loadAllByIds(int[])
+~ MyUser checkEmailPassw(String,String)
+~ MyUser checkEmail(String)
+~ void insertAll(MyUser)
+~ void delete(MyUser)
+~ void delete(int)
+~ void insert(MyUser)
+~ void update(MyUser)
+}
+note left of com.example.finalprojectniral.data.myUserTable.MyUserQuery::loadAllByIds(int[])
+ استخراج مستعمل حسب رقم المميز لهid
+end note
+note right of com.example.finalprojectniral.data.myUserTable.MyUserQuery::checkEmailPassw(String,String)
+هل المستعمل موجود حسب الايميل وكلمة السر
+end note
+note left of com.example.finalprojectniral.data.myUserTable.MyUserQuery::checkEmail(String)
+فحص هل الايميل موجود من قبل
+end note
+note right of com.example.finalprojectniral.data.myUserTable.MyUserQuery::delete(int)
+حذف حسب الرقم المميز id
+end note
+
+class com.example.finalprojectniral.ChatActivity {
+# void onCreate(Bundle)
+}
+
+class com.example.finalprojectniral.TasksActivity {
+- ImageView btnBack
+- ImageButton btnAddTask
+- ListView listTasks
+- ArrayList<MyAssignment> tasksList
+- MyAssigmentAdapter adapter
+# void onCreate(Bundle)
+}
+
+
+class com.example.finalprojectniral.data.myUserTable.MyUser {
++ long keyid
++ String fullName
++ String email
++ String phone
++ String passw
++ String toString()
++ String getFullName(String)
++ void setFullName(String)
+}
+note left of com.example.finalprojectniral.data.myUserTable.MyUser::email
+بحالة لم يتم اعطاء اسم للعامود يكون اسم الصفه هو اسم العامود
+end note
+
+
+class com.example.finalprojectniral.data.myTasksTable.MyAssignment {
++ long keyId
++ long userId
++ int importance
++ String shortTitle
++ String text
++ long time
++ boolean isCompleted
++ String file
+- int convertPriorityToInt(String)
++ long getKeyId()
++ void setKeyId(long)
++ int getImportance()
++ void setImportance(int)
++ String getShortTitle()
++ void setShortTitle(String)
++ String getText()
++ void setText(String)
++ long getTime()
++ void setTime(long)
++ boolean isCompleted()
++ void setCompleted(boolean)
++ String getFile()
++ void setFile(String)
+}
+
+
+
+
+androidx.appcompat.app.AppCompatActivity <|-- com.example.finalprojectniral.Mainalmain
+androidx.appcompat.app.AppCompatActivity <|-- com.example.finalprojectniral.MainActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.example.finalprojectniral.StayInspiredActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.example.finalprojectniral.Signup
+androidx.work.Worker <|-- com.example.finalprojectniral.MotivationWorker
+androidx.appcompat.app.AppCompatActivity <|-- com.example.finalprojectniral.Signin
+androidx.appcompat.app.AppCompatActivity <|-- com.example.finalprojectniral.addAsigment
+androidx.work.Worker <|-- com.example.finalprojectniral.NotificationWorker
+android.widget.BaseAdapter <|-- com.example.finalprojectniral.data.myTasksTable.MyAssigmentAdapter
+com.example.finalprojectniral.data.myTasksTable.MyAssigmentAdapter +.. com.example.finalprojectniral.data.myTasksTable.MyAssigmentAdapter$ViewHolder
+com.example.finalprojectniral.AppDatabase +.. com.example.finalprojectniral.AppDatabase$appDatabase
+com.example.finalprojectniral.RoomDatabase <|-- com.example.finalprojectniral.AppDatabase$appDatabase
+androidx.appcompat.app.AppCompatActivity <|-- com.example.finalprojectniral.ChatActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.example.finalprojectniral.TasksActivity
+@enduml

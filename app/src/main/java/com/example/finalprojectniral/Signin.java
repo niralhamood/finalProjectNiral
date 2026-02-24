@@ -33,7 +33,6 @@ public class Signin extends AppCompatActivity {
         Un2=findViewById(R.id.Un2);
         Psw2=findViewById(R.id.Pw2);
         btnSignUp =findViewById(R.id.Enter);
-        forgetyourpw=findViewById(R.id.forgetyourpw);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -87,10 +86,4 @@ public class Signin extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-    public void onClickForget(View v){
-        Intent intent = new Intent(Signin.this, ForgetUrPW.class);
-        startActivity(intent);
-    }
-
-
 }
