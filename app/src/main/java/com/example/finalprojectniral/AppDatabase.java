@@ -5,27 +5,33 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
-public class AppDatabase {
-    public abstract static class appDatabase extends RoomDatabase {
+import com.example.finalprojectniral.data.myTasksTable.MyAssignment;
+import com.example.finalprojectniral.data.myTasksTable.MyAssignmentQuery;
+import com.example.finalprojectniral.data.myUserTable.MyUser;
+import com.example.finalprojectniral.data.myUserTable.MyUserQuery;
 
-        private static volatile appDatabase INSTANCE;
+@Database(entities = {MyUser.class, MyAssignment.class}, version = 1, exportSchema = false)
 
+public abstract class AppDatabase extends RoomDatabase {
+    public abstract MyUserQuery myUserQuery();
+    public abstract MyAssignmentQuery myAssignmentQuery();
 
-        public static appDatabase getDatabase(Context context) {
-            if (INSTANCE == null) {
-                synchronized (appDatabase.class) {
-                    if (INSTANCE == null) {
-                        INSTANCE = Room.databaseBuilder(
-                                context.getApplicationContext(),
-                                appDatabase.class,
-                                "my_database"
-                        ).allowMainThreadQueries().build();
-                    }
+    private static volatile AppDatabase INSTANCE;
+
+    public static AppDatabase getDatabase(Context context) {
+        if (INSTANCE == null) {
+            synchronized (AppDatabase.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = Room.databaseBuilder(
+                            context.getApplicationContext(),
+                            AppDatabase.class,
+                            "my_database"
+                    ).allowMainThreadQueries().build();
                 }
             }
-            return INSTANCE;
         }
+        return INSTANCE;
     }
-
 }

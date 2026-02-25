@@ -37,18 +37,21 @@ public class MainActivity extends AppCompatActivity {
         tvLoading = findViewById(R.id.tvLoading);
 
 
+        // נוסף הודעה כדי לספק تفاصيل عن الקוד
+        // הקוד כאן מוריד 3 ثانיות בעברית ולאחר מכן יופיע אובר חדש עם הסינון להתחלת הרישום
+        // 3000 מילישניים = 3 ثوانי
+        // אנו משתמשים במתודה postDelayed שמקבלת אוביקט מסוג Runnable ומתווספת זמן במילישניות
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
+                // כאן נישיא להתחלת הרישום באמצעות התנהגות של האפליקציה
                 Intent intent = new Intent(MainActivity.this, Signup.class);
                 startActivity(intent);
                 finish(); // אם רוצים לסגור את המסך הנוכחי
             }
-        }, 3000); // 3000 ملِّي = ثلث ثانية
+        }, 3000); // 3000 מילישניים = 3 ثوانי
     }
 }
-
-
 
 
 

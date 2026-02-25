@@ -61,9 +61,18 @@ public class Signin extends AppCompatActivity {
             Toast.makeText(this, "الرجاء تعبئة جميع الحقول", Toast.LENGTH_SHORT).show();
             isValid = false;
         }
-        if(isValid)
-        {
+        // تحقق من أن القيمة صحيحة قبل مناقشة اسم المستخدم وكلمة المرور
+        if(isValid) {
+            // حفظ البيانات المستخدمة في قاعدة البيانات الخاصة بالتطبيق
+            // يوجد قاعدة بيانات واحدة فقط تسمى "UserData"
+            // يمكن استخدامها لتخزين البيانات المستخدمة في التطبيق
+            // يمكن الوصول إليها باستخدام الدالة getSharedPreferences
+            // الدالة تستقبل اسم القاعدة المراد الوصول إليها كمعلمة والنوع المستخدم لها كمعلمة اخرى
+            // النوع MODE_PRIVATE يعني أن البيانات سرية ولا يمكن الوصول إليها من قبل البرامج الأخرى
             SharedPreferences userData = getSharedPreferences("UserData", MODE_PRIVATE);
+            // الدالة getString تستخدم لجلب قيمة نصية من القاعدة المسجلة لها
+            // الدالة تستقبل اسم المفتاح الذي تريد الوصول إليه كمعلمة وقيمة الإفتراضية كمعلمة اخرى
+            // في حال كان المفتاح غير موجود في القاعدة سيتم عرض القيمة الإفتراضية المحددة
             String username1 = userData.getString("username", "");
             if (username.equals(username) && password.equals(password)) {
 

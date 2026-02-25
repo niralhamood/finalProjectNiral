@@ -27,6 +27,9 @@ public class MyAssignment {
         this.isCompleted = false;
     }
 
+    // هذا الدالة تقوم بتحويل المستوي الخاص بالمهمة من نوع سلسلة نصية إلى مستوى صحيح من نوع رقم صحيح.
+    // المستوي الخاص بالمهمة يمكن أن يكون "عالي" أو "متوسط" أو "منخفض".
+    // إذا كان مستوى المهمة غير معروف، فسيتم استخدام المستوى الافتراضي "متوسط".
     private int convertPriorityToInt(String priority) {
         switch (priority.toLowerCase()) {
             case "high":
@@ -39,7 +42,6 @@ public class MyAssignment {
                 return 2;
         }
     }
-
     public long getKeyId() {
         return keyId;
     }
@@ -48,8 +50,15 @@ public class MyAssignment {
         this.keyId = keyId;
     }
 
+/* <<<<<<<<<<<<<<  ✨ Windsurf Command 🌟 >>>>>>>>>>>>>>>> */
+    /**
+     * Get the importance of the task.
+     *
+     * @return the importance of the task as an integer between 1 and 3
+     */
     public int getImportance() {
         return importance;
+/* <<<<<<<<<<  1401eb70-0cec-40e9-be8e-4cc85e38e76d  >>>>>>>>>>> */
     }
 
     public void setImportance(int importance) {

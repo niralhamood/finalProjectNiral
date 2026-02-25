@@ -25,7 +25,8 @@ public class TasksActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tasksactivity); // تأكدي من اسم ملف XML
+        setContentView(R.layout.activity_tasksactivity);
+        // تأكدي من اسم ملف XML
 
         // ربط العناصر
         btnBack = findViewById(R.id.btn_back);
