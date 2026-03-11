@@ -13,7 +13,6 @@ import com.example.finalprojectniral.R;
 import java.util.ArrayList;
 
 public class MyAssigmentAdapter extends BaseAdapter {
-
     private Context context;
     private ArrayList<MyAssignment> assignmentList;
     private LayoutInflater inflater;
