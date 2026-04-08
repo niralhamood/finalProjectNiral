@@ -1,136 +1,152 @@
 package com.example.finalprojectniral;
 
 import android.annotation.SuppressLint;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class Signup extends AppCompatActivity {
-    private TextView WB;
-    private EditText edUsername2, edPassW;
-    private TextView UserName;
-    private TextView Pw;
-    private Button SignUp;
-    private Button SignIn;
-    private TextView textView4;
-    private Button signIn;
+// استيراد كلاس المستخدم وقواعد بيانات Firebase
+import com.example.finalprojectniral.data.myUserTable.MyUser;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+/**
+ * شاشة التسجيل (Signup): المسؤولة عن إنشاء حساب جديد وحفظ البيانات في Firebase
+ */
+public class Signup extends AppCompatActivity {
+    // تعريف عناصر الواجهة (حقول النص والأزرار)
+    private EditText edUsername2, edPassW;
+    private Button SignUp;
+    private Button signIn;
 
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // تفعيل ميزة العرض على كامل الشاشة
         EdgeToEdge.enable(this);
+        // تحديد ملف التصميم (Layout) الخاص بهذه الشاشة
         setContentView(R.layout.signup);
-        edUsername2 = findViewById(R.id.edUsername2);
-        edPassW = findViewById(R.id.edPassW);
-        UserName = findViewById(R.id.UserName);
-        Pw = findViewById(R.id.Pw);
-        SignUp = findViewById(R.id.SignUp);
-        signIn = findViewById(R.id.signIn);
-        textView4 = findViewById(R.id.textView4);
+
+        // ربط المتغيرات بالعناصر الموجودة في ملف الـ XML باستخدام الـ ID
+        edUsername2 = findViewById(R.id.edUsername2); // حقل اسم المستخدم
+        edPassW = findViewById(R.id.edPassW);       // حقل كلمة المرور
+        SignUp = findViewById(R.id.SignUp);           // زر التسجيل
+        signIn = findViewById(R.id.signIn);           // زر الانتقال لتسجيل الدخول
+
+        // ضبط الحواف لتناسب أبعاد شاشة الجهاز (مثل مكان الساعة والكاميرا)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        signIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Signup.this, Signin.class);
-                startActivity(intent);
-                finish();
-            }
+
+        // عند الضغط على زر "Sign In" يتم الانتقال لشاشة تسجيل الدخول
+        signIn.setOnClickListener(v -> {
+            Intent intent = new Intent(Signup.this, Signin.class);
+            startActivity(intent);
+            finish(); // إغلاق الشاشة الحالية
         });
+
+        // عند الضغط على زر "Sign Up" تبدأ عملية فحص البيانات ثم الحفظ
         SignUp.setOnClickListener(v -> {
+            // جلب النصوص المدخلة وحذف المسافات الزائدة
+            String username = edUsername2.getText().toString().trim();
+            String password = edPassW.getText().toString().trim();
 
-            String username = edUsername2.getText().toString();
-            String password = edPassW.getText().toString();
+            // 1. التأكد من أن البيانات المدخلة صحيحة (ليست فارغة والطول مناسب)
+            if (isValid(username, password)) {
+                // 2. إنشاء كائن مستخدم جديد وتعبئته بالبيانات
+                MyUser newUser = new MyUser();
+                newUser.fullName = username;
+                newUser.passw = password;
+                newUser.email = username; // استخدام اسم المستخدم كإيميل افتراضي حالياً
 
-            // أولاً نفحص هل الحقول فارغة
-            if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "الرجاء تعبئة جميع الحقول", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // ثانياً نفحص هل المستخدم موجود أصلاً
-            boolean exists = check(username);
-
-            if (exists) {
-                Toast.makeText(this, "هذا الحساب موجود بالفعل", Toast.LENGTH_SHORT).show();
-            } else {
-                // إذا ليس موجود → نسجل الحساب الجديد
-                saveUser(username, password);
-                Toast.makeText(this, "تم إنشاء الحساب بنجاح!", Toast.LENGTH_SHORT).show();
-
-                // الانتقال لصفحة تسجيل الدخول
-                Intent intent = new Intent(Signup.this, Signin.class);
-                startActivity(intent);
-                finish();
+                // 3. استدعاء دالة حفظ البيانات في قاعدة بيانات Firebase السحابية
+                saveUserToFirebase(newUser);
             }
         });
-
-
-
     }
 
     /**
-     * Called when pointer capture is enabled or disabled for the current window.
-     *
-     * @param hasCapture True if the window has pointer capture.
+     * دالة لفحص صحة المعطيات: تتأكد من أن الحقول ليست فارغة وأن كلمة المرور قوية كفاية
      */
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-        super.onPointerCaptureChanged(hasCapture);
-    }
+    private boolean isValid(String username, String password) {
+        boolean valid = true;
 
-    public void onClickGo(View v) {
-        Intent intent = new Intent(Signup.this, Signin.class);
-        startActivity(intent);
-        finish();
-
-    }
-
-    public void onClickGo2(View v) {
-        Intent intent = new Intent(Signup.this, Mainalmain.class);
-        startActivity(intent);
-        finish();
-    }
-
-    private boolean check(String username) {
-
-        boolean userExists = false;   // متغير بولياني مساعد
-
-        // جلب اسم المستخدم المخزن
-        String savedUsername = getSharedPreferences("UserData", MODE_PRIVATE)
-                .getString("username", null);
-
-        // إذا كان اسم المستخدم موجود في الذاكرة
-        if (savedUsername != null && savedUsername.equals(username)) {
-            userExists = true;
+        // فحص حقل اسم المستخدم
+        if (username.isEmpty()) {
+            edUsername2.setError("الرجاء إدخال اسم المستخدم");
+            valid = false;
+        }
+        
+        // فحص حقل كلمة المرور
+        if (password.isEmpty()) {
+            edPassW.setError("الرجاء إدخال كلمة المرور");
+            valid = false;
+        } else if (password.length() < 5) {
+            // كلمة المرور يجب أن لا تقل عن 5 خانات
+            edPassW.setError("يجب أن تكون كلمة المرور 5 أحرف على الأقل");
+            valid = false;
         }
 
-        return userExists;
+        return valid;
     }
 
-    private void saveUser(String username, String password) {
+    /**
+     * دالة حفظ المستخدم في Firebase Realtime Database (السحابة)
+     */
+    private void saveUserToFirebase(MyUser user) {
+        // الوصول لمرجع قاعدة البيانات السحابية
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        // الوصول للجدول أو العقدة المسماة "users"
+        DatabaseReference usersRef = database.getReference("users");
+        // إنشاء مكان جديد للمستخدم وتوليد مفتاح فريد (Unique Key) له
+        DatabaseReference newUserRef = usersRef.push();
+        
+        // وضع المفتاح الفريد داخل كائن المستخدم لسهولة الوصول إليه مستقبلاً
+        user.setUserId(newUserRef.getKey());
+
+        // البدء بعملية رفع البيانات للسحابة مع إضافة مستمع (Listener) للنتائج
+        newUserRef.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    // في حال نجاح الحفظ، تظهر رسالة للمستخدم ويتم حفظ البيانات محلياً أيضاً
+                    Toast.makeText(Signup.this, "تم إنشاء الحساب وحفظ البيانات بنجاح!", Toast.LENGTH_SHORT).show();
+                    saveUserLocally(user.fullName, user.passw);
+                    // الانتقال لشاشة تسجيل الدخول
+                    Intent intent = new Intent(Signup.this, Signin.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    // في حال الفشل، يتم عرض سبب الخطأ
+                    Toast.makeText(Signup.this, "فشل في حفظ البيانات: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    /**
+     * دالة لحفظ بيانات بسيطة في ذاكرة الهاتف (SharedPreferences)
+     */
+    private void saveUserLocally(String username, String password) {
         getSharedPreferences("UserData", MODE_PRIVATE)
                 .edit()
                 .putString("username", username)
                 .putString("password", password)
                 .apply();
     }
-
-
 }
