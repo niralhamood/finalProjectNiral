@@ -60,6 +60,13 @@ public class Mainalmain extends AppCompatActivity {
         greetingText.setText(greeting);
         subGreetingText.setText("Let's make today productive!");
 
+        // تعريف الدوال المستخدمة في هذا المكون
+
+        /**
+         * تحديد الترحيب المناسب حسب وقت اليوم
+         *
+         * @return ترحيب مناسب لليوم
+         */
         // معالجة أحداث الأزرار
         btnTasks.setOnClickListener(v -> {
             Intent intent = new Intent(Mainalmain.this, TasksActivity.class);

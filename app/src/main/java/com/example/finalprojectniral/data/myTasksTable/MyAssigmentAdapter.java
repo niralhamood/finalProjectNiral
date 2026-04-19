@@ -42,6 +42,7 @@ public class MyAssigmentAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
 
+        // تحديد طريقة تحميل القالب المناسب لكل عنصر في قائمة المهام
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.task_item_layout, parent, false);
             holder = new ViewHolder();
@@ -49,11 +50,13 @@ public class MyAssigmentAdapter extends BaseAdapter {
             holder.tvPriority = convertView.findViewById(R.id.tv_priority);
             holder.btnEdit = convertView.findViewById(R.id.btn_edit);
             holder.btnDelete = convertView.findViewById(R.id.btn_delete);
+
+            // تخزين العناصر التي تم تحميلها في هذا العنصر للاستخدام في المرة القادمة
             convertView.setTag(holder);
         } else {
+            // إذا كان العنصر موجودًا بالفعل، فإننا نستخرج بيانات العناصر المخزنة منه
             holder = (ViewHolder) convertView.getTag();
         }
-
         MyAssignment assignment = assignmentList.get(position);
 
         holder.tvTitle.setText(assignment.getShortTitle());
