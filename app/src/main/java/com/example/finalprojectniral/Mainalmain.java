@@ -78,29 +78,42 @@ public class Mainalmain extends AppCompatActivity {
             Intent intent = new Intent(Mainalmain.this, ChatActivity.class);
             startActivity(intent);
         });
-
-
+        // 🔹 الزر الجديد: Stay Inspired
+        btnStayInspired.setOnClickListener(v -> {
+            //todo complete notification...
+//            Intent intent = new Intent(Mainalmain.this, StayIN.class);
+//            startActivity(intent);
+        });
 
     }
 
-    public boolean onCreateOptionMenu (Menu menu){
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
+    /**
+     * @param hasCapture
+     */
     @Override
-    public boolean onOptionsItemSelected (MenuItem item){
-        if (item.getItemId() == R.id.itemSettings) {
-            Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();
-        }
-        if (item.getItemId() == R.id.itemSignUp) {
-            Toast.makeText(this, "Sign out", Toast.LENGTH_SHORT).show();
-        }
-        if (item.getItemId() == R.id.itemHistory) {
-            Toast.makeText(this, "History", Toast.LENGTH_SHORT).show();
-        }
-        return true;
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
     }
+
+
+//    public boolean onCreateOptionMenu (Menu menu){
+//        getMenuInflater().inflate(R.menu.main_menu, menu);
+//        return true;
+//    }
+//    @Override
+//    public boolean onOptionsItemSelected (MenuItem item){
+//        if (item.getItemId() == R.id.itemSettings) {
+//            Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();
+//        }
+//        if (item.getItemId() == R.id.itemSignUp) {
+//            Toast.makeText(this, "Sign out", Toast.LENGTH_SHORT).show();
+//        }
+//        if (item.getItemId() == R.id.itemHistory) {
+//            Toast.makeText(this, "History", Toast.LENGTH_SHORT).show();
+//        }
+//        return true;
+//    }
+
+
 }
-
-
 

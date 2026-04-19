@@ -27,10 +27,21 @@ public class MyAssignment {
         this.isCompleted = false;
     }
 
-    // هذا الدالة تقوم بتحويل المستوي الخاص بالمهمة من نوع سلسلة نصية إلى مستوى صحيح من نوع رقم صحيح.
-    // المستوي الخاص بالمهمة يمكن أن يكون "عالي" أو "متوسط" أو "منخفض".
-    // إذا كان مستوى المهمة غير معروف، فسيتم استخدام المستوى الافتراضي "متوسط".
+/* <<<<<<<<<<<<<<  ✨ Windsurf Command 🌟 >>>>>>>>>>>>>>>> */
+    /**
+     * This method converts the priority string given as an argument to an integer value.
+     * It takes a string argument called "priority" which represents the priority of a task.
+     * The priority can be "high", "medium", or "low".
+     * The method returns an integer value representing the priority level.
+     * If the priority string is not one of the three valid values, the method defaults to "medium" priority level.
+     * The method is used to convert the priority string retrieved from the database to an integer value
+     * that can be used in the application for sorting and filtering tasks based on their priority.
+     *
+     * @param priority The priority of a task as a string.
+     * @return An integer value representing the priority level of the task.
+     */
     private int convertPriorityToInt(String priority) {
+/* <<<<<<<<<<  6db93eed-b0e9-48d7-8bc1-3208c5154f79  >>>>>>>>>>> */
         switch (priority.toLowerCase()) {
             case "high":
                 return 3;
@@ -42,6 +53,7 @@ public class MyAssignment {
                 return 2;
         }
     }
+
     public long getKeyId() {
         return keyId;
     }
@@ -50,15 +62,8 @@ public class MyAssignment {
         this.keyId = keyId;
     }
 
-/* <<<<<<<<<<<<<<  ✨ Windsurf Command 🌟 >>>>>>>>>>>>>>>> */
-    /**
-     * Get the importance of the task.
-     *
-     * @return the importance of the task as an integer between 1 and 3
-     */
     public int getImportance() {
         return importance;
-/* <<<<<<<<<<  1401eb70-0cec-40e9-be8e-4cc85e38e76d  >>>>>>>>>>> */
     }
 
     public void setImportance(int importance) {
