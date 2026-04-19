@@ -74,7 +74,7 @@ public class Signin extends AppCompatActivity {
             // الدالة تستقبل اسم المفتاح الذي تريد الوصول إليه كمعلمة وقيمة الإفتراضية كمعلمة اخرى
             // في حال كان المفتاح غير موجود في القاعدة سيتم عرض القيمة الإفتراضية المحددة
             String username1 = userData.getString("username", "");
-            if (username.equals(username) && password.equals(password)) {
+            if (username1.equals(username) && password.equals(password)) {
 
                 // ✅ الانتقال للشاشة الرئيسية
                 Intent intent = new Intent(Signin.this, Mainalmain.class);

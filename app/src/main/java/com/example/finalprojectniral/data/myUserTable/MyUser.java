@@ -15,6 +15,7 @@ import androidx.room.PrimaryKey;
     public String email;//بحالة لم يتم اعطاء اسم للعامود يكون اسم الصفه هو اسم العامود
     public String phone;
     public String passw;
+    public String userId;
 
     // هذا هو طريقة لإعطاء نسخة من الكائن MyUser بصيغة نصية تعرض جميع خصائص الكائن
     // المعطية في الطريقة toString() يتم استخدامها عادة لعرض البيانات الخاصة بكائن Java
@@ -27,6 +28,7 @@ import androidx.room.PrimaryKey;
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", passw='" + passw + '\'' +
+                ", userId='" + userId + '\'' +
                 '}';
     }
 
@@ -38,6 +40,11 @@ import androidx.room.PrimaryKey;
     // دالة لتعيين قيمة الصفة fullName
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    // دالة لتعيين قيمة الصفة userId
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
 
