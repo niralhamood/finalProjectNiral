@@ -85,41 +85,14 @@ public class StayInspired extends AppCompatActivity {
                 }
             }
 
-            if (!isRunning) { // إذا كانت التنبيهات متوقفة حالياً
-                startNotifications(); // استدعاء دالة البدء
-                tvStatus.setText("Status: Active"); // تحديث النص ليظهر أنها نشطة
-                btnStart.setText("Stop"); // تغيير نص الزر إلى "إيقاف"
-                isRunning = true; // تحديث الحالة إلى "تعمل"
-            } else { // إذا كانت التنبيهات تعمل حالياً
-                stopNotifications(); // استدعاء دالة الإيقاف
-                tvStatus.setText("Status: Inactive"); // تحديث النص ليظهر أنها غير نشطة
-                btnStart.setText("Start"); // تغيير نص الزر إلى "بدء"
-                isRunning = false; // تحديث الحالة إلى "متوقفة"
-            }
+
         });
     }
 
     // دالة لتهيئة وبدء تكرار التنبيهات
-    private void startNotifications() {
 
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                String message = getRandomMessage(); // الحصول على رسالة عشوائية بناءً على الاختيار
-                sendNotification(message); // إظهار التنبيه للمستخدم
 
-                // إعادة جدولة نفس هذه المهمة (run) لتعمل مرة أخرى بعد 15 ثانية (15000 ميلي ثانية)
-                handler.postDelayed(this, 15000);
-            }
-        };
 
-        handler.post(runnable); // تنفيذ المهمة فوراً للمرة الأولى
-    }
-
-    // دالة لإيقاف تكرار التنبيهات
-    private void stopNotifications() {
-        handler.removeCallbacks(runnable); // إلغاء أي مهام مجدولة مسبقاً في الـ Handler
-    }
 
     // دالة تختار رسالة عشوائية من المصفوفات المناسبة
     private String getRandomMessage() {
