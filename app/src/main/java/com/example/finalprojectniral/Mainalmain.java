@@ -80,9 +80,8 @@ public class Mainalmain extends AppCompatActivity {
         });
         // 🔹 الزر الجديد: Stay Inspired
         btnStayInspired.setOnClickListener(v -> {
-            //todo complete notification...
-//            Intent intent = new Intent(Mainalmain.this, StayIN.class);
-//            startActivity(intent);
+           Intent intent = new Intent(Mainalmain.this, StayInspired.class);
+           startActivity(intent);
         });
 
     }
