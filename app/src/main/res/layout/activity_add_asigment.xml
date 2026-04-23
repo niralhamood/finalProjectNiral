@@ -5,67 +5,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-  >
+    android:padding="20dp"
+    android:background="#FFFFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create New Assignment"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Title Field -->
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Short Title">
+            android:layout_marginBottom="12dp"
+            android:hint="Assignment Title"
+            app:startIconDrawable="@android:drawable/ic_menu_edit">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_short_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textCapSentences"
-                android:maxLines="1" />
+                android:inputType="textCapSentences" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <!-- Priority and Workload in one row -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Importance Level (1-5)">
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etImprtance"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:maxLength="1"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                android:hint="Priority (1-5)">
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Workload Size (1-10)">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etImprtance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etWorkLoad"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:maxLength="2"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                android:hint="Workload (1-10)">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etWorkLoad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <!-- Description -->
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Full Description/Details (شرح المهمة)">
+            android:layout_marginBottom="20dp"
+            android:hint="Details / Description">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_text"
@@ -76,45 +93,54 @@
                 android:minLines="3" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Image Attachment Section -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Due Date/Time"
-            android:textStyle="bold" />
+            android:text="Attachment (Optional)"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"
+            android:textColor="#666666"/>
+
+        <ImageView
+            android:id="@+id/image_view_assignment"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginBottom="8dp"
+            android:background="#F8F8F8"
+            android:scaleType="centerInside"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:padding="8dp"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_select_time"
+            android:id="@+id/button_select_image"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:backgroundTint="#FFE0E0"
+            android:text="Select Image"
             android:textColor="#000"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Select Due Date and Time" />
+            app:icon="@android:drawable/ic_menu_camera"
+            app:iconTint="#000" />
 
-
-        <TextView
-            android:id="@+id/text_view_selected_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginBottom="16dp"
-            android:text="Selected: Not Set" />
-
+        <!-- Completed Checkbox -->
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/checkbox_is_completed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:text="Task is already completed?" />
+            android:layout_marginBottom="24dp"
+            android:text="Task is already completed" />
 
+        <!-- Action Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_save_assignment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
+            android:text="SAVE ASSIGNMENT"
+            android:textSize="16sp"
             android:backgroundTint="#FFE0E0"
             android:textColor="#000"
-            android:text="Save New Assignment" />
-
+            app:cornerRadius="8dp" />
 
     </LinearLayout>
 </ScrollView>

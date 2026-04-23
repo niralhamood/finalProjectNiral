@@ -1,36 +1,36 @@
 package com.example.finalprojectniral;
 
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.DatePicker;
-import android.widget.TextView;
-import android.widget.TimePicker;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.finalprojectniral.data.myTasksTable.MyAssignment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.util.Calendar;
-
 public class addAsigment extends AppCompatActivity {
 
     private TextInputEditText etShortTitle, etImportance, etWorkLoad, etDescription;
-    private MaterialButton btnSelectTime, btnSave;
-    private TextView tvSelectedTime;
+    private MaterialButton btnSave, btnSelectImage;
+    private ImageView ivAssignment;
     private MaterialCheckBox checkCompleted;
 
-    private Calendar selectedDateTime = Calendar.getInstance();
+    private Uri imageUri;
+    private ActivityResultLauncher<String> imagePickerLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_asigment); // حطي اسم ملف XML هون
+        setContentView(R.layout.activity_add_asigment);
 
         // ربط العناصر
         etShortTitle = findViewById(R.id.edit_text_short_title);
@@ -38,17 +38,30 @@ public class addAsigment extends AppCompatActivity {
         etWorkLoad = findViewById(R.id.etWorkLoad);
         etDescription = findViewById(R.id.edit_text_text);
 
-        btnSelectTime = findViewById(R.id.button_select_time);
         btnSave = findViewById(R.id.button_save_assignment);
-
-        tvSelectedTime = findViewById(R.id.text_view_selected_time);
         checkCompleted = findViewById(R.id.checkbox_is_completed);
+        ivAssignment = findViewById(R.id.image_view_assignment);
+        btnSelectImage = findViewById(R.id.button_select_image);
 
-        // زر اختيار التاريخ والوقت
-        btnSelectTime.setOnClickListener(new View.OnClickListener() {
+        // تهيئة أداة اختيار الصور
+        imagePickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                new ActivityResultCallback<Uri>() {
+                    @Override
+                    public void onActivityResult(Uri uri) {
+                        if (uri != null) {
+                            imageUri = uri;
+                            ivAssignment.setImageURI(uri);
+                        }
+                    }
+                }
+        );
+
+        // زر اختيار الصورة
+        btnSelectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePicker();
+                imagePickerLauncher.launch("image/*");
             }
         });
 
@@ -70,71 +83,38 @@ public class addAsigment extends AppCompatActivity {
                     return;
                 }
 
-                int importance = Integer.parseInt(importanceStr);
-                int workload = Integer.parseInt(workloadStr);
+                try {
+                    int importance = Integer.parseInt(importanceStr);
 
-                // هون بعدين بتحطي كود الحفظ بقاعدة البيانات (Room)
+                    // 1. إنشاء كائن المهمة
+                    MyAssignment newAssignment = new MyAssignment();
+                    newAssignment.setShortTitle(title);
+                    newAssignment.setText(description);
+                    newAssignment.setImportance(importance);
+                    newAssignment.setCompleted(isCompleted);
+                    
+                    // استخدام وقت النظام الحالي لأننا حذفنا اختيار الوقت
+                    newAssignment.setTime(System.currentTimeMillis());
 
-                Toast.makeText(addAsigment.this,
-                        "Assignment Saved Successfully!",
-                        Toast.LENGTH_SHORT).show();
+                    // 2. حفظ مسار الصورة إذا تم اختيارها
+                    if (imageUri != null) {
+                        newAssignment.setFile(imageUri.toString());
+                    }
 
-                finish(); // يرجع للشاشة السابقة
+                    // 3. الحفظ في قاعدة البيانات باستخدام Room
+                    AppDatabase db = AppDatabase.getDatabase(addAsigment.this);
+                    db.myAssignmentQuery().insertTask(newAssignment);
+
+                    Toast.makeText(addAsigment.this,
+                            "Assignment Saved Successfully!",
+                            Toast.LENGTH_SHORT).show();
+
+                    finish();
+
+                } catch (NumberFormatException e) {
+                    Toast.makeText(addAsigment.this, "Please enter valid numbers for Importance", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
-
-    private void showDatePicker() {
-
-        int year = selectedDateTime.get(Calendar.YEAR);
-        int month = selectedDateTime.get(Calendar.MONTH);
-        int day = selectedDateTime.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
-                        selectedDateTime.set(Calendar.YEAR, year);
-                        selectedDateTime.set(Calendar.MONTH, month);
-                        selectedDateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-                        showTimePicker();
-                    }
-                }, year, month, day);
-
-        datePickerDialog.show();
-    }
-
-    private void showTimePicker() {
-
-        int hour = selectedDateTime.get(Calendar.HOUR_OF_DAY);
-        int minute = selectedDateTime.get(Calendar.MINUTE);
-
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
-                new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-                        selectedDateTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                        selectedDateTime.set(Calendar.MINUTE, minute);
-
-                        String formatted = dayFormat();
-                        tvSelectedTime.setText("Selected: " + formatted);
-                    }
-                }, hour, minute, true);
-
-        timePickerDialog.show();
-    }
-
-    private String dayFormat() {
-        int day = selectedDateTime.get(Calendar.DAY_OF_MONTH);
-        int month = selectedDateTime.get(Calendar.MONTH) + 1;
-        int year = selectedDateTime.get(Calendar.YEAR);
-        int hour = selectedDateTime.get(Calendar.HOUR_OF_DAY);
-        int minute = selectedDateTime.get(Calendar.MINUTE);
-
-        return day + "/" + month + "/" + year + "  " + hour + ":" + minute;
-    }
-
 }

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+
 
     <application
         android:allowBackup="true"
@@ -14,19 +18,7 @@
         <activity
             android:name=".StayInspired"
             android:exported="false" />
-        <activity
-            android:name=".StayInspiredActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ForgetUrPW"
-            android:exported="false" />
-        <activity
-            android:name=".addAsigment"
-            android:exported="false" />
-        <activity
-            android:name=".NotificationWorker"
-            android:exported="false"
-            tools:ignore="Instantiatable" />
+
         <activity
             android:name=".ChatActivity"
             android:exported="false" />
