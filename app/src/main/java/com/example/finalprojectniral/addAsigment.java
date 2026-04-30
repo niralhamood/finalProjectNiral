@@ -1,8 +1,13 @@
 package com.example.finalprojectniral;
 
 
+import static android.content.ContentValues.TAG;
+
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -10,12 +15,18 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.finalprojectniral.data.myTasksTable.MyAssignment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class addAsigment extends AppCompatActivity {
 
@@ -25,6 +36,10 @@ public class addAsigment extends AppCompatActivity {
     private MaterialCheckBox checkCompleted;
 
     private Uri imageUri;
+    private ActivityResultLauncher<String> requestReadMediaImagesPermission;
+    private ActivityResultLauncher<String> requestReadMediaVideoPermission;
+    private ActivityResultLauncher<String> requestReadExternalStoragePermission;
+
     private ActivityResultLauncher<String> imagePickerLauncher;
 
     @Override
@@ -43,19 +58,65 @@ public class addAsigment extends AppCompatActivity {
         ivAssignment = findViewById(R.id.image_view_assignment);
         btnSelectImage = findViewById(R.id.button_select_image);
 
-        // تهيئة أداة اختيار الصور
-        imagePickerLauncher = registerForActivityResult(
-                new ActivityResultContracts.GetContent(),
-                new ActivityResultCallback<Uri>() {
-                    @Override
-                    public void onActivityResult(Uri uri) {
-                        if (uri != null) {
-                            imageUri = uri;
-                            ivAssignment.setImageURI(uri);
-                        }
+        // تسجيل مُشغّل لطلب إذن READ_MEDIA_IMAGES
+        requestReadMediaImagesPermission = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) {
+                Log.d(TAG, "READ_MEDIA_IMAGES permission granted");
+                Toast.makeText(this, "تم منح إذن قراءة الصور", Toast.LENGTH_SHORT).show();
+                // يمكنك الآن المتابعة بالعملية التي تتطلب هذا الإذن
+            } else {
+                Log.d(TAG, "READ_MEDIA_IMAGES permission denied");
+                Toast.makeText(this, "تم رفض إذن قراءة الصور", Toast.LENGTH_SHORT).show();
+                // التعامل مع حالة رفض الإذن
+            }
+            private void checkAndRequestPermissions() {
+                // فحص وطلب إذن READ_MEDIA_IMAGES (للإصدارات الحديثة)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // أندرويد 13+
+                    if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_IMAGES)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        requestReadMediaImagesPermission.launch(android.Manifest.permission.READ_MEDIA_IMAGES);
+                    } else {
+                        Log.d(TAG, "READ_MEDIA_IMAGES permission already granted");
+                        Toast.makeText(this, "إذن قراءة الصور ممنوح بالفعل", Toast.LENGTH_SHORT).show();
+                    }
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // أندرويد 10 و 11 و 12// على هذه الإصدارات، READ_EXTERNAL_STORAGE له سلوك مختلف
+                    // إذا كنت تستخدم Scoped Storage بشكل صحيح، قد لا تحتاج إلى هذا الإذن
+                    // ولكن إذا كنت تحتاج إلى الوصول إلى جميع الصور، فقد تحتاج إلى READ_EXTERNAL_STORAGE
+                    // في هذا المثال، سنفحص READ_EXTERNAL_STORAGE للإصدارات الأقدم من 13
+                    if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        requestReadExternalStoragePermission.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE);
+                    } else {
+                        Log.d(TAG, "READ_EXTERNAL_STORAGE permission already granted (for older versions)");
+                        Toast.makeText(this, "إذن قراءة التخزين ممنوح بالفعل (للإصدارات الأقدم)", Toast.LENGTH_SHORT).show();
+                    }
+                } else { // أندرويد 9 والإصدارات الأقدم
+                    if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        requestReadExternalStoragePermission.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE);
+                    } else {
+                        Log.d(TAG, "READ_EXTERNAL_STORAGE permission already granted (for older versions)");
+                        Toast.makeText(this, "إذن قراءة التخزين ممنوح بالفعل (للإصدارات الأقدم)", Toast.LENGTH_SHORT).show();
                     }
                 }
-        );
+
+
+                // فحص وطلب إذن READ_MEDIA_VIDEO (للإصدارات الحديثة)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // أندرويد 13+
+                    if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_VIDEO)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        requestReadMediaVideoPermission.launch(android.Manifest.permission.READ_MEDIA_VIDEO);
+                    } else {
+                        Log.d(TAG, "READ_MEDIA_VIDEO permission already granted");
+                        Toast.makeText(this, "إذن قراءة الفيديو ممنوح بالفعل", Toast.LENGTH_SHORT).show();
+                    }
+                }// ملاحظة: إذن INTERNET لا يحتاج إلى فحص أو
+            }
+
+
+        });
+
+
 
         // زر اختيار الصورة
         btnSelectImage.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +153,7 @@ public class addAsigment extends AppCompatActivity {
                     newAssignment.setText(description);
                     newAssignment.setImportance(importance);
                     newAssignment.setCompleted(isCompleted);
-                    
+
                     // استخدام وقت النظام الحالي لأننا حذفنا اختيار الوقت
                     newAssignment.setTime(System.currentTimeMillis());
 
@@ -102,6 +163,7 @@ public class addAsigment extends AppCompatActivity {
                     }
 
                     // 3. الحفظ في قاعدة البيانات باستخدام Room
+
                     AppDatabase db = AppDatabase.getDatabase(addAsigment.this);
                     db.myAssignmentQuery().insertTask(newAssignment);
 
@@ -114,7 +176,11 @@ public class addAsigment extends AppCompatActivity {
                 } catch (NumberFormatException e) {
                     Toast.makeText(addAsigment.this, "Please enter valid numbers for Importance", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
     }
 }
+
+
+

@@ -1,16 +1,14 @@
 package com.example.finalprojectniral;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.finalprojectniral.data.myTasksTable.MyAssignment;
 import com.example.finalprojectniral.data.myTasksTable.MyAssignmentQuery;
 import com.example.finalprojectniral.data.myTasksTable.MyAssigmentAdapter;
-
 import java.util.ArrayList;
 
 public class TasksActivity extends AppCompatActivity {
@@ -48,9 +46,8 @@ public class TasksActivity extends AppCompatActivity {
 
         // زر إضافة مهمة جديدة
         btnAddTask.setOnClickListener(v -> {
-            // إضافة مهمة جديدة (يمكن لاحقًا تفتح شاشة لإدخال الاسم والأولوية)
-            tasksList.add(new MyAssignment("New Task", "Low"));
-            adapter.notifyDataSetChanged(); // تحديث القائمة
+            Intent intent = new Intent(TasksActivity.this, addAsigment .class);
+            startActivity(intent);
         });
     }
 }
