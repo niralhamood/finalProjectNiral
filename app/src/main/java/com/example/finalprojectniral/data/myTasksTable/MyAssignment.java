@@ -15,9 +15,8 @@ public class MyAssignment {
     public long time;
     public boolean isCompleted;
     public String file;
+    private String key;
 
-    public MyAssignment() {
-    }
 
     public MyAssignment(String title, String priority) {
         this.shortTitle = title;
@@ -27,7 +26,11 @@ public class MyAssignment {
         this.isCompleted = false;
     }
 
-/* <<<<<<<<<<<<<<  ✨ Windsurf Command 🌟 >>>>>>>>>>>>>>>> */
+    public MyAssignment() {
+
+    }
+
+    /* <<<<<<<<<<<<<<  ✨ Windsurf Command 🌟 >>>>>>>>>>>>>>>> */
     /**
      * This method converts the priority string given as an argument to an integer value.
      * It takes a string argument called "priority" which represents the priority of a task.
@@ -107,6 +110,14 @@ public class MyAssignment {
 
     public void setFile(String file) {
         this.file = file;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getKey() {
+        return key;
     }
 }
 

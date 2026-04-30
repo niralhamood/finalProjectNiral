@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -58,6 +57,7 @@ public class addAsigment extends AppCompatActivity {
         ivAssignment = findViewById(R.id.image_view_assignment);
         btnSelectImage = findViewById(R.id.button_select_image);
 
+
         // تسجيل مُشغّل لطلب إذن READ_MEDIA_IMAGES
         requestReadMediaImagesPermission = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
             if (isGranted) {
@@ -69,52 +69,38 @@ public class addAsigment extends AppCompatActivity {
                 Toast.makeText(this, "تم رفض إذن قراءة الصور", Toast.LENGTH_SHORT).show();
                 // التعامل مع حالة رفض الإذن
             }
-            private void checkAndRequestPermissions() {
-                // فحص وطلب إذن READ_MEDIA_IMAGES (للإصدارات الحديثة)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // أندرويد 13+
-                    if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_IMAGES)
-                            != PackageManager.PERMISSION_GRANTED) {
-                        requestReadMediaImagesPermission.launch(android.Manifest.permission.READ_MEDIA_IMAGES);
-                    } else {
-                        Log.d(TAG, "READ_MEDIA_IMAGES permission already granted");
-                        Toast.makeText(this, "إذن قراءة الصور ممنوح بالفعل", Toast.LENGTH_SHORT).show();
-                    }
-                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // أندرويد 10 و 11 و 12// على هذه الإصدارات، READ_EXTERNAL_STORAGE له سلوك مختلف
-                    // إذا كنت تستخدم Scoped Storage بشكل صحيح، قد لا تحتاج إلى هذا الإذن
-                    // ولكن إذا كنت تحتاج إلى الوصول إلى جميع الصور، فقد تحتاج إلى READ_EXTERNAL_STORAGE
-                    // في هذا المثال، سنفحص READ_EXTERNAL_STORAGE للإصدارات الأقدم من 13
-                    if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                            != PackageManager.PERMISSION_GRANTED) {
-                        requestReadExternalStoragePermission.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE);
-                    } else {
-                        Log.d(TAG, "READ_EXTERNAL_STORAGE permission already granted (for older versions)");
-                        Toast.makeText(this, "إذن قراءة التخزين ممنوح بالفعل (للإصدارات الأقدم)", Toast.LENGTH_SHORT).show();
-                    }
-                } else { // أندرويد 9 والإصدارات الأقدم
-                    if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                            != PackageManager.PERMISSION_GRANTED) {
-                        requestReadExternalStoragePermission.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE);
-                    } else {
-                        Log.d(TAG, "READ_EXTERNAL_STORAGE permission already granted (for older versions)");
-                        Toast.makeText(this, "إذن قراءة التخزين ممنوح بالفعل (للإصدارات الأقدم)", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-
-                // فحص وطلب إذن READ_MEDIA_VIDEO (للإصدارات الحديثة)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // أندرويد 13+
-                    if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_VIDEO)
-                            != PackageManager.PERMISSION_GRANTED) {
-                        requestReadMediaVideoPermission.launch(android.Manifest.permission.READ_MEDIA_VIDEO);
-                    } else {
-                        Log.d(TAG, "READ_MEDIA_VIDEO permission already granted");
-                        Toast.makeText(this, "إذن قراءة الفيديو ممنوح بالفعل", Toast.LENGTH_SHORT).show();
-                    }
-                }// ملاحظة: إذن INTERNET لا يحتاج إلى فحص أو
-            }
-
-
         });
+
+
+// تسجيل مُشغّل لطلب إذن READ_MEDIA_VIDEO
+        requestReadMediaVideoPermission = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) {
+                Log.d(TAG, "READ_MEDIA_VIDEO permission granted");
+                Toast.makeText(this, "تم منح إذن قراءة الفيديو", Toast.LENGTH_SHORT).show();
+                // يمكنك الآن المتابعة بالعملية التي تتطلب هذا الإذن
+            } else {
+                Log.d(TAG, "READ_MEDIA_VIDEO permission denied");
+                Toast.makeText(this, "تم رفض إذن قراءة الفيديو", Toast.LENGTH_SHORT).show();
+                // التعامل مع حالة رفض الإذن
+            }
+        });
+
+
+// تسجيل مُشغّل لطلب إذن READ_EXTERNAL_STORAGE
+        requestReadExternalStoragePermission = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) {
+                Log.d(TAG, "READ_EXTERNAL_STORAGE permission granted");
+                Toast.makeText(this, "تم منح إذن قراءة التخزين الخارجي", Toast.LENGTH_SHORT).show();
+                // يمكنك الآن المتابعة بالعملية التي تتطلب هذا الإذن
+            } else {
+                Log.d(TAG, "READ_EXTERNAL_STORAGE permission denied");
+                Toast.makeText(this, "تم رفض إذن قراءة التخزين الخارجي", Toast.LENGTH_SHORT).show();
+                // التعامل مع حالة رفض الإذن
+            }
+        });
+//استدعاء دالة الفحص (سيتم تطبيقها لاحقا)
+        checkAndRequestPermissions();
+
 
 
 
@@ -162,11 +148,7 @@ public class addAsigment extends AppCompatActivity {
                         newAssignment.setFile(imageUri.toString());
                     }
 
-                    // 3. الحفظ في قاعدة البيانات باستخدام Room
-
-                    AppDatabase db = AppDatabase.getDatabase(addAsigment.this);
-                    db.myAssignmentQuery().insertTask(newAssignment);
-
+                   saveUser(newAssignment);
                     Toast.makeText(addAsigment.this,
                             "Assignment Saved Successfully!",
                             Toast.LENGTH_SHORT).show();
@@ -178,7 +160,82 @@ public class addAsigment extends AppCompatActivity {
                 }
 
             }
+            public void saveUser(MyAssignment assignment) {// الحصول على مرجع إلى عقدة "users" في قاعدة البيانات
+
+                // تهيئة Firebase Realtime Database    //مؤشر لقاعدة البيانات
+                DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+// ‏مؤشر لجدول المستعملين
+                DatabaseReference usersRef = database.child("assignments");
+                // إنشاء مفتاح فريد للمستخدم الجديد
+                DatabaseReference newUserRef = usersRef.push();
+                // تعيين معرف المستخدم في كائن MyUser
+                assignment.setKey(newUserRef.getKey());
+                // حفظ بيانات المستخدم في قاعدة البيانات
+                //اضافة كائن "لمجموعة" المستعملين ومعالج حدث لفحص نجاح المطلوب
+
+                newUserRef.setValue(assignment).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(addAsigment.this, "FB Assignment added successfully", Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else {
+                            Toast.makeText(addAsigment.this, "FB Failed to add task", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+
+
+                });
+
+
+            }
+
         });
+    }
+
+    private void checkAndRequestPermissions() {
+        // فحص وطلب إذن READ_MEDIA_IMAGES (للإصدارات الحديثة)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // أندرويد 13+
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_IMAGES)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestReadMediaImagesPermission.launch(android.Manifest.permission.READ_MEDIA_IMAGES);
+            } else {
+                Log.d(TAG, "READ_MEDIA_IMAGES permission already granted");
+                Toast.makeText(this, "إذن قراءة الصور ممنوح بالفعل", Toast.LENGTH_SHORT).show();
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // أندرويد 10 و 11 و 12// على هذه الإصدارات، READ_EXTERNAL_STORAGE له سلوك مختلف
+            // إذا كنت تستخدم Scoped Storage بشكل صحيح، قد لا تحتاج إلى هذا الإذن
+            // ولكن إذا كنت تحتاج إلى الوصول إلى جميع الصور، فقد تحتاج إلى READ_EXTERNAL_STORAGE
+            // في هذا المثال، سنفحص READ_EXTERNAL_STORAGE للإصدارات الأقدم من 13
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestReadExternalStoragePermission.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE);
+            } else {
+                Log.d(TAG, "READ_EXTERNAL_STORAGE permission already granted (for older versions)");
+                Toast.makeText(this, "إذن قراءة التخزين ممنوح بالفعل (للإصدارات الأقدم)", Toast.LENGTH_SHORT).show();
+            }
+        } else { // أندرويد 9 والإصدارات الأقدم
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestReadExternalStoragePermission.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE);
+            } else {
+                Log.d(TAG, "READ_EXTERNAL_STORAGE permission already granted (for older versions)");
+                Toast.makeText(this, "إذن قراءة التخزين ممنوح بالفعل (للإصدارات الأقدم)", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
+//        // فحص وطلب إذن READ_MEDIA_VIDEO (للإصدارات الحديثة)
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // أندرويد 13+
+//            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_VIDEO)
+//                    != PackageManager.PERMISSION_GRANTED) {
+//                requestReadMediaVideoPermission.launch(android.Manifest.permission.READ_MEDIA_VIDEO);
+//            } else {
+//                Log.d(TAG, "READ_MEDIA_VIDEO permission already granted");
+//                Toast.makeText(this, "إذن قراءة الفيديو ممنوح بالفعل", Toast.LENGTH_SHORT).show();
+//            }
+//        }// ملاحظة: إذن INTERNET لا يحتاج إلى فحص أو
     }
 }
 
