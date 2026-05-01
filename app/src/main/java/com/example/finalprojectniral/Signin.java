@@ -10,10 +10,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Firebase;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Signin extends AppCompatActivity {
     private TextView SignInn;
@@ -63,29 +70,24 @@ public class Signin extends AppCompatActivity {
         }
         // تحقق من أن القيمة صحيحة قبل مناقشة اسم المستخدم وكلمة المرور
         if(isValid) {
-            // حفظ البيانات المستخدمة في قاعدة البيانات الخاصة بالتطبيق
-            // يوجد قاعدة بيانات واحدة فقط تسمى "UserData"
-            // يمكن استخدامها لتخزين البيانات المستخدمة في التطبيق
-            // يمكن الوصول إليها باستخدام الدالة getSharedPreferences
-            // الدالة تستقبل اسم القاعدة المراد الوصول إليها كمعلمة والنوع المستخدم لها كمعلمة اخرى
-            // النوع MODE_PRIVATE يعني أن البيانات سرية ولا يمكن الوصول إليها من قبل البرامج الأخرى
-            SharedPreferences userData = getSharedPreferences("UserData", MODE_PRIVATE);
-            // الدالة getString تستخدم لجلب قيمة نصية من القاعدة المسجلة لها
-            // الدالة تستقبل اسم المفتاح الذي تريد الوصول إليه كمعلمة وقيمة الإفتراضية كمعلمة اخرى
-            // في حال كان المفتاح غير موجود في القاعدة سيتم عرض القيمة الإفتراضية المحددة
-            String username1 = userData.getString("username", "");
-            if (username1.equals(username) && password.equals(password)) {
-
-                // ✅ الانتقال للشاشة الرئيسية
-                Intent intent = new Intent(Signin.this, Mainalmain.class);
-                startActivity(intent);
-                finish(); // يمنع الرجوع لشاشة تسجيل الدخول
-
-            } else {
-                Toast.makeText(this, "اسم المستخدم أو كلمة المرور غير صحيحة", Toast.LENGTH_SHORT).show();
-                isValid = false;
-            }
+            FirebaseAuth auth=FirebaseAuth.getInstance();
+            auth.signInWithEmailAndPassword(username,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()){
+                        Toast.makeText(Signin.this,"Signing in Succeeded", Toast.LENGTH_SHORT).show();
+                        Intent i=new Intent(Signin.this,Mainalmain.class);
+                        startActivity(i);
+                    }
+                    else {
+                        Toast.makeText(Signin.this,"Signing in Failed", Toast.LENGTH_SHORT).show();
+                        etUserNmaeEmail.setError(task.getException().getMessage());
+                    }
+                }
+            });
         }
+
+
 
         return isValid;
     }

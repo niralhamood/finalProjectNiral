@@ -1,5 +1,7 @@
 package com.example.finalprojectniral;
 
+import android.content.Intent;
+
 public class task_item_layout {
 
     private String title;
@@ -18,3 +20,4 @@ public class task_item_layout {
         return priority;
     }
 }
+
