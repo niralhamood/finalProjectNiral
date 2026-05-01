@@ -49,6 +49,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".addAsigment"
+            android:exported="false" />
+        <activity
             android:name=".Signup"
             android:exported="false" />
     </application>

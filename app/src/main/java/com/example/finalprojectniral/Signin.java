@@ -35,6 +35,12 @@ public class Signin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.signin);
+        if (FirebaseAuth.getInstance().getCurrentUser()!=null)
+        {
+            Intent intent = new Intent(Signin.this, Mainalmain.class);
+            startActivity(intent);
+            finish();
+        }
         etUserNmaeEmail =findViewById(R.id.etUserNmaeEmail);
         etPassword=findViewById(R.id.etPassword);
         Un2=findViewById(R.id.Un2);
