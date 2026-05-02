@@ -10,6 +10,8 @@ import android.content.Intent; // استيراد الـ Intent للانتقال 
 import android.content.pm.PackageManager; // استيراد أداة لفحص صلاحيات النظام
 import android.os.Build; // استيراد معلومات عن إصدار نظام الأندرويد
 import android.os.Bundle; // استيراد كائن لنقل البيانات بين الحالات
+import android.os.SystemClock; // استيراد ساعة النظام لقياس الوقت المنقضي
+import android.os.SystemClock; // استيراد ساعة النظام لقياس الوقت المنقضي
 import android.widget.Button; // استيراد عنصر الزر (Button)
 import android.widget.RadioButton; // استيراد زر الاختيار (RadioButton)
 import android.widget.RadioGroup; // استيراد مجموعة أزرار الاختيار
@@ -115,12 +117,19 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE); // الوصول لخدمة المنبه في النظام
 
-        // تحديد وقت ظهور الإشعار (الوقت الحالي + 60 ثانية)
-        long triggerTime = System.currentTimeMillis() + 60000; // حساب وقت الانطلاق
+        // استخدام SystemClock.elapsedRealtime() بدلاً من System.currentTimeMillis()
+        // لأنه أكثر استقراراً لجدولة الفواصل الزمنية ولا يتأثر بتغيير المستخدم لوقت الساعة.
+        long triggerTime = SystemClock.elapsedRealtime() + 60000; // حساب وقت الانطلاق (بعد 60 ثانية)
 
         if (alarmManager != null) { // التأكد من توفر مدير المنبهات
-            // ضبط منبه دقيق يعمل حتى في وضع السكون
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent); // جدولة المنبه
+            // فحص الصلاحية للأجهزة التي تعمل بنظام أندرويد 12 (API 31) أو أحدث
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
+                // إذا لم تتوفر صلاحية المنبه الدقيق، نستخدم المنبه العادي كبديل آمن لتجنب الانهيار (Crash)
+                alarmManager.setAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pendingIntent);
+            } else {
+                // ضبط منبه دقيق يعمل حتى في وضع السكون
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pendingIntent);
+            }
         }
 
         isRunning = true; // تغيير الحالة إلى "يعمل"

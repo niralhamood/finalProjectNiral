@@ -6,7 +6,7 @@ import androidx.core.app.NotificationCompat;
 import android.app.NotificationManager;
 import java.util.Random;
 /**
- * ملخص الكلاس: NotificationReceiver يعمل كمستقبل (Receiver) ينتظر إشارة من النظام 
+ * ملخص الكلاس: NotificationReceiver يعمل كمستقبل (Receiver) ينتظر إشارة من النظام
  * (المنبه) ليقوم ببناء الإشعار وعرضه للمستخدم في الوقت المحدد.
  */
 public class NotificationReceiver extends BroadcastReceiver { // تعريف الكلاس كمستقبل بث
