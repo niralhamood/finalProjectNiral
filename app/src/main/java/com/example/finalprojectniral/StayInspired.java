@@ -67,6 +67,11 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
 
         createNotificationChannel(); // استدعاء دالة إنشاء قناة الإشعارات
 
+
+        // شرح ليه لازم استدعيها ب اون كريايت :
+        // بما أن onCreate تعمل فور فتح الشاشة، فإنها تضمن أن القناة أصبحت "معرفة" لدى نظام التشغيل قبل أن يحاول التطبيق إرسال أي إشعار
+
+        
         // إعداد ما سيحدث عند الضغط على زر البدء
         btnStart.setOnClickListener(v -> { // مراقب النقرات على الزر
             if (modeRadioGroup.getCheckedRadioButtonId() == -1) { // التحقق إذا لم يتم اختيار أي نمط
@@ -91,7 +96,16 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
     }
 
     /**
+    
      * دالة startInspiration: مسؤولة عن جدولة الإشعارات باستخدام AlarmManager.
+     * شرح عن الـ AlarmManager:
+     * هو خدمة من نظام أندرويد تسمح بجدولة المهام لتنفيذها في وقت محدد مستقبلاً.
+     * 1. يعمل حتى لو كان التطبيق مغلقاً (Background Task).
+     * 2. نستخدم فيه PendingIntent لإخبار النظام بما يجب فعله عند حلول الوقت.
+     * 3. في هذا الكود، نستخدمه لإرسال إشارة للـ Receiver ليقوم بإظهار الإشعار بعد 60 ثانية.
+     * 
+     * 
+     * 
      * تضمن وصول الإشعار حتى لو تم إغلاق التطبيق.
      */
     private void startInspiration() { // دالة تشغيل الإلهام
@@ -187,7 +201,7 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // التحقق من أن الإصدار أوريو أو أحدث
-/* <<<<<<<<<<  7f7184d0-860e-46a2-a0ab-f655b675cac0  >>>>>>>>>>> */
+
             NotificationChannel channel = new NotificationChannel( // إنشاء كائن القناة
                     "channel_id", // معرف القناة (يجب أن يتطابق مع المستخدم في الـ Receiver)
                     "Stay Inspired Channel", // اسم القناة الذي يظهر في الإعدادات

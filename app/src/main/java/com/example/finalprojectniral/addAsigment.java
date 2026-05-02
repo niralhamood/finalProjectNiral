@@ -41,6 +41,9 @@ public class addAsigment extends AppCompatActivity {
 
     private ActivityResultLauncher<String> imagePickerLauncher;
 
+    private MyAssignment currentAssignment;
+    private boolean isEditMode = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,24 @@ public class addAsigment extends AppCompatActivity {
         checkCompleted = findViewById(R.id.checkbox_is_completed);
         ivAssignment = findViewById(R.id.image_view_assignment);
         btnSelectImage = findViewById(R.id.button_select_image);
+
+        // تهيئة مُشغّل اختيار الصورة
+        imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
+            if (uri != null) {
+                imageUri = uri;
+                ivAssignment.setImageURI(uri);
+            }
+        });
+
+        // التحقق مما إذا كنا في وضع التعديل
+        if (getIntent().hasExtra("isEdit") && getIntent().getBooleanExtra("isEdit", false)) {
+            isEditMode = true;
+            currentAssignment = (MyAssignment) getIntent().getSerializableExtra("assignment");
+            if (currentAssignment != null) {
+                populateFields(currentAssignment);
+                btnSave.setText("Update Assignment");
+            }
+        }
 
 
         // تسجيل مُشغّل لطلب إذن READ_MEDIA_IMAGES
@@ -133,65 +154,74 @@ public class addAsigment extends AppCompatActivity {
                 try {
                     int importance = Integer.parseInt(importanceStr);
 
-                    // 1. إنشاء كائن المهمة
-                    MyAssignment newAssignment = new MyAssignment();
-                    newAssignment.setShortTitle(title);
-                    newAssignment.setText(description);
-                    newAssignment.setImportance(importance);
-                    newAssignment.setCompleted(isCompleted);
+                    // 1. إنشاء أو تحديث كائن المهمة
+                    MyAssignment assignmentToSave;
+                    if (isEditMode && currentAssignment != null) {
+                        assignmentToSave = currentAssignment;
+                    } else {
+                        assignmentToSave = new MyAssignment();
+                        assignmentToSave.setTime(System.currentTimeMillis());
+                    }
 
-                    // استخدام وقت النظام الحالي لأننا حذفنا اختيار الوقت
-                    newAssignment.setTime(System.currentTimeMillis());
+                    assignmentToSave.setShortTitle(title);
+                    assignmentToSave.setText(description);
+                    assignmentToSave.setImportance(importance);
+                    assignmentToSave.setCompleted(isCompleted);
 
                     // 2. حفظ مسار الصورة إذا تم اختيارها
                     if (imageUri != null) {
-                        newAssignment.setFile(imageUri.toString());
+                        assignmentToSave.setFile(imageUri.toString());
                     }
 
-                   saveUser(newAssignment);
-                    Toast.makeText(addAsigment.this,
-                            "Assignment Saved Successfully!",
-                            Toast.LENGTH_SHORT).show();
-
-                    finish();
+                    saveAssignment(assignmentToSave);
 
                 } catch (NumberFormatException e) {
                     Toast.makeText(addAsigment.this, "Please enter valid numbers for Importance", Toast.LENGTH_SHORT).show();
                 }
 
             }
-            public void saveUser(MyAssignment assignment) {// الحصول على مرجع إلى عقدة "users" في قاعدة البيانات
 
-                // تهيئة Firebase Realtime Database    //مؤشر لقاعدة البيانات
+            private void saveAssignment(MyAssignment assignment) {
                 DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-// ‏مؤشر لجدول المستعملين
-                DatabaseReference usersRef = database.child("assignments");
-                // إنشاء مفتاح فريد للمستخدم الجديد
-                DatabaseReference newUserRef = usersRef.push();
-                // تعيين معرف المستخدم في كائن MyUser
-                assignment.setKey(newUserRef.getKey());
-                // حفظ بيانات المستخدم في قاعدة البيانات
-                //اضافة كائن "لمجموعة" المستعملين ومعالج حدث لفحص نجاح المطلوب
+                DatabaseReference assignmentsRef = database.child("assignments");
 
-                newUserRef.setValue(assignment).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                if (isEditMode && assignment.getKey() != null) {
+                    // تحديث مهمة موجودة
+                    assignmentsRef.child(assignment.getKey()).setValue(assignment).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(addAsigment.this, "FB Assignment added successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(addAsigment.this, "Assignment updated successfully", Toast.LENGTH_SHORT).show();
                             finish();
                         } else {
-                            Toast.makeText(addAsigment.this, "FB Failed to add task", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(addAsigment.this, "Failed to update assignment", Toast.LENGTH_SHORT).show();
                         }
-                    }
-
-
-
-                });
-
-
+                    });
+                } else {
+                    // إضافة مهمة جديدة
+                    DatabaseReference newAssignmentRef = assignmentsRef.push();
+                    assignment.setKey(newAssignmentRef.getKey());
+                    newAssignmentRef.setValue(assignment).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(addAsigment.this, "Assignment added successfully", Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else {
+                            Toast.makeText(addAsigment.this, "Failed to add assignment", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
 
         });
+    }
+
+    private void populateFields(MyAssignment assignment) {
+        etShortTitle.setText(assignment.getShortTitle());
+        etImportance.setText(String.valueOf(assignment.getImportance()));
+        etDescription.setText(assignment.getText());
+        checkCompleted.setChecked(assignment.isCompleted());
+        if (assignment.getFile() != null) {
+            imageUri = Uri.parse(assignment.getFile());
+            ivAssignment.setImageURI(imageUri);
+        }
     }
 
     private void checkAndRequestPermissions() {

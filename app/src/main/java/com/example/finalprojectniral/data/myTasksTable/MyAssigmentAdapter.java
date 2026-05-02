@@ -16,11 +16,18 @@ public class MyAssigmentAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<MyAssignment> assignmentList;
     private LayoutInflater inflater;
+    private OnAssignmentClickListener listener;
 
-    public MyAssigmentAdapter(Context context, ArrayList<MyAssignment> assignmentList) {
+    public interface OnAssignmentClickListener {
+        void onEditClick(MyAssignment assignment);
+        void onDeleteClick(MyAssignment assignment);
+    }
+
+    public MyAssigmentAdapter(Context context, ArrayList<MyAssignment> assignmentList, OnAssignmentClickListener listener) {
         this.context = context;
         this.assignmentList = assignmentList;
         this.inflater = LayoutInflater.from(context);
+        this.listener = listener;
     }
 
     @Override
@@ -64,15 +71,16 @@ public class MyAssigmentAdapter extends BaseAdapter {
 
         // زر تعديل
         holder.btnEdit.setOnClickListener(v -> {
-            // هنا ممكن تفتح شاشة لتعديل المهمة
-            // لاحقاً يمكن تمرير البيانات للشاشة الثانية
+            if (listener != null) {
+                listener.onEditClick(assignment);
+            }
         });
 
         // زر حذف
         holder.btnDelete.setOnClickListener(v -> {
-            assignmentList.remove(position);
-            notifyDataSetChanged();
-            // لاحقاً يمكن حذفها من قاعدة البيانات
+            if (listener != null) {
+                listener.onDeleteClick(assignment);
+            }
         });
 
         return convertView;
