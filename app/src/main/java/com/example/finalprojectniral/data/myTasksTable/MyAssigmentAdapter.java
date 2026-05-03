@@ -12,12 +12,26 @@ import com.example.finalprojectniral.R;
 
 import java.util.ArrayList;
 
+/**
+ * فئة مخصصة لعرض قائمة مهام (MyAssignment) في شاشة أساسية (TasksActivity).
+ */
 public class MyAssigmentAdapter extends BaseAdapter {
+    /**
+     * ربط الواجهة بالأصل (Context).
+     */
     private Context context;
+    /**
+     * قائمة بالمهام التي ستتم عرضها.
+     */
     private ArrayList<MyAssignment> assignmentList;
+    /**
+     * تحميل القوالب المستخدمة لعرض العناصر.
+     */
     private LayoutInflater inflater;
+    /**
+     * المستمع للأحداث التي تتم عليها على المهام (التعديل والحذف).
+     */
     private OnAssignmentClickListener listener;
-
     public interface OnAssignmentClickListener {
         void onEditClick(MyAssignment assignment);
         void onDeleteClick(MyAssignment assignment);

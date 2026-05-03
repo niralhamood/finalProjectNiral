@@ -18,14 +18,24 @@ import java.util.ArrayList;
 
 public class TasksActivity extends AppCompatActivity {
 
-    private ImageView btnBack;
-    private ImageButton btnAddTask;
-    private ListView listTasks;
+    /**
+     * يحتوي هذا المتغير على إمكانية الرجوع إلى صفحة الملف الرئيسي (MainActivity) بالضغط على زر "العودة".
+     */
+    private ImageView btnBack; /** * يحتوي هذا المتغير على زر إضافة مهمة جديدة للمهام
+     */
+    private ImageButton btnAddTask;    /**  * يحتوي هذا المتغير على قائمة المهام التي ستظهر في شاشة المهام.*/
 
-    private ArrayList<MyAssignment> tasksList;
-    private MyAssigmentAdapter adapter;
+    private ListView listTasks;/**
+     * يحتوي هذا المتغير على قائمة بالمهام التي ستظهر في شاشة المهام.
+     */
+    private ArrayList<MyAssignment> tasksList;/**
+     * يحتوي هذا المتغير على Adapter للمهام التي ستظهر في قائمة المهام (listTasks).
+     */
+    private MyAssigmentAdapter adapter;/**
+     * يحتوي هذا المتغير على مرجع لقاعدة بيانات Firebase للمهام.
+     */
+
     private DatabaseReference databaseReference;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
