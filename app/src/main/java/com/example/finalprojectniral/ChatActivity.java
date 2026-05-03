@@ -64,6 +64,11 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * تقوم هذه الدالة بإرسال طلب إلى نموذج Gemini AI للحصول على خطوات مقترحة لموضوع معين.
+     * 
+     * @param topic الموضوع الذي سيتم طلب خطوات تنفيذه من الذكاء الاصطناعي.
+     */
     private void askFirebaseAiGeminiForSteps(String topic) {
         pbLoading.setVisibility(View.VISIBLE);
         tvAiResponse.setText("");

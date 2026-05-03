@@ -181,7 +181,11 @@ public class addAsigment extends AppCompatActivity {
 
             }
 
-            private void saveAssignment(MyAssignment assignment) {
+    /**
+     * وصف قصير: تقوم بحفظ أو تحديث بيانات المهمة في قاعدة بيانات Firebase.
+     * البارامترات (@param assignment): كائن المهمة الذي يحتوي على البيانات المراد حفظها.
+     */
+    private void saveAssignment(MyAssignment assignment) {
                 DatabaseReference database = FirebaseDatabase.getInstance().getReference();
                 DatabaseReference assignmentsRef = database.child("assignments");
 
@@ -213,6 +217,10 @@ public class addAsigment extends AppCompatActivity {
         });
     }
 
+    /**
+     * وصف قصير: تقوم بتعبئة حقول الشاشة ببيانات المهمة المختارة عند الدخول في وضع التعديل.
+     * البارامترات (@param assignment): كائن المهمة الذي يحتوي على البيانات المراد عرضها.
+     */
     private void populateFields(MyAssignment assignment) {
         etShortTitle.setText(assignment.getShortTitle());
         etImportance.setText(String.valueOf(assignment.getImportance()));
@@ -224,6 +232,9 @@ public class addAsigment extends AppCompatActivity {
         }
     }
 
+    /**
+     * وصف قصير: تقوم بفحص وطلب الصلاحيات اللازمة للوصول إلى الصور والملفات بناءً على إصدار الأندرويد.
+     */
     private void checkAndRequestPermissions() {
         // فحص وطلب إذن READ_MEDIA_IMAGES (للإصدارات الحديثة)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // أندرويد 13+

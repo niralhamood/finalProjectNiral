@@ -56,8 +56,11 @@ public class Signin extends AppCompatActivity {
     //  دالة تفحص القيم بمساعدة متغير بولياني مساعد
     // -----------------------------------------------------------
 
-    //  دالة تفحص القيم بمساعدة متغير بولياني مساعد
-    // -----------------------------------------------------------
+    /**
+     * وصف قصير: تقوم بالتحقق من صحة البيانات المدخلة (البريد الإلكتروني وكلمة المرور) وبدء عملية تسجيل الدخول عبر Firebase.
+     * الهدف منها: التأكد من أن المستخدم أدخل بياناته بشكل صحيح قبل محاولة الاتصال بالخادم.
+     * القيمة المُرجعة (@return): تُرجع true إذا كانت الحقول غير فارغة، و false خلاف ذلك.
+     */
     private boolean validateSignIn() {
         boolean isValid = true;
 
@@ -92,6 +95,10 @@ public class Signin extends AppCompatActivity {
         return isValid;
     }
 
+    /**
+     * وصف قصير: دالة استجابة عند النقر للانتقال المباشر إلى الشاشة الرئيسية (Mainalmain).
+     * البارامترات (@param v): عرض الزر الذي تم النقر عليه.
+     */
     public void onClickGo22(View v){
         Intent intent = new Intent(Signin.this, Mainalmain.class);
         startActivity(intent);

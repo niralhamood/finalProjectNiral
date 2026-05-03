@@ -81,7 +81,11 @@ public class Signup extends AppCompatActivity {
     }
 
     /**
-     * دالة لفحص صحة المعطيات: تتأكد من أن الحقول ليست فارغة وأن كلمة المرور قوية كفاية
+     * وصف قصير: تقوم بفحص صحة البيانات المدخلة من قبل المستخدم قبل البدء بعملية التسجيل.
+     * الهدف منها: التأكد من أن الحقول ليست فارغة وأن كلمة المرور تفي بالحد الأدنى من الطول.
+     * البارامترات (@param username): اسم المستخدم أو البريد الإلكتروني المدخل.
+     * البارامترات (@param password): كلمة المرور المدخلة.
+     * القيمة المُرجعة (@return): تُرجع true إذا كانت البيانات صالحة، و false إذا وجد خطأ.
      */
     private boolean isValid(String username, String password) {
         boolean valid = true;
@@ -106,7 +110,9 @@ public class Signup extends AppCompatActivity {
     }
 
     /**
-     * دالة حفظ المستخدم في Firebase Realtime Database (السحابة)
+     * وصف قصير: تقوم بحفظ بيانات المستخدم الجديد في قاعدة بيانات Firebase السحابية.
+     * الهدف منها: إنشاء سجل مستخدم دائم في السحابة للتمكن من تسجيل الدخول لاحقاً.
+     * البارامترات (@param user): كائن من نوع MyUser يحتوي على بيانات المستخدم (الاسم، كلمة المرور، المعرف).
      */
     private void saveUserToFirebase(MyUser user) {
         // الوصول لمرجع قاعدة البيانات السحابية
@@ -140,7 +146,10 @@ public class Signup extends AppCompatActivity {
     }
 
     /**
-     * دالة لحفظ بيانات بسيطة في ذاكرة الهاتف (SharedPreferences)
+     * وصف قصير: تقوم بحفظ بيانات المستخدم (الاسم وكلمة المرور) محلياً في ذاكرة الهاتف.
+     * الهدف منها: الاحتفاظ ببيانات تسجيل الدخول للوصول السريع إليها لاحقاً.
+     * البارامترات (@param username): اسم المستخدم المراد حفظه.
+     * البارامترات (@param password): كلمة المرور المراد حفظها.
      */
     private void saveUserLocally(String username, String password) {
         getSharedPreferences("UserData", MODE_PRIVATE)

@@ -47,7 +47,7 @@ public class TasksActivity extends AppCompatActivity {
             public void onEditClick(MyAssignment assignment) {
                 Intent intent = new Intent(TasksActivity.this, addAsigment.class);
                 intent.putExtra("isEdit", true);
-                intent.putExtra("assignment", assignment);
+                intent.putExtra("assignment", assignment.isCompleted());
                 startActivity(intent);
             }
 
@@ -74,6 +74,10 @@ public class TasksActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * وصف قصير: تقوم بجلب قائمة المهام من قاعدة بيانات Firebase وتحديث الواجهة تلقائياً عند حدوث أي تغيير.
+     * الهدف منها: عرض المهام الحقيقية المخزنة في السحاب بدلاً من البيانات الافتراضية.
+     */
     private void fetchTasksFromFirebase() {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

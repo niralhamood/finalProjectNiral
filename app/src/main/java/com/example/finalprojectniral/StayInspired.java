@@ -96,16 +96,14 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
     }
 
     /**
-    
+
      * دالة startInspiration: مسؤولة عن جدولة الإشعارات باستخدام AlarmManager.
      * شرح عن الـ AlarmManager:
      * هو خدمة من نظام أندرويد تسمح بجدولة المهام لتنفيذها في وقت محدد مستقبلاً.
      * 1. يعمل حتى لو كان التطبيق مغلقاً (Background Task).
      * 2. نستخدم فيه PendingIntent لإخبار النظام بما يجب فعله عند حلول الوقت.
      * 3. في هذا الكود، نستخدمه لإرسال إشارة للـ Receiver ليقوم بإظهار الإشعار بعد 60 ثانية.
-     * 
-     * 
-     * 
+
      * تضمن وصول الإشعار حتى لو تم إغلاق التطبيق.
      */
     private void startInspiration() { // دالة تشغيل الإلهام
@@ -122,6 +120,13 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
         // يتم تعيين الأعلام PendingIntent.FLAG_UPDATE_CURRENT للتأكد من تحديث النية الموجودة في الذاكرة إذا كانت موجودة بالفعل.
         // ويتم تعيين الأعلام PendingIntent.FLAG_IMMUTABLE للتأكد من أن النية لن تتغير حتى يتم تحديثها في الإصدارات الحديثة.
         // إنشاء PendingIntent  للسماح للنظام بتنفيذ الكود لاحقاً
+
+
+
+
+        // تقوم هذه الدالة ببدء عملية الإلهام عن طريق جدولة إشعارات دورية.
+                 // تختار رسالة عشوائية بناءً على النمط المحدد وتستخدم AlarmManager لجدولتها.
+
         PendingIntent pendingIntent = PendingIntent.getBroadcast( // إنشاء نية معلقة للبث
                 this, // السياق الحالي
                 0, // كود الطلب
@@ -153,7 +158,7 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
     }
 
     /**
-     * دالة stopInspiration: تقوم بإلغاء أي منبهات مجدولة مسبقاً لإيقاف الإشعارات.
+     * تقوم هذه الدالة بإيقاف عملية الإلهام وإلغاء أي إشعارات مجدولة.
      */
     private void stopInspiration() { // دالة إيقاف الإلهام
         Intent intent = new Intent(this, NotificationReceiver.class); // إنشاء نية مطابقة للنية المجدولة

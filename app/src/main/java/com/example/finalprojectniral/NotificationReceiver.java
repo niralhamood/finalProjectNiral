@@ -12,8 +12,10 @@ import java.util.Random;
 public class NotificationReceiver extends BroadcastReceiver { // تعريف الكلاس كمستقبل بث
 
     /**
-     * دالة onReceive: يتم استدعاؤها عند انطلاق المنبه المجدول.
-     * تقوم باستخراج الرسالة وبناء الإشعار وعرضه.
+     * وصف قصير: يتم استدعاؤها تلقائياً بواسطة النظام عند انطلاق المنبه المجدول.
+     * الهدف منها: استخراج الرسالة التحفيزية وبناء الإشعار وعرضه للمستخدم.
+     * البارامترات (@param context): سياق التطبيق الذي يعمل فيه المستقبل.
+     * البارامترات (@param intent): النية التي تحتوي على الرسالة المرسلة من شاشة StayInspired.
      */
     @Override
     public void onReceive(Context context, Intent intent) { // نقطة انطلاق استقبال الحدث
