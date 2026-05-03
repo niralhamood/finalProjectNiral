@@ -27,8 +27,13 @@ import com.google.firebase.database.FirebaseDatabase;
  */
 public class Signup extends AppCompatActivity {
     // تعريف عناصر الواجهة (حقول النص والأزرار)
-    private EditText edUsername2, edPassW;
+    /** حقل إدخال اسم المستخدم أو البريد الإلكتروني */
+    private EditText edUsername2;
+    /** حقل إدخال كلمة المرور */
+    private EditText edPassW;
+    /** زر إتمام عملية التسجيل */
     private Button SignUp;
+    /** زر الانتقال لشاشة تسجيل الدخول */
     private Button signIn;
 
     @SuppressLint("WrongViewCast")

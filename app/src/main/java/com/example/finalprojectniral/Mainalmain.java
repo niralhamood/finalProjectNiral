@@ -17,9 +17,14 @@ import java.util.Calendar;
 
 public class Mainalmain extends AppCompatActivity {
 
-    TextView greetingText, subGreetingText;
-    Button btnTasks, btnChat, btnStayInspired; // ← أضفنا الزر الجديد
-    String username = "User"; // قيمة افتراضية
+    /** نص الترحيب الرئيسي */
+    TextView greetingText;
+    /** نص الترحيب الفرعي */
+    TextView subGreetingText;
+    /** أزرار التنقل للمهام، المحادثة، والإلهام */
+    Button btnTasks, btnChat, btnStayInspired;
+    /** اسم المستخدم المعروض في الترحيب، القيمة الافتراضية هي "User" */
+    String username = "User";
 
     @SuppressLint("MissingInflatedId")
     @Override
