@@ -14,6 +14,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
+    /**
+     * TextView لعرض نص التحميل أو اسم التطبيق أثناء شاشة الترحيب.
+     */
     private TextView tvLoading;
 
     @Override

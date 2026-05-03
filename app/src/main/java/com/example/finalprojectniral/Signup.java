@@ -19,8 +19,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.finalprojectniral.data.myUserTable.MyUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -29,8 +27,13 @@ import com.google.firebase.database.FirebaseDatabase;
  */
 public class Signup extends AppCompatActivity {
     // تعريف عناصر الواجهة (حقول النص والأزرار)
-    private EditText edUsername2, edPassW;
+    /** حقل إدخال اسم المستخدم أو البريد الإلكتروني */
+    private EditText edUsername2;
+    /** حقل إدخال كلمة المرور */
+    private EditText edPassW;
+    /** زر إتمام عملية التسجيل */
     private Button SignUp;
+    /** زر الانتقال لشاشة تسجيل الدخول */
     private Button signIn;
 
     @SuppressLint("WrongViewCast")
@@ -55,8 +58,9 @@ public class Signup extends AppCompatActivity {
             return insets;
         });
 
+        // عند الضغط على زر "Sign In" يتم الانتقال لشاشة تسجيل الدخول
         signIn.setOnClickListener(v -> {
-            Intent intent = new Intent(Signup.this, Mainalmain.class);
+            Intent intent = new Intent(Signup.this, Signin.class);
             startActivity(intent);
             finish(); // إغلاق الشاشة الحالية
         });
@@ -75,30 +79,18 @@ public class Signup extends AppCompatActivity {
                 newUser.passw = password;
                 newUser.email = username; // استخدام اسم المستخدم كإيميل افتراضي حالياً
 
-                FirebaseAuth auth=FirebaseAuth.getInstance();
-                auth.createUserWithEmailAndPassword(username,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                            Toast.makeText(getApplication(),"Signing in Succeeded", Toast.LENGTH_SHORT).show();
-                            // 3. استدعاء دالة حفظ البيانات في قاعدة بيانات Firebase السحابية
-                            saveUserToFirebase(newUser);
-
-                        }
-                        else {
-                            Toast.makeText(getApplication(),"Signing in Failed", Toast.LENGTH_SHORT).show();
-                            edUsername2.setError(task.getException().getMessage());
-                        }
-                    }
-                });
-
-
+                // 3. استدعاء دالة حفظ البيانات في قاعدة بيانات Firebase السحابية
+                saveUserToFirebase(newUser);
             }
         });
     }
 
     /**
-     * دالة لفحص صحة المعطيات: تتأكد من أن الحقول ليست فارغة وأن كلمة المرور قوية كفاية
+     * وصف قصير: تقوم بفحص صحة البيانات المدخلة من قبل المستخدم قبل البدء بعملية التسجيل.
+     * الهدف منها: التأكد من أن الحقول ليست فارغة وأن كلمة المرور تفي بالحد الأدنى من الطول.
+     * البارامترات (@param username): اسم المستخدم أو البريد الإلكتروني المدخل.
+     * البارامترات (@param password): كلمة المرور المدخلة.
+     * القيمة المُرجعة (@return): تُرجع true إذا كانت البيانات صالحة، و false إذا وجد خطأ.
      */
     private boolean isValid(String username, String password) {
         boolean valid = true;
@@ -123,7 +115,9 @@ public class Signup extends AppCompatActivity {
     }
 
     /**
-     * دالة حفظ المستخدم في Firebase Realtime Database (السحابة)
+     * وصف قصير: تقوم بحفظ بيانات المستخدم الجديد في قاعدة بيانات Firebase السحابية.
+     * الهدف منها: إنشاء سجل مستخدم دائم في السحابة للتمكن من تسجيل الدخول لاحقاً.
+     * البارامترات (@param user): كائن من نوع MyUser يحتوي على بيانات المستخدم (الاسم، كلمة المرور، المعرف).
      */
     private void saveUserToFirebase(MyUser user) {
         // الوصول لمرجع قاعدة البيانات السحابية
@@ -145,7 +139,7 @@ public class Signup extends AppCompatActivity {
                     Toast.makeText(Signup.this, "تم إنشاء الحساب وحفظ البيانات بنجاح!", Toast.LENGTH_SHORT).show();
                     saveUserLocally(user.fullName, user.passw);
                     // الانتقال لشاشة تسجيل الدخول
-                    Intent intent = new Intent(Signup.this, Mainalmain.class);
+                    Intent intent = new Intent(Signup.this, Signin.class);
                     startActivity(intent);
                     finish();
                 } else {
@@ -157,7 +151,10 @@ public class Signup extends AppCompatActivity {
     }
 
     /**
-     * دالة لحفظ بيانات بسيطة في ذاكرة الهاتف (SharedPreferences)
+     * وصف قصير: تقوم بحفظ بيانات المستخدم (الاسم وكلمة المرور) محلياً في ذاكرة الهاتف.
+     * الهدف منها: الاحتفاظ ببيانات تسجيل الدخول للوصول السريع إليها لاحقاً.
+     * البارامترات (@param username): اسم المستخدم المراد حفظه.
+     * البارامترات (@param password): كلمة المرور المراد حفظها.
      */
     private void saveUserLocally(String username, String password) {
         getSharedPreferences("UserData", MODE_PRIVATE)

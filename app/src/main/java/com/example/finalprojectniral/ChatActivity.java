@@ -21,15 +21,14 @@ import com.google.firebase.ai.type.Content;
 import com.google.firebase.ai.type.GenerateContentResponse;
 import com.google.firebase.ai.type.GenerativeBackend;
 
-
 import java.util.concurrent.Executor;
 
 public class ChatActivity extends AppCompatActivity {
-
     private EditText etTaskTopic;
     private Button btnSuggestSteps;
     private TextView tvAiResponse;
     private ProgressBar pbLoading;
+
     private GenerativeModel ai;
     private GenerativeModelFutures model;
 
@@ -38,30 +37,25 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        // ربط العناصر بالواجهة
+        // ربط العناصر بالواجهة (كل العناصر الموجودة في XML)
         etTaskTopic = findViewById(R.id.etTaskTopic);
         btnSuggestSteps = findViewById(R.id.btnSuggestSteps);
         tvAiResponse = findViewById(R.id.tvAiResponse);
         pbLoading = findViewById(R.id.pbLoading);
 
-        // تهيئة محرك Gemini (استخدام gemini-1.5-flash لضمان التوافق)
-        // Initialize the Gemini Developer API backend service
-// Create a `GenerativeModel` instance with a model that supports your use case
+        // تهيئة Gemini
         ai = FirebaseAI.getInstance(GenerativeBackend.googleAI())
                 .generativeModel("gemini-3-flash-preview");
 
-
-// Use the GenerativeModelFutures Java compatibility layer which offers
-// support for ListenableFuture and Publisher APIs
         model = GenerativeModelFutures.from(ai);
 
-        // إعداد المستمع للنقر على الزر
+        // عند الضغط على الزر
         btnSuggestSteps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String task = etTaskTopic.getText().toString().trim();
+
                 if (!task.isEmpty()) {
-                    // استدعاء الدالة لطلب الاقتراحات من الذكاء الاصطناعي
                     askFirebaseAiGeminiForSteps(task);
                 } else {
                     Toast.makeText(ChatActivity.this, "Please enter a topic", Toast.LENGTH_SHORT).show();
@@ -70,23 +64,27 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * تقوم هذه الدالة بإرسال طلب إلى نموذج Gemini AI للحصول على خطوات مقترحة لموضوع معين.
+     * 
+     * @param topic الموضوع الذي سيتم طلب خطوات تنفيذه من الذكاء الاصطناعي.
+     */
     private void askFirebaseAiGeminiForSteps(String topic) {
         pbLoading.setVisibility(View.VISIBLE);
         tvAiResponse.setText("");
         btnSuggestSteps.setEnabled(false);
 
-
         String promptStr = "I want to perform the following task: '" + topic + "'. " +
                 "Can you suggest a clear, step-by-step checklist to complete this task effectively?";
-
 
         Content prompt = new Content.Builder()
                 .addText(promptStr)
                 .build();
 
-
         ListenableFuture<GenerateContentResponse> response = model.generateContent(prompt);
+
         Executor executor = this::runOnUiThread;
+
         Futures.addCallback(response, new FutureCallback<GenerateContentResponse>() {
             @Override
             public void onSuccess(GenerateContentResponse result) {
@@ -94,7 +92,6 @@ public class ChatActivity extends AppCompatActivity {
                 btnSuggestSteps.setEnabled(true);
                 tvAiResponse.setText(result.getText());
             }
-
 
             @Override
             public void onFailure(Throwable t) {
@@ -104,7 +101,4 @@ public class ChatActivity extends AppCompatActivity {
             }
         }, executor);
     }
-
-
-
 }

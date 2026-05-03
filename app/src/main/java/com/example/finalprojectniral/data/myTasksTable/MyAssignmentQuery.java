@@ -11,31 +11,62 @@ import java.util.List;
 @Dao
 public interface MyAssignmentQuery {
 
-    // 1) جلب كل المهام مرتبة حسب الأهمية
+    /**
+     * تجلب جميع المهام من قاعدة البيانات مرتبة تنازلياً حسب الأهمية.
+     * 
+     * @return قائمة بجميع المهام.
+     */
     @Query("SELECT * FROM MyAssignment ORDER BY importance DESC")
     List<MyAssignment> getAllTasks();
 
-    // 2) جلب المهام حسب userId مرتبة حسب الوقت
+    /**
+     * تجلب جميع المهام الخاصة بمستخدم معين مرتبة تنازلياً حسب الوقت.
+     * 
+     * @param userId الرقم التعريفي للمستخدم.
+     * @return قائمة بمهام المستخدم المحدد.
+     */
     @Query("SELECT * FROM MyAssignment WHERE userId = :userId ORDER BY time DESC")
     List<MyAssignment> getAllTasksByUser(long userId);
 
-    // 3) جلب المهام حسب userId + حالة الإنجاز + ترتيب حسب الأهمية
+    /**
+     * تجلب المهام الخاصة بمستخدم معين بناءً على حالة الإنجاز، مرتبة حسب الأهمية.
+     * 
+     * @param userId الرقم التعريفي للمستخدم.
+     * @param isCompleted حالة إنجاز المهمة (تمت أو لم تتم).
+     * @return قائمة بالمهام المفلترة.
+     */
     @Query("SELECT * FROM MyAssignment WHERE userId = :userId AND isCompleted = :isCompleted ORDER BY importance DESC")
     List<MyAssignment> getTasksByUserAndStatus(long userId, boolean isCompleted);
 
-    // 4) إدخال مهمة أو أكثر
+    /**
+     * تقوم بإدراج مهمة أو أكثر في قاعدة البيانات.
+     * 
+     * @param tasks المهام المراد إدراجها.
+     */
     @Insert
     void insertTask(MyAssignment... tasks);
 
-    // 5) تحديث مهمة أو أكثر
+    /**
+     * تقوم بتحديث بيانات مهمة أو أكثر موجودة مسبقاً في قاعدة البيانات.
+     * 
+     * @param tasks المهام المراد تحديثها.
+     */
     @Update
     void updateTask(MyAssignment... tasks);
 
-    // 6) حذف مهمة أو أكثر
+    /**
+     * تقوم بحذف مهمة أو أكثر من قاعدة البيانات.
+     * 
+     * @param tasks المهام المراد حذفها.
+     */
     @Delete
     void deleteTask(MyAssignment... tasks);
 
-    // 7) حذف مهمة حسب المفتاح الأساسي
+    /**
+     * تقوم بحذف مهمة معينة بناءً على رقمها التعريفي (المفتاح الأساسي).
+     * 
+     * @param keyId الرقم التعريفي للمهمة.
+     */
     @Query("DELETE FROM MyAssignment WHERE keyId = :keyId")
     void deleteTaskByKey(long keyId);
 }

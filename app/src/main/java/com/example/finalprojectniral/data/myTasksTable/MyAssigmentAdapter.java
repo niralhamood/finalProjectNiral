@@ -16,28 +16,57 @@ public class MyAssigmentAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<MyAssignment> assignmentList;
     private LayoutInflater inflater;
+    private OnAssignmentClickListener listener;
 
-    public MyAssigmentAdapter(Context context, ArrayList<MyAssignment> assignmentList) {
+    public interface OnAssignmentClickListener {
+        void onEditClick(MyAssignment assignment);
+        void onDeleteClick(MyAssignment assignment);
+    }
+
+    public MyAssigmentAdapter(Context context, ArrayList<MyAssignment> assignmentList, OnAssignmentClickListener listener) {
         this.context = context;
         this.assignmentList = assignmentList;
         this.inflater = LayoutInflater.from(context);
+        this.listener = listener;
     }
 
+    /**
+     * وصف قصير: تُرجع عدد العناصر الموجودة في قائمة المهام.
+     * القيمة المُرجعة (@return): عدد المهام (int).
+     */
     @Override
     public int getCount() {
         return assignmentList.size();
     }
 
+    /**
+     * وصف قصير: تُرجع كائن المهمة الموجود في موقع معين في القائمة.
+     * البارامترات (@param position): ترتيب العنصر في القائمة.
+     * القيمة المُرجعة (@return): كائن المهمة (Object) في هذا الموقع.
+     */
     @Override
     public Object getItem(int position) {
         return assignmentList.get(position);
     }
 
+    /**
+     * وصف قصير: تُرجع المعرف الفريد للعنصر بناءً على موقعه.
+     * البارامترات (@param position): ترتيب العنصر.
+     * القيمة المُرجعة (@return): المعرف (long).
+     */
     @Override
     public long getItemId(int position) {
         return position;
     }
 
+    /**
+     * وصف قصير: تقوم بإنشاء وتجهيز واجهة العرض (View) لكل عنصر في القائمة.
+     * الهدف منها: ربط بيانات المهمة بالعناصر المرئية (العنوان، الأهمية) وإعداد أزرار التعديل والحذف.
+     * البارامترات (@param position): موقع العنصر في القائمة.
+     * البارامترات (@param convertView): واجهة عرض قديمة يمكن إعادة استخدامها.
+     * البارامترات (@param parent): الحاوية الأب التي ستحتوي على الواجهة.
+     * القيمة المُرجعة (@return): واجهة العرض الجاهزة (View).
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
@@ -64,15 +93,16 @@ public class MyAssigmentAdapter extends BaseAdapter {
 
         // زر تعديل
         holder.btnEdit.setOnClickListener(v -> {
-            // هنا ممكن تفتح شاشة لتعديل المهمة
-            // لاحقاً يمكن تمرير البيانات للشاشة الثانية
+            if (listener != null) {
+                listener.onEditClick(assignment);
+            }
         });
 
         // زر حذف
         holder.btnDelete.setOnClickListener(v -> {
-            assignmentList.remove(position);
-            notifyDataSetChanged();
-            // لاحقاً يمكن حذفها من قاعدة البيانات
+            if (listener != null) {
+                listener.onDeleteClick(assignment);
+            }
         });
 
         return convertView;

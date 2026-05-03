@@ -10,6 +10,8 @@ import android.content.Intent; // استيراد الـ Intent للانتقال 
 import android.content.pm.PackageManager; // استيراد أداة لفحص صلاحيات النظام
 import android.os.Build; // استيراد معلومات عن إصدار نظام الأندرويد
 import android.os.Bundle; // استيراد كائن لنقل البيانات بين الحالات
+import android.os.SystemClock; // استيراد ساعة النظام لقياس الوقت المنقضي
+import android.os.SystemClock; // استيراد ساعة النظام لقياس الوقت المنقضي
 import android.widget.Button; // استيراد عنصر الزر (Button)
 import android.widget.RadioButton; // استيراد زر الاختيار (RadioButton)
 import android.widget.RadioGroup; // استيراد مجموعة أزرار الاختيار
@@ -65,6 +67,11 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
 
         createNotificationChannel(); // استدعاء دالة إنشاء قناة الإشعارات
 
+
+        // شرح ليه لازم استدعيها ب اون كريايت :
+        // بما أن onCreate تعمل فور فتح الشاشة، فإنها تضمن أن القناة أصبحت "معرفة" لدى نظام التشغيل قبل أن يحاول التطبيق إرسال أي إشعار
+
+        
         // إعداد ما سيحدث عند الضغط على زر البدء
         btnStart.setOnClickListener(v -> { // مراقب النقرات على الزر
             if (modeRadioGroup.getCheckedRadioButtonId() == -1) { // التحقق إذا لم يتم اختيار أي نمط
@@ -89,8 +96,20 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
     }
 
     /**
+
      * دالة startInspiration: مسؤولة عن جدولة الإشعارات باستخدام AlarmManager.
+     * شرح عن الـ AlarmManager:
+     * هو خدمة من نظام أندرويد تسمح بجدولة المهام لتنفيذها في وقت محدد مستقبلاً.
+     * 1. يعمل حتى لو كان التطبيق مغلقاً (Background Task).
+     * 2. نستخدم فيه PendingIntent لإخبار النظام بما يجب فعله عند حلول الوقت.
+     * 3. في هذا الكود، نستخدمه لإرسال إشارة للـ Receiver ليقوم بإظهار الإشعار بعد 60 ثانية.
+
      * تضمن وصول الإشعار حتى لو تم إغلاق التطبيق.
+     */
+
+    /**
+     * وصف قصير: تقوم هذه الدالة بتشغيل عملية الإلهام عبر اختيار رسالة عشوائية وجدولة إشعار ليظهر بعد دقيقة واحدة.
+     * الهدف منها: ضمان وصول رسائل تحفيزية للمستخدم حتى لو كان التطبيق مغلقاً باستخدام مدير التنبيهات (AlarmManager).
      */
     private void startInspiration() { // دالة تشغيل الإلهام
         String message = getRandomMessage(); // الحصول على رسالة عشوائية بناءً على النمط
@@ -106,6 +125,13 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
         // يتم تعيين الأعلام PendingIntent.FLAG_UPDATE_CURRENT للتأكد من تحديث النية الموجودة في الذاكرة إذا كانت موجودة بالفعل.
         // ويتم تعيين الأعلام PendingIntent.FLAG_IMMUTABLE للتأكد من أن النية لن تتغير حتى يتم تحديثها في الإصدارات الحديثة.
         // إنشاء PendingIntent  للسماح للنظام بتنفيذ الكود لاحقاً
+
+
+
+
+        // تقوم هذه الدالة ببدء عملية الإلهام عن طريق جدولة إشعارات دورية.
+                 // تختار رسالة عشوائية بناءً على النمط المحدد وتستخدم AlarmManager لجدولتها.
+
         PendingIntent pendingIntent = PendingIntent.getBroadcast( // إنشاء نية معلقة للبث
                 this, // السياق الحالي
                 0, // كود الطلب
@@ -115,12 +141,19 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE); // الوصول لخدمة المنبه في النظام
 
-        // تحديد وقت ظهور الإشعار (الوقت الحالي + 60 ثانية)
-        long triggerTime = System.currentTimeMillis() + 60000; // حساب وقت الانطلاق
+        // استخدام SystemClock.elapsedRealtime() بدلاً من System.currentTimeMillis()
+        // لأنه أكثر استقراراً لجدولة الفواصل الزمنية ولا يتأثر بتغيير المستخدم لوقت الساعة.
+        long triggerTime = SystemClock.elapsedRealtime() + 60000; // حساب وقت الانطلاق (بعد 60 ثانية)
 
         if (alarmManager != null) { // التأكد من توفر مدير المنبهات
-            // ضبط منبه دقيق يعمل حتى في وضع السكون
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent); // جدولة المنبه
+            // فحص الصلاحية للأجهزة التي تعمل بنظام أندرويد 12 (API 31) أو أحدث
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
+                // إذا لم تتوفر صلاحية المنبه الدقيق، نستخدم المنبه العادي كبديل آمن لتجنب الانهيار (Crash)
+                alarmManager.setAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pendingIntent);
+            } else {
+                // ضبط منبه دقيق يعمل حتى في وضع السكون
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pendingIntent);
+            }
         }
 
         isRunning = true; // تغيير الحالة إلى "يعمل"
@@ -130,7 +163,7 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
     }
 
     /**
-     * دالة stopInspiration: تقوم بإلغاء أي منبهات مجدولة مسبقاً لإيقاف الإشعارات.
+     * تقوم هذه الدالة بإيقاف عملية الإلهام وإلغاء أي إشعارات مجدولة.
      */
     private void stopInspiration() { // دالة إيقاف الإلهام
         Intent intent = new Intent(this, NotificationReceiver.class); // إنشاء نية مطابقة للنية المجدولة
@@ -149,7 +182,9 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
     }
 
     /**
-     * دالة getRandomMessage: تختار رسالة واحدة عشوائية من المصفوفة المختارة (تحفيزي أو تأنيب).
+     * وصف قصير: تختار هذه الدالة رسالة واحدة بشكل عشوائي من مصفوفات النصوص المتاحة.
+     * الهدف منها: جلب نص عشوائي بناءً على النمط الذي اختاره المستخدم (تحفيزي أو تأنيب ضمير) لعرضه في الإشعار.
+     * @return ترجع نص الرسالة (String) التي تم اختيارها عشوائياً.
      */
     private String getRandomMessage() { // دالة جلب رسالة عشوائية
         Random random = new Random(); // إنشاء كائن العشوائية
@@ -161,24 +196,16 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
     }
 
     /**
-     * دالة createNotificationChannel: تنشئ قناة إشعارات (مطلوب لأندرويد 8 فما فوق).
-     * بدون هذه القناة، لن تظهر الإشعارات على الإصدارات الحديثة.
+     * وصف قصير: تقوم هذه الدالة بإنشاء قناة للإشعارات في نظام الأندرويد.
+     * الهدف منها: تعريف القناة لنظام التشغيل (مطلوب من إصدار أندرويد 8.0 فما فوق) لضمان ظهور الإشعارات وتحديد مستواها.
+     *
+     * شرح إضافي: تحقق من أن الإصدار هو أوريو (Oreo) أو أحدث باستخدام SDK_INT، ثم تضبط اسم القناة وأهميتها وتعرفها في مدير الإشعارات.
+     *
+     * @return لا تُرجع شيئاً.
      */
     private void createNotificationChannel() { // دالة إنشاء قناة الإشعار
-
-
-/* <<<<<<<<<<<<<<  ✨ Windsurf Command 🌟 >>>>>>>>>>>>>>>> */
-        // شرح عن SDK_INT
-
-        // تحقق من أن الإصدار الذي يعمل على الجهاز هو أوريو أو أحدث.
-        // SDK_INT هو متغير يحتوي على رقم يمثل إصدار النظام الأوبينتي.
-        // يتم تعيين هذا الرقم بشكل ثابت في كل إصدار من النظام.
-        // يمكن استخدامه للتحقق من إصدار النظام بداخل الكود.
-
-
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // التحقق من أن الإصدار أوريو أو أحدث
-/* <<<<<<<<<<  7f7184d0-860e-46a2-a0ab-f655b675cac0  >>>>>>>>>>> */
+
             NotificationChannel channel = new NotificationChannel( // إنشاء كائن القناة
                     "channel_id", // معرف القناة (يجب أن يتطابق مع المستخدم في الـ Receiver)
                     "Stay Inspired Channel", // اسم القناة الذي يظهر في الإعدادات

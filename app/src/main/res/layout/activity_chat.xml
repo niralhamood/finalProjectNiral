@@ -5,57 +5,104 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:background="#FFFFFF"
+    android:padding="14dp"
     tools:context=".ChatActivity">
 
-
-    <TextView
+    <!-- Header -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Smart Task Assistant"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_marginBottom="8dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AI Chat Assistant"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="#E91E63" />
 
-    <EditText
-        android:id="@+id/etTaskTopic"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Online now"
+            android:textSize="13sp"
+            android:textColor="#999999" />
+    </LinearLayout>
+
+    <!-- Chat Area -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter task title or topic (e.g., Fix the car)"
-        android:minHeight="48dp" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btnSuggestSteps"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Suggest Steps with AI" />
+            <!-- AI Message -->
+            <TextView
+                android:id="@+id/tvAiResponse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="280dp"
+                android:text="Hello 👋 How can I help you today?"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:padding="14dp"
+                android:background="#FCE4EC"
+                android:layout_marginBottom="10dp"
+                android:textIsSelectable="true" />
 
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Loading -->
     <ProgressBar
         android:id="@+id/pbLoading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:indeterminateTint="#E91E63"
+        android:layout_marginBottom="8dp" />
 
-
-    <ScrollView
+    <!-- Bottom Input -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="16dp">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="6dp">
 
+        <EditText
+            android:id="@+id/etTaskTopic"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:hint="Type a message..."
+            android:textColorHint="#999999"
+            android:textColor="#333333"
+            android:textSize="15sp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="#F5F5F5" />
 
-        <TextView
-            android:id="@+id/tvAiResponse"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textIsSelectable="true" />
-    </ScrollView>
+        <Button
+            android:id="@+id/btnSuggestSteps"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="8dp"
+            android:text="➤"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#E91E63" />
 
+    </LinearLayout>
 
 </LinearLayout>
