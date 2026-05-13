@@ -24,6 +24,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -186,8 +188,9 @@ public class addAsigment extends AppCompatActivity {
      * البارامترات (@param assignment): كائن المهمة الذي يحتوي على البيانات المراد حفظها.
      */
     private void saveAssignment(MyAssignment assignment) {
-                DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-                DatabaseReference assignmentsRef = database.child("assignments");
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                DatabaseReference assignmentsRef = database.child("assignments").child(uid);
 
                 if (isEditMode && assignment.getKey() != null) {
                     // تحديث مهمة موجودة

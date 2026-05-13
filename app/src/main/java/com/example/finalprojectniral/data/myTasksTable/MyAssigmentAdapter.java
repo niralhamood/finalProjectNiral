@@ -1,6 +1,7 @@
 package com.example.finalprojectniral.data.myTasksTable;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.finalprojectniral.R;
+import com.example.finalprojectniral.TasksActivity;
+import com.example.finalprojectniral.addAsigment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -31,17 +37,13 @@ public class MyAssigmentAdapter extends BaseAdapter {
     /**
      * المستمع للأحداث التي تتم عليها على المهام (التعديل والحذف).
      */
-    private OnAssignmentClickListener listener;
-    public interface OnAssignmentClickListener {
-        void onEditClick(MyAssignment assignment);
-        void onDeleteClick(MyAssignment assignment);
-    }
 
-    public MyAssigmentAdapter(Context context, ArrayList<MyAssignment> assignmentList, OnAssignmentClickListener listener) {
+
+    public MyAssigmentAdapter(Context context, ArrayList<MyAssignment> assignmentList) {
         this.context = context;
         this.assignmentList = assignmentList;
         this.inflater = LayoutInflater.from(context);
-        this.listener = listener;
+       // this.listener = listener;
     }
 
     /**
@@ -107,19 +109,33 @@ public class MyAssigmentAdapter extends BaseAdapter {
 
         // زر تعديل
         holder.btnEdit.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onEditClick(assignment);
-            }
+
+                editAssignment(assignment);
+
         });
 
         // زر حذف
         holder.btnDelete.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onDeleteClick(assignment);
-            }
+                deleteAssigment(assignment);
+
         });
 
         return convertView;
+    }
+
+    private void deleteAssigment(MyAssignment assignment) {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference assignmentsRef = database.child("assignments").child(uid);
+assignmentsRef.child(assignment.getKey()).removeValue();
+    }
+
+    private void editAssignment(MyAssignment assignment) {
+        Intent intent = new Intent(context, addAsigment.class);
+        intent.putExtra("isEdit", true);
+        intent.putExtra("assignment", assignment);
+       context. startActivity(intent);
+
     }
 
     static class ViewHolder {

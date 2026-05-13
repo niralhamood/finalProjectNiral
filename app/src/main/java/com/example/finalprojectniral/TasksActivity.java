@@ -8,6 +8,7 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.finalprojectniral.data.myTasksTable.MyAssignment;
 import com.example.finalprojectniral.data.myTasksTable.MyAssigmentAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,28 +47,14 @@ public class TasksActivity extends AppCompatActivity {
         btnAddTask = findViewById(R.id.btn_add_task);
         listTasks = findViewById(R.id.list_tasks);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("assignments");
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference("assignments").child(uid);
 
         // إنشاء قائمة المهام
         tasksList = new ArrayList<>();
 
         // ربط Adapter مع ListView
-        adapter = new MyAssigmentAdapter(this, tasksList, new MyAssigmentAdapter.OnAssignmentClickListener() {
-            @Override
-            public void onEditClick(MyAssignment assignment) {
-                Intent intent = new Intent(TasksActivity.this, addAsigment.class);
-                intent.putExtra("isEdit", true);
-                intent.putExtra("assignment", assignment.isCompleted());
-                startActivity(intent);
-            }
-
-            @Override
-            public void onDeleteClick(MyAssignment assignment) {
-                if (assignment.getKey() != null) {
-                    databaseReference.child(assignment.getKey()).removeValue();
-                }
-            }
-        });
+        adapter = new MyAssigmentAdapter(this, tasksList );
         listTasks.setAdapter(adapter);
 
         // جلب البيانات الحقيقية من فايربيز

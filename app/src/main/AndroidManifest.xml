@@ -50,7 +50,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddAssignment"
+            android:name=".addAsigment"
             android:exported="false" />
         <activity
             android:name=".Signup"
