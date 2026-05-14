@@ -162,7 +162,6 @@ public class addAsigment extends AppCompatActivity {
                         assignmentToSave = currentAssignment;
                     } else {
                         assignmentToSave = new MyAssignment();
-                        assignmentToSave.setTime(System.currentTimeMillis());
                     }
 
                     assignmentToSave.setShortTitle(title);

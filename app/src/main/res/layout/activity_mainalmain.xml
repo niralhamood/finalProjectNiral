@@ -32,23 +32,23 @@
     <Button
         android:id="@+id/btnTasks"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="📘  My Tasks"
-        android:textSize="16sp"
+        android:layout_height="82dp"
+        android:layout_marginBottom="12dp"
         android:backgroundTint="#FFE0E0"
+        android:text="📘  My Tasks"
         android:textColor="#000"
-        android:layout_marginBottom="12dp"/>
+        android:textSize="16sp" />
 
     <!-- الزر الجديد: Stay Inspired -->
     <Button
         android:id="@+id/btnStayInspired"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="💡  Stay Inspired"
-        android:textSize="16sp"
+        android:layout_height="83dp"
+        android:layout_marginBottom="12dp"
         android:backgroundTint="#FFE0E0"
+        android:text="💡  Stay Inspired"
         android:textColor="#000"
-        android:layout_marginBottom="12dp"/>
+        android:textSize="16sp" />
 
     <!-- مساحة فارغة قبل الشريط السفلي -->
 
@@ -57,7 +57,7 @@
     <Button
         android:id="@+id/btnChat"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="74dp"
         android:layout_marginBottom="12dp"
         android:backgroundTint="#FFE0E0"
         android:text="💬  Chat with AI"

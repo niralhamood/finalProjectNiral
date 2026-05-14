@@ -19,14 +19,6 @@ public interface MyAssignmentQuery {
     @Query("SELECT * FROM MyAssignment ORDER BY importance DESC")
     List<MyAssignment> getAllTasks();
 
-    /**
-     * تجلب جميع المهام الخاصة بمستخدم معين مرتبة تنازلياً حسب الوقت.
-     * 
-     * @param userId الرقم التعريفي للمستخدم.
-     * @return قائمة بمهام المستخدم المحدد.
-     */
-    @Query("SELECT * FROM MyAssignment WHERE userId = :userId ORDER BY time DESC")
-    List<MyAssignment> getAllTasksByUser(long userId);
 
     /**
      * تجلب المهام الخاصة بمستخدم معين بناءً على حالة الإنجاز، مرتبة حسب الأهمية.
