@@ -1,286 +1,249 @@
-package com.example.finalprojectniral;
+package com.example.finalprojectniral; // اسم الحزمة التي ينتمي إليها الملف
 
+import static android.content.ContentValues.TAG; // استيراد وسم لتتبع السجلات والأخطاء
 
-import static android.content.ContentValues.TAG;
+import android.content.pm.PackageManager; // استيراد أداة فحص صلاحيات النظام
+import android.net.Uri; // استيراد فئة التعامل مع روابط الملفات والصور
+import android.os.Build; // استيراد معلومات عن إصدار نظام الأندرويد
+import android.os.Bundle; // استيراد كائن نقل البيانات بين الحالات
+import android.util.Log; // استيراد أداة تدوين السجلات البرمجية
+import android.view.View; // استيراد فئة التعامل مع واجهات العرض
+import android.widget.ImageView; // استيراد عنصر عرض الصور
+import android.widget.Toast; // استيراد أداة عرض الرسائل القصيرة للمستخدم
 
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
+import androidx.activity.result.ActivityResultLauncher; // استيراد مشغل نتائج الأنشطة
+import androidx.activity.result.contract.ActivityResultContracts; // استيراد عقود نتائج الأنشطة
+import androidx.annotation.NonNull; // استيراد وسم لضمان عدم وجود قيم فارغة
+import androidx.appcompat.app.AppCompatActivity; // استيراد فئة الأنشطة المتوافقة مع النظام
+import androidx.core.content.ContextCompat; // استيراد أداة المساعدة للتعامل مع الموارد والصلاحيات
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import com.example.finalprojectniral.data.myTasksTable.MyAssignment; // استيراد كائن المهمة (Model)
+import com.google.android.gms.tasks.OnCompleteListener; // استيراد مستمع اكتمال عمليات جوجل
+import com.google.android.gms.tasks.Task; // استيراد فئة المهام من خدمات جوجل
+import com.google.android.material.button.MaterialButton; // استيراد زر من نمط Material Design
+import com.google.android.material.checkbox.MaterialCheckBox; // استيراد صندوق اختيار من نمط Material
+import com.google.android.material.textfield.TextInputEditText; // استيراد حقل إدخال نصوص متقدم
+import com.google.firebase.Firebase; // استيراد فئة فايربيس الأساسية
+import com.google.firebase.auth.FirebaseAuth; // استيراد أداة المصادقة بفايربيس
+import com.google.firebase.database.DatabaseReference; // استيراد فئة مرجع قاعدة البيانات
+import com.google.firebase.database.FirebaseDatabase; // استيراد كائن قاعدة بيانات فايربيس
 
-import com.example.finalprojectniral.data.myTasksTable.MyAssignment;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.checkbox.MaterialCheckBox;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.Firebase;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+public class addAsigment extends AppCompatActivity { // تعريف كلاس شاشة إضافة المهمة
 
-public class addAsigment extends AppCompatActivity {
+    // تعريف متغيرات عناصر الواجهة (الحقول، الأزرار، الصور)
+    private TextInputEditText etShortTitle, etImportance, etWorkLoad, etDescription; // حقول النص للعنوان، الأهمية، العمل، والوصف
+    private MaterialButton btnSave, btnSelectImage; // أزرار الحفظ واختيار الصورة
+    private ImageView ivAssignment; // عنصر عرض صورة المهمة
+    private MaterialCheckBox checkCompleted; // صندوق اختيار حالة الإكمال
 
-    private TextInputEditText etShortTitle, etImportance, etWorkLoad, etDescription;
-    private MaterialButton btnSave, btnSelectImage;
-    private ImageView ivAssignment;
-    private MaterialCheckBox checkCompleted;
+    private Uri imageUri; // متغير لتخزين مسار الصورة المرفقة
+    private ActivityResultLauncher<String> requestReadMediaImagesPermission; // مشغل طلب إذن الصور
+    private ActivityResultLauncher<String> requestReadExternalStoragePermission; // مشغل طلب إذن التخزين
+    private ActivityResultLauncher<String> imagePickerLauncher; // مشغل اختيار صورة من الاستوديو
 
-    private Uri imageUri;
-    private ActivityResultLauncher<String> requestReadMediaImagesPermission;
-    private ActivityResultLauncher<String> requestReadMediaVideoPermission;
-    private ActivityResultLauncher<String> requestReadExternalStoragePermission;
-
-    private ActivityResultLauncher<String> imagePickerLauncher;
-
-    private MyAssignment currentAssignment;
-    private boolean isEditMode = false;
+    private MyAssignment currentAssignment; // كائن لتخزين بيانات المهمة في حال التعديل
+    private boolean isEditMode = false; // متغير يحدد ما إذا كنا في وضع الإضافة أو التعديل
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_asigment);
+    protected void onCreate(Bundle savedInstanceState) { // الدالة الأساسية عند إنشاء الشاشة
+        super.onCreate(savedInstanceState); // استدعاء دالة الحالة الأصلية
+        setContentView(R.layout.activity_add_asigment); // ربط الكود بملف التصميم XML
 
-        // ربط العناصر
-        etShortTitle = findViewById(R.id.edit_text_short_title);
-        etImportance = findViewById(R.id.etImprtance);
-        etWorkLoad = findViewById(R.id.etWorkLoad);
-        etDescription = findViewById(R.id.edit_text_text);
+        // ربط المتغيرات البرمجية بالعناصر الموجودة في التصميم عبر الـ ID
+        etShortTitle = findViewById(R.id.edit_text_short_title); // ربط حقل العنوان
+        etImportance = findViewById(R.id.etImprtance); // ربط حقل الأهمية (1-5)
+        etWorkLoad = findViewById(R.id.etWorkLoad); // ربط حقل مدى العمل (1-10)
+        etDescription = findViewById(R.id.edit_text_text); // ربط حقل الوصف
+        btnSave = findViewById(R.id.button_save_assignment); // ربط زر الحفظ
+        checkCompleted = findViewById(R.id.checkbox_is_completed); // ربط صندوق الإكمال
+        ivAssignment = findViewById(R.id.image_view_assignment); // ربط عنصر الصورة
+        btnSelectImage = findViewById(R.id.button_select_image); // ربط زر اختيار الصورة
 
-        btnSave = findViewById(R.id.button_save_assignment);
-        checkCompleted = findViewById(R.id.checkbox_is_completed);
-        ivAssignment = findViewById(R.id.image_view_assignment);
-        btnSelectImage = findViewById(R.id.button_select_image);
-
-        // تهيئة مُشغّل اختيار الصورة
+        // إعداد مشغل اختيار الصورة من معرض الصور في الهاتف
         imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
-            if (uri != null) {
-                imageUri = uri;
-                ivAssignment.setImageURI(uri);
+            if (uri != null) { // إذا تم اختيار صورة بنجاح
+                imageUri = uri; // حفظ مسار الصورة
+                ivAssignment.setImageURI(uri); // عرض الصورة في الواجهة
             }
         });
 
-        // التحقق مما إذا كنا في وضع التعديل
+        // التحقق مما إذا كانت الشاشة قد فُتحت بغرض "التعديل" بدلاً من "الإضافة"
         if (getIntent().hasExtra("isEdit") && getIntent().getBooleanExtra("isEdit", false)) {
-            isEditMode = true;
-            currentAssignment = (MyAssignment) getIntent().getSerializableExtra("assignment");
+            isEditMode = true; // تفعيل وضع التعديل
+            currentAssignment = (MyAssignment) getIntent().getSerializableExtra("assignment"); // استلام كائن المهمة
             if (currentAssignment != null) {
-                populateFields(currentAssignment);
-                btnSave.setText("Update Assignment");
+                populateFields(currentAssignment); // تعبئة الحقول بالبيانات الحالية
+                btnSave.setText("Update Assignment"); // تغيير نص الزر ليتناسب مع التعديل
             }
         }
 
+        setupPermissionLaunchers(); // استدعاء دالة إعداد مشغلات الصلاحيات
+        checkAndRequestPermissions(); // فحص وطلب الصلاحيات عند بدء الشاشة
 
-        // تسجيل مُشغّل لطلب إذن READ_MEDIA_IMAGES
-        requestReadMediaImagesPermission = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-            if (isGranted) {
-                Log.d(TAG, "READ_MEDIA_IMAGES permission granted");
-                Toast.makeText(this, "تم منح إذن قراءة الصور", Toast.LENGTH_SHORT).show();
-                // يمكنك الآن المتابعة بالعملية التي تتطلب هذا الإذن
-            } else {
-                Log.d(TAG, "READ_MEDIA_IMAGES permission denied");
-                Toast.makeText(this, "تم رفض إذن قراءة الصور", Toast.LENGTH_SHORT).show();
-                // التعامل مع حالة رفض الإذن
-            }
-        });
+        // إعداد مستمع النقر لزر اختيار الصورة
+        btnSelectImage.setOnClickListener(v -> imagePickerLauncher.launch("image/*")); // فتح المعرض لاختيار الصور
 
+        // إعداد مستمع النقر لزر الحفظ أو التحديث
+        btnSave.setOnClickListener(v -> {
+            // استخراج النصوص المدخلة من الحقول
+            String title = etShortTitle.getText().toString().trim(); // جلب العنوان
+            String importanceStr = etImportance.getText().toString().trim(); // جلب نص الأهمية
+            String workloadStr = etWorkLoad.getText().toString().trim(); // جلب نص مدى العمل
+            String description = etDescription.getText().toString().trim(); // جلب الوصف
+            boolean isCompleted = checkCompleted.isChecked(); // جلب حالة الإكمال
 
-// تسجيل مُشغّل لطلب إذن READ_MEDIA_VIDEO
-        requestReadMediaVideoPermission = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-            if (isGranted) {
-                Log.d(TAG, "READ_MEDIA_VIDEO permission granted");
-                Toast.makeText(this, "تم منح إذن قراءة الفيديو", Toast.LENGTH_SHORT).show();
-                // يمكنك الآن المتابعة بالعملية التي تتطلب هذا الإذن
-            } else {
-                Log.d(TAG, "READ_MEDIA_VIDEO permission denied");
-                Toast.makeText(this, "تم رفض إذن قراءة الفيديو", Toast.LENGTH_SHORT).show();
-                // التعامل مع حالة رفض الإذن
-            }
-        });
-
-
-// تسجيل مُشغّل لطلب إذن READ_EXTERNAL_STORAGE
-        requestReadExternalStoragePermission = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-            if (isGranted) {
-                Log.d(TAG, "READ_EXTERNAL_STORAGE permission granted");
-                Toast.makeText(this, "تم منح إذن قراءة التخزين الخارجي", Toast.LENGTH_SHORT).show();
-                // يمكنك الآن المتابعة بالعملية التي تتطلب هذا الإذن
-            } else {
-                Log.d(TAG, "READ_EXTERNAL_STORAGE permission denied");
-                Toast.makeText(this, "تم رفض إذن قراءة التخزين الخارجي", Toast.LENGTH_SHORT).show();
-                // التعامل مع حالة رفض الإذن
-            }
-        });
-//استدعاء دالة الفحص (سيتم تطبيقها لاحقا)
-        checkAndRequestPermissions();
-
-
-
-
-        // زر اختيار الصورة
-        btnSelectImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imagePickerLauncher.launch("image/*");
-            }
-        });
-
-        // زر الحفظ
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String title = etShortTitle.getText().toString().trim();
-                String importanceStr = etImportance.getText().toString().trim();
-                String workloadStr = etWorkLoad.getText().toString().trim();
-                String description = etDescription.getText().toString().trim();
-                boolean isCompleted = checkCompleted.isChecked();
-
-                if (title.isEmpty() || importanceStr.isEmpty() || workloadStr.isEmpty()) {
-                    Toast.makeText(addAsigment.this,
-                            "Please fill all required fields",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                try {
-                    int importance = Integer.parseInt(importanceStr);
-
-                    // 1. إنشاء أو تحديث كائن المهمة
-                    MyAssignment assignmentToSave;
-                    if (isEditMode && currentAssignment != null) {
-                        assignmentToSave = currentAssignment;
-                    } else {
-                        assignmentToSave = new MyAssignment();
-                    }
-
-                    assignmentToSave.setShortTitle(title);
-                    assignmentToSave.setText(description);
-                    assignmentToSave.setImportance(importance);
-                    assignmentToSave.setCompleted(isCompleted);
-
-                    // 2. حفظ مسار الصورة إذا تم اختيارها
-                    if (imageUri != null) {
-                        assignmentToSave.setFile(imageUri.toString());
-                    }
-
-                    saveAssignment(assignmentToSave);
-
-                } catch (NumberFormatException e) {
-                    Toast.makeText(addAsigment.this, "Please enter valid numbers for Importance", Toast.LENGTH_SHORT).show();
-                }
-
+            // التأكد من أن الحقول الأساسية ليست فارغة
+            if (title.isEmpty() || importanceStr.isEmpty() || workloadStr.isEmpty()) {
+                Toast.makeText(this, "Please fill all required fields", Toast.LENGTH_SHORT).show(); // تنبيه المستخدم
+                return;
             }
 
-    /**
-     * وصف قصير: تقوم بحفظ أو تحديث بيانات المهمة في قاعدة بيانات Firebase.
-     * البارامترات (@param assignment): كائن المهمة الذي يحتوي على البيانات المراد حفظها.
-     */
-    private void saveAssignment(MyAssignment assignment) {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-                DatabaseReference assignmentsRef = database.child("assignments").child(uid);
+            // استدعاء دالة فحص ملاءمة المعطيات (العنوان والوصف نصوص، والأرقام ضمن المجال)
+            if (!validateInputs(title, description, importanceStr, workloadStr)) {
+                return; // التوقف عن الحفظ في حال كانت المعطيات غير ملائمة
+            }
 
-                if (isEditMode && assignment.getKey() != null) {
-                    // تحديث مهمة موجودة
-                    assignmentsRef.child(assignment.getKey()).setValue(assignment).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(addAsigment.this, "Assignment updated successfully", Toast.LENGTH_SHORT).show();
-                            finish();
-                        } else {
-                            Toast.makeText(addAsigment.this, "Failed to update assignment", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            try {
+                int importance = Integer.parseInt(importanceStr); // تحويل نص الأهمية لرقم
+                int workload = Integer.parseInt(workloadStr); // تحويل نص العمل لرقم
+
+                MyAssignment assignmentToSave; // تعريف كائن المهمة للحفظ
+                if (isEditMode && currentAssignment != null) {
+                    assignmentToSave = currentAssignment; // استخدام المهمة الحالية في حال التعديل
                 } else {
-                    // إضافة مهمة جديدة
-                    DatabaseReference newAssignmentRef = assignmentsRef.push();
-                    assignment.setKey(newAssignmentRef.getKey());
-                    newAssignmentRef.setValue(assignment).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(addAsigment.this, "Assignment added successfully", Toast.LENGTH_SHORT).show();
-                            finish();
-                        } else {
-                            Toast.makeText(addAsigment.this, "Failed to add assignment", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    assignmentToSave = new MyAssignment(); // إنشاء مهمة جديدة في حال الإضافة
                 }
-            }
 
+                // تعبئة البيانات في كائن المهمة
+                assignmentToSave.setShortTitle(title); // تعيين العنوان
+                assignmentToSave.setText(description); // تعيين الوصف
+                assignmentToSave.setImportance(importance); // تعيين الأهمية (1-5)
+                assignmentToSave.setWorkLoad(workload); // تعيين مدى العمل (1-10)
+                assignmentToSave.setCompleted(isCompleted); // تعيين حالة الإكمال
+
+                if (imageUri != null) { // إذا تم اختيار صورة
+                    assignmentToSave.setFile(imageUri.toString()); // حفظ مسار الصورة في الكائن
+                }
+
+                saveAssignment(assignmentToSave); // استدعاء دالة الحفظ الفعلي في قاعدة البيانات
+
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, "Please enter valid numeric values for importance and workload", Toast.LENGTH_SHORT).show(); // خطأ في تحويل النص لرقم
+            }
         });
     }
 
     /**
-     * وصف قصير: تقوم بتعبئة حقول الشاشة ببيانات المهمة المختارة عند الدخول في وضع التعديل.
-     * البارامترات (@param assignment): كائن المهمة الذي يحتوي على البيانات المراد عرضها.
+     * دالة validateInputs: تقوم بفحص المعطيات المدخلة للتأكد من أنها تتبع القواعد الصحيحة.
+     * العنوان والوصف: يجب أن يحتوي كل منهما على حروف (نص وصفي) ولا يجوز أن يتكونا من أرقام فقط.
+     * الأهمية: من 1 إلى 5.
+     * مدى العمل: من 1 إلى 10.
      */
-    private void populateFields(MyAssignment assignment) {
-        etShortTitle.setText(assignment.getShortTitle());
-        etImportance.setText(String.valueOf(assignment.getImportance()));
-        etDescription.setText(assignment.getText());
-        checkCompleted.setChecked(assignment.isCompleted());
-        if (assignment.getFile() != null) {
-            imageUri = Uri.parse(assignment.getFile());
-            ivAssignment.setImageURI(imageUri);
+    private boolean validateInputs(String title, String description, String importance, String workload) { 
+        // 1. فحص العنوان: يجب أن يحتوي على حروف وصفية وليس مجرد أرقام
+        if (!title.matches(".*[\\p{L}].*")) { 
+            etShortTitle.setError("العنوان يجب أن يحتوي على حروف وصفية وليس أرقاماً فقط"); 
+            etShortTitle.requestFocus();
+            return false;
+        }
+
+        // 2. فحص الوصف: إذا كتب المستخدم شيئاً، يجب أن يحتوي على حروف
+        if (!description.isEmpty() && !description.matches(".*[\\p{L}].*")) {
+            etDescription.setError("الوصف يجب أن يحتوي على حروف وصفية وليس أرقاماً فقط");
+            etDescription.requestFocus();
+            return false;
+        }
+
+        try {
+            int imp = Integer.parseInt(importance); // محاولة تحويل الأهمية لرقم
+            int work = Integer.parseInt(workload); // محاولة تحويل مدى العمل لرقم
+
+            // فحص مجال الأهمية (1-5)
+            if (imp < 1 || imp > 5) {
+                etImportance.setError("Importance must be between 1 and 5"); // إظهار خطأ بجانب الحقل
+                etImportance.requestFocus(); // وضع المؤشر على الحقل المخطئ
+                return false; // المعطى غير ملائم
+            }
+
+            // فحص مجال مدى العمل (1-10)
+            if (work < 1 || work > 10) {
+                etWorkLoad.setError("Workload must be between 1 and 10"); // إظهار خطأ بجانب الحقل
+                etWorkLoad.requestFocus(); // وضع المؤشر على الحقل المخطئ
+                return false; // المعطى غير ملائم
+            }
+
+            return true; // جميع المعطيات سليمة وملائمة للمجال المطلوب
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Please enter only numbers for Importance and Workload", Toast.LENGTH_SHORT).show(); // تنبيه بوجود نصوص بدل الأرقام
+            return false;
         }
     }
 
     /**
-     * وصف قصير: تقوم بفحص وطلب الصلاحيات اللازمة للوصول إلى الصور والملفات بناءً على إصدار الأندرويد.
+     * دالة saveAssignment: تقوم بحفظ أو تحديث بيانات المهمة في قاعدة بيانات Firebase.
      */
-    private void checkAndRequestPermissions() {
-        // فحص وطلب إذن READ_MEDIA_IMAGES (للإصدارات الحديثة)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // أندرويد 13+
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_IMAGES)
-                    != PackageManager.PERMISSION_GRANTED) {
+    private void saveAssignment(MyAssignment assignment) { // دالة حفظ البيانات في السحاب
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid(); // جلب معرف المستخدم الحالي
+        DatabaseReference assignmentsRef = FirebaseDatabase.getInstance().getReference("assignments").child(uid); // تحديد مسار الحفظ
+
+        if (isEditMode && assignment.getKey() != null) { // إذا كنا في وضع التعديل
+            assignmentsRef.child(assignment.getKey()).setValue(assignment).addOnCompleteListener(task -> { // تحديث القيمة الحالية
+                if (task.isSuccessful()) {
+                    Toast.makeText(this, "Assignment updated successfully", Toast.LENGTH_SHORT).show();
+                    finish(); // إغلاق الشاشة والعودة
+                }
+            });
+        } else { // إذا كنا في وضع الإضافة الجديدة
+            DatabaseReference newRef = assignmentsRef.push(); // إنشاء مرجع فريد جديد (Key)
+            assignment.setKey(newRef.getKey()); // حفظ المفتاح داخل الكائن
+            newRef.setValue(assignment).addOnCompleteListener(task -> { // رفع البيانات للقاعدة
+                if (task.isSuccessful()) {
+                    Toast.makeText(this, "Assignment added successfully", Toast.LENGTH_SHORT).show();
+                    finish(); // إغلاق الشاشة والعودة
+                }
+            });
+        }
+    }
+
+    /**
+     * دالة populateFields: تقوم بتعبئة حقول الشاشة ببيانات المهمة المختارة عند الدخول في وضع التعديل.
+     */
+    private void populateFields(MyAssignment assignment) { // دالة عرض البيانات للتعديل
+        etShortTitle.setText(assignment.getShortTitle()); // تعبئة العنوان
+        etImportance.setText(String.valueOf(assignment.getImportance())); // تعبئة الأهمية
+        etWorkLoad.setText(String.valueOf(assignment.getWorkLoad())); // تعبئة مدى العمل
+        etDescription.setText(assignment.getText()); // تعبئة الوصف
+        checkCompleted.setChecked(assignment.isCompleted()); // تعبئة حالة الإكمال
+        if (assignment.getFile() != null) { // إذا كان هناك صورة مرفقة سابقاً
+            imageUri = Uri.parse(assignment.getFile()); // تحويل مسار الصورة لرابط
+            ivAssignment.setImageURI(imageUri); // عرض الصورة في الواجهة
+        }
+    }
+
+    /**
+     * دالة setupPermissionLaunchers: تقوم بتعريف مشغلات طلب الصلاحيات من نظام الأندرويد.
+     */
+    private void setupPermissionLaunchers() { // إعداد مشغلات الصلاحيات
+        requestReadMediaImagesPermission = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (!isGranted) Toast.makeText(this, "Photo permission denied", Toast.LENGTH_SHORT).show();
+        });
+        requestReadExternalStoragePermission = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (!isGranted) Toast.makeText(this, "Storage permission denied", Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    /**
+     * دالة checkAndRequestPermissions: تقوم بفحص وطلب الصلاحيات اللازمة للوصول للصور بناءً على إصدار النظام.
+     */
+    private void checkAndRequestPermissions() { // فحص وطلب الأذونات
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // للأجهزة التي تعمل بنظام أندرويد 13+
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
                 requestReadMediaImagesPermission.launch(android.Manifest.permission.READ_MEDIA_IMAGES);
-            } else {
-                Log.d(TAG, "READ_MEDIA_IMAGES permission already granted");
-                Toast.makeText(this, "إذن قراءة الصور ممنوح بالفعل", Toast.LENGTH_SHORT).show();
             }
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // أندرويد 10 و 11 و 12// على هذه الإصدارات، READ_EXTERNAL_STORAGE له سلوك مختلف
-            // إذا كنت تستخدم Scoped Storage بشكل صحيح، قد لا تحتاج إلى هذا الإذن
-            // ولكن إذا كنت تحتاج إلى الوصول إلى جميع الصور، فقد تحتاج إلى READ_EXTERNAL_STORAGE
-            // في هذا المثال، سنفحص READ_EXTERNAL_STORAGE للإصدارات الأقدم من 13
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
+        } else { // للإصدارات الأقدم من أندرويد 13
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 requestReadExternalStoragePermission.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE);
-            } else {
-                Log.d(TAG, "READ_EXTERNAL_STORAGE permission already granted (for older versions)");
-                Toast.makeText(this, "إذن قراءة التخزين ممنوح بالفعل (للإصدارات الأقدم)", Toast.LENGTH_SHORT).show();
-            }
-        } else { // أندرويد 9 والإصدارات الأقدم
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                requestReadExternalStoragePermission.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE);
-            } else {
-                Log.d(TAG, "READ_EXTERNAL_STORAGE permission already granted (for older versions)");
-                Toast.makeText(this, "إذن قراءة التخزين ممنوح بالفعل (للإصدارات الأقدم)", Toast.LENGTH_SHORT).show();
             }
         }
-
-
-//        // فحص وطلب إذن READ_MEDIA_VIDEO (للإصدارات الحديثة)
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // أندرويد 13+
-//            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_VIDEO)
-//                    != PackageManager.PERMISSION_GRANTED) {
-//                requestReadMediaVideoPermission.launch(android.Manifest.permission.READ_MEDIA_VIDEO);
-//            } else {
-//                Log.d(TAG, "READ_MEDIA_VIDEO permission already granted");
-//                Toast.makeText(this, "إذن قراءة الفيديو ممنوح بالفعل", Toast.LENGTH_SHORT).show();
-//            }
-//        }// ملاحظة: إذن INTERNET لا يحتاج إلى فحص أو
     }
 }
-
-
-
