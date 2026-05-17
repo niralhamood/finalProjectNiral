@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
      * TextView لعرض نص التحميل أو اسم التطبيق أثناء شاشة الترحيب.
      */
     private TextView tvLoading;
-
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);

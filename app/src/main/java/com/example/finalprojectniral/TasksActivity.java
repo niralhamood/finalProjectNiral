@@ -16,6 +16,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections; // مكتبة لترتيب القوائم
+import java.util.Comparator;  // واجهة للمقارنة بين الكائنات
 
 public class TasksActivity extends AppCompatActivity {
 
@@ -57,7 +59,7 @@ public class TasksActivity extends AppCompatActivity {
         adapter = new MyAssigmentAdapter(this, tasksList );
         listTasks.setAdapter(adapter);
 
-        // جلب البيانات الحقيقية من فايربيز
+        // جلب البيانات الحقيقية من فايربيس
         fetchTasksFromFirebase();
 
         // زر الرجوع
@@ -72,8 +74,24 @@ public class TasksActivity extends AppCompatActivity {
     }
 
     /**
+     * دالة بسيطة لترتيب قائمة المهام حسب الأهمية (الأولوية).
+     * المهمة ذات الرقم الأعلى (مثل 5) تظهر في البداية، والأقل تظهر في النهاية.
+     * تم استخدام أسلوب Comparator البسيط المتبع في منهاج البرمجة للمرحلة الثانوية.
+     */
+    private void sortTasksByImportance() {
+        Collections.sort(tasksList, new Comparator<MyAssignment>() {
+            @Override
+            public int compare(MyAssignment task1, MyAssignment task2) {
+                // ترتيب تنازلي: الرقم الأكبر في الأهمية يأتي أولاً
+                // إذا طرحنا أهمية المهمة الأولى من الثانية، سنحصل على ترتيب من الأكبر للأصغر
+                return task2.getImportance() - task1.getImportance();
+            }
+        });
+    }
+
+    /**
      * وصف قصير: تقوم بجلب قائمة المهام من قاعدة بيانات Firebase وتحديث الواجهة تلقائياً عند حدوث أي تغيير.
-     * الهدف منها: عرض المهام الحقيقية المخزنة في السحاب بدلاً من البيانات الافتراضية.
+     * الهدف منها: عرض المهام الحقيقية المخزنة في السحاب مرتبة حسب الأهمية.
      */
     private void fetchTasksFromFirebase() {
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -87,6 +105,10 @@ public class TasksActivity extends AppCompatActivity {
                         tasksList.add(assignment);
                     }
                 }
+                
+                // استدعاء دالة الترتيب لضمان ظهور المهام المهمة أولاً قبل تحديث الواجهة
+                sortTasksByImportance();
+                
                 adapter.notifyDataSetChanged();
             }
 
