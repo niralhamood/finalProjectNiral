@@ -59,7 +59,7 @@ public class addAsigment extends AppCompatActivity { // تعريف كلاس شا
         ivAssignment = findViewById(R.id.image_view_assignment); // ربط عنصر الصورة
         btnSelectImage = findViewById(R.id.button_select_image); // ربط زر اختيار الصورة
 
-        // إعداد مشغل اختيار الصورة من معرض الصور في الهاتف
+        //CallBack methode إعداد مشغل اختيار الصورة من معرض الصور في الهاتف
         imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
             if (uri != null) { // إذا تم اختيار صورة بنجاح
                 imageUri = uri; // حفظ مسار الصورة
@@ -242,10 +242,12 @@ public class addAsigment extends AppCompatActivity { // تعريف كلاس شا
      */
     private void setupPermissionLaunchers() { // إعداد مشغلات الصلاحيات
         requestReadMediaImagesPermission = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-            if (!isGranted) Toast.makeText(this, "Photo permission denied", Toast.LENGTH_SHORT).show();
+            if (!isGranted)
+                Toast.makeText(this, "Photo permission denied", Toast.LENGTH_SHORT).show();
         });
         requestReadExternalStoragePermission = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-            if (!isGranted) Toast.makeText(this, "Storage permission denied", Toast.LENGTH_SHORT).show();
+            if (!isGranted)
+                Toast.makeText(this, "Storage permission denied", Toast.LENGTH_SHORT).show();
         });
     }
 

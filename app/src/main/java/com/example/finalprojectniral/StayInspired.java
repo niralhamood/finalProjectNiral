@@ -56,9 +56,11 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
      * تقوم بربط العناصر البرمجية بالتصميم وتجهيز المستمعات (Listeners).
      */
 
-    private final ActivityResultLauncher<String> requestNotificationPermissionLauncher = registerForActivityResult( new ActivityResultContracts.RequestPermission(),
+    private final ActivityResultLauncher<String> requestNotificationPermissionLauncher =
+            registerForActivityResult( new ActivityResultContracts.RequestPermission(),
             isGranted -> {
                 if (!isGranted) {
+                    isRunning = true;
                     Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -78,11 +80,6 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
         tvStatus = findViewById(R.id.tvStatus); // ربط نص الحالة
 
 
-
-        // شرح ليه لازم استدعيها ب اون كريايت :
-        // بما أن onCreate تعمل فور فتح الشاشة، فإنها تضمن أن القناة أصبحت "معرفة" لدى نظام التشغيل قبل أن يحاول التطبيق إرسال أي إشعار
-
-
         // إعداد ما سيحدث عند الضغط على زر البدء
         btnStart.setOnClickListener(v -> { // مراقب النقرات على الزر
             if (modeRadioGroup.getCheckedRadioButtonId() == -1) { // التحقق إذا لم يتم اختيار أي نمط
@@ -90,11 +87,11 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
                 return; // التوقف عن التنفيذ
             }
 
-            // طلب إذن الإشعارات إذا كان الإصدار أندرويد 13 (Tiramisu) أو أحدث
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // فحص إصدار النظام
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) { // فحص الإذن
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101); // طلب الإذن من المستخدم
-                    return; // التوقف لحين الموافقة
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // التحقق مما إذا كان إصدار الأندرويد 13 أو أعلى
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                        != PackageManager.PERMISSION_GRANTED) { // التأكد مما إذا كانت صلاحية الإشعارات غير ممنوحة
+                    requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS); //  يتم استدعاء دالة .launch()، وهي اللحظة الفعلية التي تظهر فيها نافذة النظام للمستخدم
                 }
             }
 
@@ -130,16 +127,14 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
         Intent intent = new Intent(this, NotificationReceiver.class); // إنشاء نية للمستقبل
         intent.putExtra("message", message); // وضع الرسالة المختارة داخل النية
         PendingIntent pendingIntent = PendingIntent.getBroadcast( // إنشاء نية معلقة للبث
-                this, // السياق الحالي
-                0, // كود الطلب
-                intent, // النية الأصلية
-                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE // الأعلام المطلوبة للإصدارات الحديثة
+                this, //  السياق الحالي(اي هاي الشاشة " ستاي انسبيرد")
+                0, // كود البيندينج انتن عشان يميز الريسيفر اي بندينج انتن يشغل وانا عندي بس واحد
+                intent, // النية الاصليه فيها اسم الريسيفر والرسالة والبيانات
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE //,مشروح بالدفتر ب 3 ستاي انسبيرد
         );
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE); // الوصول لخدمة المنبه في النظام
 
-        // استخدام SystemClock.elapsedRealtime() بدلاً من System.currentTimeMillis()
-        // لأنه أكثر استقراراً لجدولة الفواصل الزمنية ولا يتأثر بتغيير المستخدم لوقت الساعة.
         long triggerTime = SystemClock.elapsedRealtime() + (30 * 60 * 1000); // حساب وقت الانطلاق (بعد 30 دقيقة)
         if (alarmManager != null) { // التأكد من توفر مدير المنبهات
             // فحص الصلاحية للأجهزة التي تعمل بنظام أندرويد 12 (API 31) أو أحدث
@@ -151,6 +146,7 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pendingIntent);
             }
         }
+        // الأندرويد ينشئ ملف داخلي صغير داخل التطبيق. باسم " انسيبرايشن"
         getSharedPreferences("InspirationPrefs", MODE_PRIVATE)
                 .edit()
                 .putBoolean("isRunning", true)
@@ -167,24 +163,39 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
      */
     private void stopInspiration() { // دالة إيقاف الإلهام
 
-        Intent intent = new Intent(this, NotificationReceiver.class); // إنشاء نية مطابقة للنية المجدولة
-        PendingIntent pendingIntent = PendingIntent.getBroadcast( // الحصول على نفس النية المعلقة
+        // إنشاء نية مطابقة للنية المجدولة
+        // النية هي كائن يحتوي على معلومات حول العملية التي تريد تنفيذها
+        // في هذه الحالة، يتم استخدامها لإيقاف عملية الإلهام وإلغاء أي إشعارات مجدولة
+        Intent intent = new Intent(this, NotificationReceiver.class);
+
+        // الحصول على نفس النية المعلقة
+        // النيات المعلقة هي نوع من النيات التي يتم تخزينها للمستخدم حتى يتم تنفيذها في وقت لاحق
+        // في هذه الحالة، نقوم بإنشاء نية مستقلة تحتوي على معلومات حول النية التي تم تخزينها سابقاً
+        // ويتم تخزينها في النيات المعلقة من قبل النظام
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
+        // السطر أدناه: الحصول على نسخة من "مدير التنبيهات" (AlarmManager) من نظام أندرويد عبر استدعاء خدمة النظام المخصصة لذلك.
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE); // الوصول لخدمة المنبه
-        if (alarmManager != null) { // التأكد من توفر الخدمة
-            alarmManager.cancel(pendingIntent); // إلغاء المنبه المجدول المرتبط بهذه النية
+        // السطر أدناه: التحقق من أن كائن alarmManager ليس فارغاً (null) لضمان عدم حدوث انهيار للتطبيق في حال لم تتوفر الخدمة.
+        if (alarmManager != null) {
+            // السطر أدناه: استخدام دالة .cancel لإيقاف أي منبه مجدول مسبقاً يطابق "pendingIntent" (أي له نفس المعرف والوجهة).
+            alarmManager.cancel(pendingIntent);
         }
+
+        // السطر أدناه: الوصول لملف تخزين البيانات الصغير (SharedPreferences) المسمى "InspirationPrefs".
         getSharedPreferences("InspirationPrefs", MODE_PRIVATE)
+                // السطر أدناه: الدخول في وضع التعديل (Edit) لإضافة أو تغيير البيانات داخل الملف.
                 .edit()
+                // السطر أدناه: تخزين قيمة منطقية (false) تحت مفتاح "isRunning" للإشارة إلى أن الخدمة توقفت فعلياً حتى بعد إغلاق التطبيق.
                 .putBoolean("isRunning", false)
+                // السطر أدناه: تطبيق وحفظ التغييرات في الخلفية (Asynchronously) لضمان عدم تعليق واجهة المستخدم.
                 .apply();
         isRunning = false; // تغيير الحالة إلى "متوقف"
         btnStart.setText("Start Staying Inspired"); // إعادة نص الزر للأصلي
         tvStatus.setText("Status: Inactive"); // تحديث نص الحالة
     }
-
     /**
      * وصف قصير: تختار هذه الدالة رسالة واحدة بشكل عشوائي من مصفوفات النصوص المتاحة.
      * الهدف منها: جلب نص عشوائي بناءً على النمط الذي اختاره المستخدم (تحفيزي أو تأنيب ضمير) لعرضه في الإشعار.

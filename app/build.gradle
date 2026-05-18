@@ -5,6 +5,7 @@ plugins {
 
 android {
 
+
     namespace 'com.example.finalprojectniral'
     compileSdk 36
 
@@ -16,6 +17,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    buildFeatures{
+        viewBinding true
+    }
 
     }
 

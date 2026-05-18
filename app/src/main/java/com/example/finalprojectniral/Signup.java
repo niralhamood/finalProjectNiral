@@ -130,7 +130,7 @@ public class Signup extends AppCompatActivity {
         // وضع المفتاح الفريد داخل كائن المستخدم لسهولة الوصول إليه مستقبلاً
         user.setUserId(newUserRef.getKey());
 
-        // البدء بعملية رفع البيانات للسحابة مع إضافة مستمع (Listener) للنتائج
+        //  honeeee b7fzzzzzzzzz البدء بعملية رفع البيانات للسحابة مع إضافة مستمع (Listener) للنتائج
         newUserRef.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -139,7 +139,7 @@ public class Signup extends AppCompatActivity {
                     Toast.makeText(Signup.this, "تم إنشاء الحساب وحفظ البيانات بنجاح!", Toast.LENGTH_SHORT).show();
                     saveUserLocally(user.fullName, user.passw);
                     // الانتقال لشاشة تسجيل الدخول
-                    Intent intent = new Intent(Signup.this, Signin.class);
+                    Intent intent = new Intent(Signup.this, Mainalmain.class);
                     startActivity(intent);
                     finish();
                 } else {

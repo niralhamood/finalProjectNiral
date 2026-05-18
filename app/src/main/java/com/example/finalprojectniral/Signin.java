@@ -28,24 +28,36 @@ public class Signin extends AppCompatActivity {
     private EditText etPassword;    // هنا يدخل ال Password
     private TextView Un2;
     private TextView Psw2;
-    private Button btnSignUp,forgetyourpw ;
+    private Button btnSignUp, forgetyourpw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.signin);
-        if (FirebaseAuth.getInstance().getCurrentUser()!=null)
-        {
+
+        // 1. السطر التالي يتحقق مما إذا كان هناك مستخدم مسجل دخوله حالياً في التطبيق.
+        // FirebaseAuth.getInstance() تجلب الكائن المسؤول عن المصادقة.
+        // getCurrentUser() تعيد كائن المستخدم الحالي، فإذا كانت لا تساوي null، فهذا يعني أن المستخدم دخل مسبقاً ولم يقم بتسجيل الخروج.
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            // 2. إذا كان المستخدم مسجلاً بالفعل، نقوم بإنشاء "Intent" (نية انتقال).
+            // المعامل الأول (Signin.this) هو السياق الحالي، والمعامل الثاني (Mainalmain.class) هو النشاط الهدف المراد الانتقال إليه.
             Intent intent = new Intent(Signin.this, Mainalmain.class);
+
+            // 3. نقوم ببدء النشاط الجديد (الشاشة الرئيسية للبرنامج).
+            // هذا يضمن أن المستخدم لا يضطر لرؤية شاشة تسجيل الدخول في كل مرة يفتح فيها التطبيق.
             startActivity(intent);
+
+            // 4. دالة finish() مهمة جداً هنا؛ فهي تقوم بإغلاق نشاط التسجيل الحالي (Signin) وإزالته من الـ Back Stack.
+            // الفائدة: إذا ضغط المستخدم على زر "الرجوع" من الشاشة الرئيسية، فلن يعود لشاشة تسجيل الدخول مرة أخرى بل سيغلق التطبيق.
             finish();
         }
-        etUserNmaeEmail =findViewById(R.id.etUserNmaeEmail);
-        etPassword=findViewById(R.id.etPassword);
-        Un2=findViewById(R.id.Un2);
-        Psw2=findViewById(R.id.Pw2);
-        btnSignUp =findViewById(R.id.Enter);
+
+        etUserNmaeEmail = findViewById(R.id.etUserNmaeEmail);
+        etPassword = findViewById(R.id.etPassword);
+        Un2 = findViewById(R.id.Un2);
+        Psw2 = findViewById(R.id.Pw2);
+        btnSignUp = findViewById(R.id.Enter);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -55,7 +67,7 @@ public class Signin extends AppCompatActivity {
         // ⚠ معالجة الضغط على زر Enter
         btnSignUp.setOnClickListener(v -> {
             validateSignIn();
-                    });
+        });
     }
 
     // -----------------------------------------------------------
@@ -74,40 +86,26 @@ public class Signin extends AppCompatActivity {
         String password = etPassword.getText().toString();
 
         if (username.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "الرجاء تعبئة جميع الحقول", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             isValid = false;
         }
         // تحقق من أن القيمة صحيحة قبل مناقشة اسم المستخدم وكلمة المرور
-        if(isValid) {
-            FirebaseAuth auth=FirebaseAuth.getInstance();
-            auth.signInWithEmailAndPassword(username,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        if (isValid) {
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            auth.signInWithEmailAndPassword(username, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()){
-                        Toast.makeText(Signin.this,"Signing in Succeeded", Toast.LENGTH_SHORT).show();
-                        Intent i=new Intent(Signin.this,Mainalmain.class);
+                    if (task.isSuccessful()) {
+                        Toast.makeText(Signin.this, "Signing in Succeeded", Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(Signin.this, Mainalmain.class);
                         startActivity(i);
-                    }
-                    else {
-                        Toast.makeText(Signin.this,"Signing in Failed", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(Signin.this, "Signing in Failed", Toast.LENGTH_SHORT).show();
                         etUserNmaeEmail.setError(task.getException().getMessage());
                     }
                 }
             });
         }
-
-
-
         return isValid;
-    }
-
-    /**
-     * وصف قصير: دالة استجابة عند النقر للانتقال المباشر إلى الشاشة الرئيسية (Mainalmain).
-     * البارامترات (@param v): عرض الزر الذي تم النقر عليه.
-     */
-    public void onClickGo22(View v){
-        Intent intent = new Intent(Signin.this, Mainalmain.class);
-        startActivity(intent);
-        finish();
     }
 }

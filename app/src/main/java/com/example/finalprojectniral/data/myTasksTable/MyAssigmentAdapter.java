@@ -23,7 +23,7 @@ import java.util.ArrayList;
  */
 public class MyAssigmentAdapter extends BaseAdapter {
     /**
-     * ربط الواجهة بالأصل (Context).
+     * سياق التطبيق (Context) الذي يوفر الوصول إلى الموارد والنظام الأساسي لربط الواجهة بالأصل.
      */
     private Context context;
     /**
@@ -40,10 +40,13 @@ public class MyAssigmentAdapter extends BaseAdapter {
 
 
     public MyAssigmentAdapter(Context context, ArrayList<MyAssignment> assignmentList) {
+        // 1. تخزين سياق التطبيق الممرر (Context) لاستخدامه لاحقاً في تشغيل الأنشطة (Activities) أو الوصول للموارد.
         this.context = context;
+        // 2. استقبال قائمة المهام (ArrayList) التي تحتوي على البيانات القادمة من قاعدة البيانات لعرضها في القائمة.
         this.assignmentList = assignmentList;
+        // 3. تهيئة كائن 'inflater' الذي يقوم بتحويل ملفات تصميم الـ XML (مثل task_item_layout) إلى كائنات برمجية (View).
         this.inflater = LayoutInflater.from(context);
-       // this.listener = listener;
+        // this.listener = listener; // سطر معطل (Commented out): كان يستخدم سابقاً لربط مستمع للأحداث.
     }
 
     /**
