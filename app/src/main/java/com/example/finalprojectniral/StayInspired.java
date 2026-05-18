@@ -18,6 +18,8 @@ import android.widget.RadioGroup; // استيراد مجموعة أزرار ال
 import android.widget.TextView; // استيراد عنصر عرض النصوص
 import android.widget.Toast; // استيراد أداة عرض رسائل قصيرة للمستخدم
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity; // استيراد فئة الأنشطة المتوافقة مع الإصدارات القديمة
 import androidx.core.app.ActivityCompat; // استيراد أدوات المساعدة لطلب الصلاحيات
 import androidx.core.content.ContextCompat; // استيراد أدوات المساعدة للتعامل مع موارد النظام
@@ -53,6 +55,16 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
      * دالة onCreate: يتم استدعاؤها عند تشغيل الشاشة لأول مرة.
      * تقوم بربط العناصر البرمجية بالتصميم وتجهيز المستمعات (Listeners).
      */
+
+    private final ActivityResultLauncher<String> requestNotificationPermissionLauncher = registerForActivityResult( new ActivityResultContracts.RequestPermission(),
+            isGranted -> {
+                if (!isGranted) {
+                    Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show();
+                }
+            }
+    );
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) { // بداية دورة حياة النشاط
         super.onCreate(savedInstanceState); // استدعاء دالة الحالة الأصلية
@@ -65,13 +77,12 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
         btnStart = findViewById(R.id.btnStart); // ربط زر البدء
         tvStatus = findViewById(R.id.tvStatus); // ربط نص الحالة
 
-        createNotificationChannel(); // استدعاء دالة إنشاء قناة الإشعارات
 
 
         // شرح ليه لازم استدعيها ب اون كريايت :
         // بما أن onCreate تعمل فور فتح الشاشة، فإنها تضمن أن القناة أصبحت "معرفة" لدى نظام التشغيل قبل أن يحاول التطبيق إرسال أي إشعار
 
-        
+
         // إعداد ما سيحدث عند الضغط على زر البدء
         btnStart.setOnClickListener(v -> { // مراقب النقرات على الزر
             if (modeRadioGroup.getCheckedRadioButtonId() == -1) { // التحقق إذا لم يتم اختيار أي نمط
@@ -112,26 +123,12 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
      * الهدف منها: ضمان وصول رسائل تحفيزية للمستخدم حتى لو كان التطبيق مغلقاً باستخدام مدير التنبيهات (AlarmManager).
      */
     private void startInspiration() { // دالة تشغيل الإلهام
+        isRunning = true;
         String message = getRandomMessage(); // الحصول على رسالة عشوائية بناءً على النمط
 
         // تجهيز الـ Intent الذي سيقوم بتشغيل المستقبل (Receiver) لإظهار الإشعار
         Intent intent = new Intent(this, NotificationReceiver.class); // إنشاء نية للمستقبل
         intent.putExtra("message", message); // وضع الرسالة المختارة داخل النية
-
-        // PendingIntent هو كائن يستخدم للسماح للنظام بتنفيذ كود بعد فتح التطبيق من إشعار أو فتح مسار معين.
-        // تتم إنشاء PendingIntent باستخدام الأسلوب PendingIntent.getBroadcast() أو PendingIntent.getActivity() أو PendingIntent.getService().
-        // يتم استدعاء هذا الأسلوب مع السياق (Context)، رقم الطلب (requestCode)، النية الأصلية (originalIntent)، والأعلام (flags).
-        // في هذا الأمر، يتم إنشاء PendingIntent مع السياق هو النشاط الحالي (this)، رقم الطلب هو 0، النية الأصلية هي intent، والأعلام هي PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE.
-        // يتم تعيين الأعلام PendingIntent.FLAG_UPDATE_CURRENT للتأكد من تحديث النية الموجودة في الذاكرة إذا كانت موجودة بالفعل.
-        // ويتم تعيين الأعلام PendingIntent.FLAG_IMMUTABLE للتأكد من أن النية لن تتغير حتى يتم تحديثها في الإصدارات الحديثة.
-        // إنشاء PendingIntent  للسماح للنظام بتنفيذ الكود لاحقاً
-
-
-
-
-        // تقوم هذه الدالة ببدء عملية الإلهام عن طريق جدولة إشعارات دورية.
-                 // تختار رسالة عشوائية بناءً على النمط المحدد وتستخدم AlarmManager لجدولتها.
-
         PendingIntent pendingIntent = PendingIntent.getBroadcast( // إنشاء نية معلقة للبث
                 this, // السياق الحالي
                 0, // كود الطلب
@@ -143,29 +140,33 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
 
         // استخدام SystemClock.elapsedRealtime() بدلاً من System.currentTimeMillis()
         // لأنه أكثر استقراراً لجدولة الفواصل الزمنية ولا يتأثر بتغيير المستخدم لوقت الساعة.
-        long triggerTime = SystemClock.elapsedRealtime() + 60000; // حساب وقت الانطلاق (بعد 60 ثانية)
-
+        long triggerTime = SystemClock.elapsedRealtime() + (30 * 60 * 1000); // حساب وقت الانطلاق (بعد 30 دقيقة)
         if (alarmManager != null) { // التأكد من توفر مدير المنبهات
             // فحص الصلاحية للأجهزة التي تعمل بنظام أندرويد 12 (API 31) أو أحدث
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
-                // إذا لم تتوفر صلاحية المنبه الدقيق، نستخدم المنبه العادي كبديل آمن لتجنب الانهيار (Crash)
+                // إذا لم تتوفر صلاحية المنبه الدقيق، نستخدم المنبه العادي بديل آمن لتجنب الانهيار (Crash)
                 alarmManager.setAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pendingIntent);
             } else {
                 // ضبط منبه دقيق يعمل حتى في وضع السكون
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pendingIntent);
             }
         }
+        getSharedPreferences("InspirationPrefs", MODE_PRIVATE)
+                .edit()
+                .putBoolean("isRunning", true)
+                .apply();
 
         isRunning = true; // تغيير الحالة إلى "يعمل"
         btnStart.setText("Stop Notifications"); // تغيير نص الزر
         tvStatus.setText("Status: Active (Next in 60s)"); // تحديث نص الحالة
-        Toast.makeText(this, "Inspiration scheduled for 60 seconds from now!", Toast.LENGTH_LONG).show(); // إظهار رسالة تأكيد
+        Toast.makeText(this, "Inspiration scheduled for 30min from now!", Toast.LENGTH_LONG).show(); // إظهار رسالة تأكيد
     }
 
     /**
      * تقوم هذه الدالة بإيقاف عملية الإلهام وإلغاء أي إشعارات مجدولة.
      */
     private void stopInspiration() { // دالة إيقاف الإلهام
+
         Intent intent = new Intent(this, NotificationReceiver.class); // إنشاء نية مطابقة للنية المجدولة
         PendingIntent pendingIntent = PendingIntent.getBroadcast( // الحصول على نفس النية المعلقة
                 this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
@@ -175,7 +176,10 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
         if (alarmManager != null) { // التأكد من توفر الخدمة
             alarmManager.cancel(pendingIntent); // إلغاء المنبه المجدول المرتبط بهذه النية
         }
-
+        getSharedPreferences("InspirationPrefs", MODE_PRIVATE)
+                .edit()
+                .putBoolean("isRunning", false)
+                .apply();
         isRunning = false; // تغيير الحالة إلى "متوقف"
         btnStart.setText("Start Staying Inspired"); // إعادة نص الزر للأصلي
         tvStatus.setText("Status: Inactive"); // تحديث نص الحالة
@@ -195,26 +199,5 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
         }
     }
 
-    /**
-     * وصف قصير: تقوم هذه الدالة بإنشاء قناة للإشعارات في نظام الأندرويد.
-     * الهدف منها: تعريف القناة لنظام التشغيل (مطلوب من إصدار أندرويد 8.0 فما فوق) لضمان ظهور الإشعارات وتحديد مستواها.
-     *
-     * شرح إضافي: تحقق من أن الإصدار هو أوريو (Oreo) أو أحدث باستخدام SDK_INT، ثم تضبط اسم القناة وأهميتها وتعرفها في مدير الإشعارات.
-     *
-     * @return لا تُرجع شيئاً.
-     */
-    private void createNotificationChannel() { // دالة إنشاء قناة الإشعار
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // التحقق من أن الإصدار أوريو أو أحدث
 
-            NotificationChannel channel = new NotificationChannel( // إنشاء كائن القناة
-                    "channel_id", // معرف القناة (يجب أن يتطابق مع المستخدم في الـ Receiver)
-                    "Stay Inspired Channel", // اسم القناة الذي يظهر في الإعدادات
-                    NotificationManager.IMPORTANCE_HIGH // تحديد أهمية القناة (عالية لتظهر كـ Pop-up)
-            );
-            NotificationManager manager = getSystemService(NotificationManager.class); // الحصول على مدير الإشعارات
-            if (manager != null) { // التأكد من توفر المدير
-                manager.createNotificationChannel(channel); // تسجيل القناة في النظام
-            }
-        }
-    }
 }

@@ -8,6 +8,12 @@
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
+
+
 
 
     <application
@@ -21,7 +27,7 @@
         android:theme="@style/Theme.FinalProjectNiral">
 
         <receiver
-            android:name=".NotificationReceiver"
+            android:name=".StayInspired.NotificationReceiver"
             android:enabled="true"
             android:exported="false" />
 
