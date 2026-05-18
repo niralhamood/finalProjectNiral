@@ -21,7 +21,8 @@ import java.util.ArrayList;
 /**
  * فئة مخصصة لعرض قائمة مهام (MyAssignment) في شاشة أساسية (TasksActivity).
  */
-public class MyAssigmentAdapter extends BaseAdapter {
+public class MyAssigmentAdapter extends BaseAdapter
+{
     /**
      * سياق التطبيق (Context) الذي يوفر الوصول إلى الموارد والنظام الأساسي لربط الواجهة بالأصل.
      */
@@ -39,7 +40,9 @@ public class MyAssigmentAdapter extends BaseAdapter {
      */
 
 
-    public MyAssigmentAdapter(Context context, ArrayList<MyAssignment> assignmentList) {
+    // دالكة بنائية
+    public MyAssigmentAdapter(Context context, ArrayList<MyAssignment> assignmentList)
+    {
         // 1. تخزين سياق التطبيق الممرر (Context) لاستخدامه لاحقاً في تشغيل الأنشطة (Activities) أو الوصول للموارد.
         this.context = context;
         // 2. استقبال قائمة المهام (ArrayList) التي تحتوي على البيانات القادمة من قاعدة البيانات لعرضها في القائمة.
@@ -50,7 +53,7 @@ public class MyAssigmentAdapter extends BaseAdapter {
     }
 
     /**
-     * وصف قصير: تُرجع عدد العناصر الموجودة في قائمة المهام.
+     * وصف قصير: تُرجع عدد العناصر الموجودة في قائمة المهام عشان تفهم الاندرويد قديه يحضر وهكذا.
      * القيمة المُرجعة (@return): عدد المهام (int).
      */
     @Override

@@ -8,79 +8,80 @@ import androidx.room.Update;
 
 import java.util.List;
 
-    @Dao//لتحديد ان الواجهخة تحوي استعلامات على قاعدة بايانات
-   public interface MyUserQuery{
+/**
+ * واجهة MyUserQuery تحتوي على جميع الاستعلامات (Queries) الخاصة بجدول المستخدمين.
+ * تستخدم مكتبة Room لتحويل هذه الدوال إلى أوامر SQL وتنفذها على قاعدة البيانات.
+ */
+@Dao
+public interface MyUserQuery {
     /**
-     * تجلب جميع المستخدمين من قاعدة البيانات.
-     * 
-     * @return قائمة بجميع المستخدمين.
+     * تجلب جميع المستخدمين المسجلين في قاعدة البيانات.
+     * @return قائمة (List) بجميع كائنات MyUser.
      */
     @Query("SELECT * FROM MyUser")
     List<MyUser> getAll();
+
     /**
-     * تجلب مستخدمين محددين بناءً على قائمة الأرقام التعريفية الخاصة بهم.
-     * 
-     * @param userIds مصفوفة الأرقام التعريفية للمستخدمين.
-     * @return قائمة بالمستخدمين الذين تم العثور عليهم.
+     * تجلب مجموعة مستخدمين بناءً على مصفوفة من الأرقام التعريفية (IDs).
+     * @param userIds مصفوفة أرقام تعريفية.
+     * @return قائمة بالمستخدمين المطابقين.
      */
     @Query("SELECT * FROM MyUser WHERE keyid IN (:userIds)")
     List<MyUser> loadAllByIds(int[] userIds);
+
     /**
-     * تتحقق من وجود مستخدم بناءً على البريد الإلكتروني وكلمة المرور.
-     * تستخدم للتحقق من بيانات تسجيل الدخول.
-     * 
-     * @param myEmail البريد الإلكتروني للمستخدم.
+     * تتحقق من صحة بيانات تسجيل الدخول (البريد وكلمة المرور).
+     * @param myEmail البريد الإلكتروني.
      * @param myPassw كلمة المرور.
-     * @return كائن المستخدم إذا كانت البيانات صحيحة، وإلا تعيد null.
+     * @return كائن المستخدم إذا كانت البيانات صحيحة، أو null إذا لم يتطابق شيء.
      */
     @Query("SELECT * FROM MyUser WHERE email = :myEmail AND passw = :myPassw LIMIT 1")
     MyUser checkEmailPassw(String myEmail, String myPassw);
+
     /**
-     * تتحقق مما إذا كان البريد الإلكتروني موجوداً مسبقاً في قاعدة البيانات.
-     * 
-     * @param myEmail البريد الإلكتروني المراد فحصه.
-     * @return كائن المستخدم إذا وجد، وإلا تعيد null.
+     * تتحقق من وجود بريد إلكتروني معين (يستخدم عادةً عند التسجيل الجديد).
+     * @param myEmail البريد المراد فحصه.
+     * @return كائن المستخدم إذا وجد.
      */
     @Query("SELECT * FROM MyUser WHERE email = :myEmail LIMIT 1")
     MyUser checkEmail(String myEmail);
+
     /**
-     * تقوم بإدراج مجموعة من المستخدمين في قاعدة البيانات.
-     * 
-     * @param users قائمة المستخدمين المراد إدراجهم.
+     * إدراج مجموعة من المستخدمين في قاعدة البيانات.
+     * @param users كائنات المستخدمين المراد إضافتهم.
      */
     @Insert
     void insertAll(MyUser... users);
+
     /**
-     * تقوم بحذف مستخدم معين من قاعدة البيانات.
-     * 
+     * حذف مستخدم معين من قاعدة البيانات.
      * @param user كائن المستخدم المراد حذفه.
      */
     @Delete
     void delete(MyUser user);
+
     /**
-     * تقوم بحذف مستخدم بناءً على رقمه التعريفي.
-     * 
-     * @param id الرقم التعريفي للمستخدم المراد حذفه.
+     * حذف مستخدم بناءً على رقمه التعريفي.
+     * @param id الرقم التعريفي (KeyId).
      */
     @Query("Delete From MyUser WHERE keyid=:id ")
     void delete(int id);
+
     /**
-     * تقوم بإدراج مستخدم واحد في قاعدة البيانات.
-     * 
-     * @param myUser كائن المستخدم المراد إدراجه.
+     * إدراج مستخدم واحد جديد.
+     * @param myUser كائن المستخدم.
      */
     @Insert
     void insert(MyUser myUser);
+
     /**
-     * تقوم بتحديث بيانات مستخدم أو أكثر في قاعدة البيانات.
-     * 
+     * تحديث بيانات مستخدم أو أكثر (مثل تغيير الاسم أو كلمة المرور).
      * @param values المستخدمون المراد تحديث بياناتهم.
      */
     @Update
     void update(MyUser...values);
+}
 
-    }
-      //استخراج جميع المستعملين
 
 
 

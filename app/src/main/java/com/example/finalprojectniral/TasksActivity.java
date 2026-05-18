@@ -24,22 +24,28 @@ public class TasksActivity extends AppCompatActivity {
     /**
      * يحتوي هذا المتغير على إمكانية الرجوع إلى صفحة الملف الرئيسي (MainActivity) بالضغط على زر "العودة".
      */
-    private ImageView btnBack; /** * يحتوي هذا المتغير على زر إضافة مهمة جديدة للمهام
+    private ImageView btnBack;
+    /** * يحتوي هذا المتغير على زر إضافة مهمة جديدة للمهام
      */
-    private ImageButton btnAddTask;    /**  * يحتوي هذا المتغير على قائمة المهام التي ستظهر في شاشة المهام.*/
-
+    private ImageButton btnAddTask;
+    /**
+     * يحتوي هذا المتغير على واجهة القائمة (ListView) التي تقوم بعرض المهام بشكل متتابع وقابل للتمرير.
+     */
     private ListView listTasks; // for showing a list of tasks (scrollable list)[[
     /**
-     * يحتوي هذا المتغير على قائمة بالمهام التي ستظهر في شاشة المهام.
+     * يحتوي هذا المتغير على قائمة برمجية من نوع ArrayList لتخزين كائنات المهام (MyAssignment) التي يتم جلبها من قاعدة البيانات.
      */
-    private ArrayList<MyAssignment> tasksList;/**
-     * يحتوي هذا المتغير على Adapter للمهام التي ستظهر في قائمة المهام (listTasks).
+    private ArrayList<MyAssignment> tasksList;
+    /**
+     * يحتوي هذا المتغير على الوسيط (Adapter) المسؤول عن ربط البيانات الموجودة في القائمة البرمجية بالعناصر المرئية في الـ ListView.
      */
-    private MyAssigmentAdapter adapter;/**
+    private MyAssigmentAdapter adapter;
+    /**
      * يحتوي هذا المتغير على مرجع لقاعدة بيانات Firebase للمهام.
      */
 
     private DatabaseReference databaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,11 +92,27 @@ public class TasksActivity extends AppCompatActivity {
         // إنشاء قائمة المهام
         tasksList = new ArrayList<>();
 
-        // ربط Adapter مع ListView
+        /**
+         * Initialize and connect the Data Bridge (Adapter):
+         *
+         * What it does:
+         * It creates a new instance of MyAssigmentAdapter and links it to our ListView.
+         *
+         * What it is for:
+         * A ListView cannot "talk" directly to an ArrayList. The Adapter acts as a middleman
+         * that takes each data object from 'tasksList' and converts it into a visual row
+         * layout that the user can see on the screen.
+         *
+         * Logic:
+         * 1. 'new MyAssigmentAdapter(this, tasksList)': Creates the bridge, giving it the
+         *    current screen (context) and the data source (the list).
+         * 2. 'listTasks.setAdapter(adapter)': Plugs this bridge into the UI component
+         *    (ListView) so it knows where to get its rows from.
+         */
         adapter = new MyAssigmentAdapter(this, tasksList );
         listTasks.setAdapter(adapter);
 
-        // جلب البيانات الحقيقية من فايربيس
+        //hay astd3aa dalah جلب البيانات الحقيقية من فايربيس
         fetchTasksFromFirebase();
 
         // زر الرجوع
@@ -125,38 +147,70 @@ public class TasksActivity extends AppCompatActivity {
      * الهدف منها: عرض المهام الحقيقية المخزنة في السحاب مرتبة حسب الأهمية.
      */
     /**
-     * Fetches tasks from Firebase and updates the list of tasks.
-     * This method listens for changes in the Firebase database and updates the list of tasks accordingly.
-     * It retrieves all tasks from the database and adds them to the list.
-     * The list of tasks is then sorted by importance.
-     * The method {@link #sortTasksByImportance()} is called to ensure that the tasks are displayed in the correct order.
-     * After sorting, the adapter is notified that the data has changed, triggering a refresh of the displayed data.
+     * شرح معمق للدالة fetchTasksFromFirebase:
+     * ---------------------------------------
+     * لماذا نستخدمها؟ لجلب بيانات المهام الخاصة بالمستخدم من السحاب (Firebase) وعرضها.
+     * كيف تعمل؟ تستخدم "مراقب بيانات" (EventListener) يظل متصلاً بفايربيس طوال فترة فتح الشاشة.
+     * متى تعمل؟ بمجرد تشغيل النشاط (Activity) وأيضاً تلقائياً عند حدوث أي تغيير في قاعدة البيانات.
      */
     private void fetchTasksFromFirebase() {
+        // إضافة مستمع (Listener) يراقب المسار المحدد في databaseReference
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                tasksList.clear(); // Clear the list of tasks before fetching new data
+                // 1. تفريغ القائمة الحالية لتجنب تكرار البيانات عند كل تحديث
+                tasksList.clear();
+
+                /*
+                 * 2. المرور عبر جميع "العقد" (Nodes) الموجودة تحت مسار هذا المستخدم:
+                 * -----------------------------------------------------------
+                 * snapshot.getChildren() تعيد قائمة بكل "الأبناء" الموجودين داخل مسار المستخدم.
+                 * نستخدم حلقة التكرار (for) للمرور على كل مهمة (postSnapshot) واحدة تلو الأخرى.
+                 */
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+
+                    /*
+                     * تحويل البيانات من JSON (تنسيق فايربيس) إلى كائن جافا (MyAssignment):
+                     * ---------------------------------------------------------------
+                     * getValue(MyAssignment.class): هي دالة سحرية في فايربيس تبحث عن أسماء المفاتيح
+                     * في قاعدة البيانات (مثل title, importance) وتضع قيمها داخل المتغيرات المقابلة
+                     * لها في كائن الـ Java تلقائياً، بشرط أن تكون الأسماء متطابقة.
+                     */
                     MyAssignment assignment = postSnapshot.getValue(MyAssignment.class);
+
+                    /* التحقق من أن عملية التحويل نجحت ولم ينتج كائن فارغ */
                     if (assignment != null) {
-                        assignment.setKey(postSnapshot.getKey()); // Set the key for the task
-                        tasksList.add(assignment); // Add the task to the list
+
+                        /*
+                         * تخزين المفتاح الفريد (Key) للمهمة:
+                         * -------------------------------
+                         * postSnapshot.getKey() يعيد المعرف العشوائي الذي ولده فايربيس للمهمة (مثل -Nxyz...).
+                         * هذا المفتاح ليس جزءاً من البيانات الداخلية للكائن، لذا نحتاج لتخزينه يدوياً
+                         * عبر دالة setKey()، لنتمكن مستقبلاً من معرفة "أي مهمة بالضبط" نريد حذفها أو تعديلها.
+                         */
+                        assignment.setKey(postSnapshot.getKey());
+
+                        /*
+                         * إضافة المهمة إلى القائمة المحلية:
+                         * ------------------------------
+                         * بعد أن أصبح كائن الـ Java جاهزاً ويحتوي على البيانات والمفتاح (Key)،
+                         * نقوم بإضافته إلى ArrayList (tasksList) التي سيستخدمها الـ Adapter للعرض.
+                         */
+                        tasksList.add(assignment);
                     }
                 }
                 
-                // استدعاء دالة الترتيب لضمان ظهور المهام المهمة أولاً قبل تحديث الواجهة
+                // 3. الترتيب: وضع المهام الأكثر أهمية في بداية القائمة
                 sortTasksByImportance();
                 
-                // إبلاغ الـ Adapter بأن البيانات قد تغيرت.
-                // بدون هذا السطر، لن تظهر البيانات الجديدة على الشاشة حتى لو تم تحميلها بنجاح
-                // في قائمة tasksList. هذا السطر يجبر الشاشة على إعادة رسم القائمة بالبيانات المحدثة والمرتبة.
+                // 4. التحديث البصري: إخبار الـ Adapter أن البيانات جاهزة ليقوم برسمها على الشاشة
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-                // التعامل مع الخطأ هنا
+                // يتم استدعاء هذا الجزء في حال فشل الوصول للبيانات (مثل انقطاع الإنترنت أو رفض الصلاحيات)
+                android.util.Log.e("FirebaseError", "Error fetching data", error.toException());
             }
         });
     }

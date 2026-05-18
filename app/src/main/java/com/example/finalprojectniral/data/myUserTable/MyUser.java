@@ -3,23 +3,48 @@ package com.example.finalprojectniral.data.myUserTable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+/**
+ * كلاس MyUser يمثل جدول المستخدمين في قاعدة بيانات Room.
+ * يحتوي على البيانات الشخصية للمستخدم مثل الاسم، البريد الإلكتروني، الهاتف، وكلمة المرور.
+ */
 @Entity
-
-
-
-    public class MyUser {
-    @PrimaryKey(autoGenerate = true)//تحديد الصفة كمفتاح رئيسي والذي يُنتجح بشكل تلقائي
+public class MyUser {
+    /**
+     * المفتاح الرئيسي للجدول، يتم إنتاجه تلقائياً.
+     */
+    @PrimaryKey(autoGenerate = true)
     public long keyid;
-    @ColumnInfo(name = "full_Name")//اعطاء اسم جديد للعامود-الصفة في الجدول
+
+    /**
+     * اسم المستخدم الكامل.
+     */
+    @ColumnInfo(name = "full_Name")
     public String fullName;
-    public String email;//بحالة لم يتم اعطاء اسم للعامود يكون اسم الصفه هو اسم العامود
+
+    /**
+     * البريد الإلكتروني للمستخدم.
+     */
+    public String email;
+
+    /**
+     * رقم هاتف المستخدم.
+     */
     public String phone;
+
+    /**
+     * كلمة مرور المستخدم.
+     */
     public String passw;
+
+    /**
+     * معرف المستخدم الفريد (يمكن استخدامه للربط مع Firebase).
+     */
     public String userId;
 
-    // هذا هو طريقة لإعطاء نسخة من الكائن MyUser بصيغة نصية تعرض جميع خصائص الكائن
-    // المعطية في الطريقة toString() يتم استخدامها عادة لعرض البيانات الخاصة بكائن Java
-    // في نطاق محدد مثل محطات التحكم أو المحلاعات الخطأ أو المخرجات الخاصة بالبرنامج
+    /**
+     * تحويل بيانات الكائن إلى نص لعرضها (مفيد لعمليات التصحيح Debugging).
+     * @return نص يحتوي على كافة خصائص المستخدم.
+     */
     @Override
     public String toString() {
         return "MyUser{" +
@@ -32,17 +57,26 @@ import androidx.room.PrimaryKey;
                 '}';
     }
 
-    // دالة للحصول على قيمة الصفة fullName
+    /**
+     * الحصول على الاسم الكامل للمستخدم.
+     * @return الاسم الكامل.
+     */
     public String getFullName() {
         return fullName;
     }
 
-    // دالة لتعيين قيمة الصفة fullName
+    /**
+     * تعيين الاسم الكامل للمستخدم.
+     * @param fullName الاسم الجديد.
+     */
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
-    // دالة لتعيين قيمة الصفة userId
+    /**
+     * تعيين المعرف الفريد للمستخدم (UserId).
+     * @param userId المعرف الجديد.
+     */
     public void setUserId(String userId) {
         this.userId = userId;
     }
