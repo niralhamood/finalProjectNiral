@@ -27,7 +27,7 @@
         android:theme="@style/Theme.FinalProjectNiral">
 
         <receiver
-            android:name=".StayInspired.NotificationReceiver"
+            android:name=".NotificationReceiver"
             android:enabled="true"
             android:exported="false" />
 
