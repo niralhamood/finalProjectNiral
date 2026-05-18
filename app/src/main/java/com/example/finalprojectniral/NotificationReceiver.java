@@ -70,28 +70,27 @@ public class NotificationReceiver extends BroadcastReceiver { // تعريف ال
         }
 
         // الوصول لخدمة AlarmManager المسؤولة عن جدولة المهام
-        AlarmManager alarmManager =
-                (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         // إنشاء Intent جديد لإعادة تشغيل NotificationReceiver
-        Intent nextIntent =
-                new Intent(context, NotificationReceiver.class);
+        Intent nextIntent = new Intent(context, NotificationReceiver.class);
 
         // تمرير الرسالة مرة أخرى للإشعار القادم
         nextIntent.putExtra("message", message);
 
         // إنشاء PendingIntent ليتم تنفيذه لاحقاً بواسطة النظام
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                context,
-                0,
-                nextIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT |
-                        PendingIntent.FLAG_IMMUTABLE
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, nextIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
-
         // تحديد وقت الإشعار القادم بعد 60 ثانية
-        long triggerTime =
-                SystemClock.elapsedRealtime() + (30 * 60 * 1000);
+        long triggerTime = SystemClock.elapsedRealtime() + (30 * 60 * 1000);
+        if (alarmManager != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
+                alarmManager.setAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pendingIntent);
+            } else {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pendingIntent);
+            }
+        }
 
 
     }

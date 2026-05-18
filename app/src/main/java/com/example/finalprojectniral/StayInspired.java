@@ -158,7 +158,7 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
 
         isRunning = true; // تغيير الحالة إلى "يعمل"
         btnStart.setText("Stop Notifications"); // تغيير نص الزر
-        tvStatus.setText("Status: Active (Next in 60s)"); // تحديث نص الحالة
+        tvStatus.setText("Status: Active (Next in 30min)");
         Toast.makeText(this, "Inspiration scheduled for 30min from now!", Toast.LENGTH_LONG).show(); // إظهار رسالة تأكيد
     }
 
