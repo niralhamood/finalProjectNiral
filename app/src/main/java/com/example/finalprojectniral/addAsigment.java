@@ -67,7 +67,7 @@ public class addAsigment extends AppCompatActivity { // تعريف كلاس شا
          * when the image is selected (saving the URI and updating the ImageView).
          */
         imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
-            if (uri != null) { // إذا تم اختيار صورة بنجاح
+            if (uri != null) { // إذاتم اختيار صورة بنجاح
                 imageUri = uri; // حفظ مسار الصورة
                 ivAssignment.setImageURI(uri); // عرض الصورة في الواجهة
             }
@@ -247,6 +247,10 @@ public class addAsigment extends AppCompatActivity { // تعريف كلاس شا
      * It takes a MyAssignment object as a parameter and saves it to the database.
      *
      * @param assignment The MyAssignment object to be saved.
+                // UID stands for Unique Identifier. It is a unique identifier for a Firebase user account.
+                // Each user is assigned a unique identifier when they sign up, and it remains constant throughout their lifetime.
+                // The UID is used to identify a user across different devices and sessions.
+                // Firebase uses this UID to store and retrieve user-specific data.
      */
     private void saveAssignment(MyAssignment assignment) { // Save the assignment data to Firebase
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Get the current user's UID

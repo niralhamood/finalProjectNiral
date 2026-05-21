@@ -63,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         /**
+         * Handler: هو عبارة عن نقطة التواصل بين الـ Thread المسؤول عن جميع العمليات المتعبرة في تطبيقك والـ UI Thread الذي يستخدم لعرض الواجهة.
+         * يستخدم لتنفيذ الأمور التي تحتاج إلى تنفيذها على الـ UI Thread من خلال الـ MessageQueue والـ MessageLooper.
+         * يمكن أن يستخدم لتنفيذ أي عملية معينة في منفذة زمنية محددة أو مع انتهاء تلقي رسالة (Runnables) أو عند الضغط على زر (onClickListeners) أو عند التغير في قيمة حقل إدخال (TextWatchers).
+         * يتم استخدامه كمزيد للتعامل مع الـ UI Thread من خلال الـ Main Thread وليس من خلال تشغيل الـ Thread الخاص بالتطبيق.
+         */
+        /**
          * Handler و Looper:
          * يستخدم الـ Handler لإرسال ومعالجة الرسائل و "Runnable" (أوامر قابلة للتنفيذ) في طابور الرسائل.
          * Looper.getMainLooper(): يضمن تنفيذ الكود على "الخيط الرئيسي" (Main Thread) المسؤول عن تحديث واجهة المستخدم.
