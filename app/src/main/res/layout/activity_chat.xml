@@ -1,108 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFFFFF"
-    android:padding="14dp"
+    android:padding="16dp"
     tools:context=".ChatActivity">
 
-    <!-- Header -->
-    <LinearLayout
+    <!-- عنوان الشاشة -->
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:layout_marginBottom="8dp">
+        android:text="Chat with Ai"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#3F51B5"
+        android:layout_marginBottom="16dp"
+        android:gravity="center" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="AI Chat Assistant"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            android:textColor="#E91E63" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Online now"
-            android:textSize="13sp"
-            android:textColor="#999999" />
-    </LinearLayout>
-
-    <!-- Chat Area -->
-    <ScrollView
+    <!-- حقل إدخال الطالب -->
+    <EditText
+        android:id="@+id/etTaskTopic"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fillViewport="true">
+        android:layout_height="wrap_content"
+        android:hint="بماذا تفكر؟ (مثلاً: أريد تنظيم وقتي أو أحتاج لتشجيع)"
+        android:minHeight="48dp"
+        android:padding="12dp"
+        android:background="@android:drawable/edit_text" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <!-- زر طلب المساعدة من الذكاء الاصطناعي -->
+    <Button
+        android:id="@+id/btnSuggestSteps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="#3F51B5"
+        android:text="الحصول على إرشاد / دعم"
+        android:textColor="#FFFFFF" />
 
-            <!-- AI Message -->
-            <TextView
-                android:id="@+id/tvAiResponse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxWidth="280dp"
-                android:text="Hello 👋 How can I help you today?"
-                android:textSize="16sp"
-                android:textColor="#333333"
-                android:padding="14dp"
-                android:background="#FCE4EC"
-                android:layout_marginBottom="10dp"
-                android:textIsSelectable="true" />
-
-        </LinearLayout>
-
-    </ScrollView>
-
-    <!-- Loading -->
+    <!-- مؤشر التحميل -->
     <ProgressBar
         android:id="@+id/pbLoading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone"
-        android:indeterminateTint="#E91E63"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginTop="16dp"
+        android:visibility="gone" />
 
-    <!-- Bottom Input -->
-    <LinearLayout
+    <!-- منطقة عرض رد الذكاء الاصطناعي -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="6dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="16dp"
+        android:background="#F5F5F5"
+        android:padding="8dp">
 
-        <EditText
-            android:id="@+id/etTaskTopic"
-            android:layout_width="0dp"
-            android:layout_height="52dp"
-            android:layout_weight="1"
-            android:hint="Type a message..."
-            android:textColorHint="#999999"
+        <TextView
+            android:id="@+id/tvAiResponse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:textColor="#333333"
-            android:textSize="15sp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:background="#F5F5F5" />
-
-        <Button
-            android:id="@+id/btnSuggestSteps"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="8dp"
-            android:text="➤"
-            android:textSize="18sp"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#E91E63" />
-
-    </LinearLayout>
-
+            android:lineSpacingExtra="4dp"
+            android:textIsSelectable="true" />
+    </ScrollView>
 </LinearLayout>
+
+
