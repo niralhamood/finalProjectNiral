@@ -66,16 +66,17 @@ public class ChatActivity extends AppCompatActivity {
 
     /**
      * تقوم هذه الدالة بإرسال طلب إلى نموذج Gemini AI للحصول على خطوات مقترحة لموضوع معين.
-     * 
+     *
      * @param topic الموضوع الذي سيتم طلب خطوات تنفيذه من الذكاء الاصطناعي.
      */
     private void askFirebaseAiGeminiForSteps(String topic) {
         pbLoading.setVisibility(View.VISIBLE);
         tvAiResponse.setText("");
         btnSuggestSteps.setEnabled(false);
-
-        String promptStr = "I want to perform the following task: '" + topic + "'. " +
-                "Can you suggest a clear, step-by-step checklist to complete this task effectively?";
+// بناء الـ Prompt ليكون مرشداً للطلاب (الدعم المعنوي والجدولة)
+        String promptStr = "أنت مرشد طلابي خبير وداعم. الطالب يقول: '" + topic + "'. " +
+                "إذا كان الطالب يطلب تنظيماً لوقته أو جدولة مهامه، فقدم له خطة عمل واضحة ومرتبة. " +
+                "وإذا كان الطالب يشعر بالإحباط أو يحتاج لدعم، فقدم له كلمات تشجيعية ونصائح معنوية بأسلوب لطيف.";
 
         Content prompt = new Content.Builder()
                 .addText(promptStr)
