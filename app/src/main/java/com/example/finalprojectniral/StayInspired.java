@@ -7,6 +7,7 @@ import android.app.NotificationManager; // استيراد مدير نظام ال
 import android.app.PendingIntent; // استيراد كائن لتنفيذ إجراء مستقبلي (مثل فتح التطبيق من إشعار)
 import android.content.Context; // استيراد سياق التطبيق للوصول للموارد
 import android.content.Intent; // استيراد الـ Intent للانتقال بين المكونات
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager; // استيراد أداة لفحص صلاحيات النظام
 import android.os.Build; // استيراد معلومات عن إصدار نظام الأندرويد
 import android.os.Bundle; // استيراد كائن لنقل البيانات بين الحالات
@@ -59,9 +60,10 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
     private final ActivityResultLauncher<String> requestNotificationPermissionLauncher =
             registerForActivityResult( new ActivityResultContracts.RequestPermission(),
             isGranted -> {
-                if (!isGranted) {
-                    isRunning = true;
-                    Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show();
+                if (isGranted) {
+                    startInspiration();
+                } else {
+                    Toast.makeText(this, "Notification permission denied. Cannot start service.", Toast.LENGTH_SHORT).show();
                 }
             }
     );
@@ -79,23 +81,36 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
         btnStart = findViewById(R.id.btnStart); // ربط زر البدء
         tvStatus = findViewById(R.id.tvStatus); // ربط نص الحالة
 
+        SharedPreferences prefs = getSharedPreferences("InspirationPrefs", MODE_PRIVATE);
+        isRunning = prefs.getBoolean("isRunning", false);
+        boolean isMotivational = prefs.getBoolean("isMotivational", true);
+
+        if (isRunning) {
+            btnStart.setText("Stop Notifications");
+            tvStatus.setText("Status: Active (Next in 30min)");
+            if (isMotivational) rbMotivational.setChecked(true);
+            else rbGuiltDriven.setChecked(true);
+        } else {
+            btnStart.setText("Start Staying Inspired");
+            tvStatus.setText("Status: Inactive");
+        }
+
 
         // إعداد ما سيحدث عند الضغط على زر البدء
         btnStart.setOnClickListener(v -> { // مراقب النقرات على الزر
-            if (modeRadioGroup.getCheckedRadioButtonId() == -1) { // التحقق إذا لم يتم اختيار أي نمط
-                Toast.makeText(this, "Please choose a mode first", Toast.LENGTH_SHORT).show(); // عرض تنبيه للمستخدم
-                return; // التوقف عن التنفيذ
-            }
-
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // التحقق مما إذا كان إصدار الأندرويد 13 أو أعلى
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
-                        != PackageManager.PERMISSION_GRANTED) { // التأكد مما إذا كانت صلاحية الإشعارات غير ممنوحة
-                    requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS); //  يتم استدعاء دالة .launch()، وهي اللحظة الفعلية التي تظهر فيها نافذة النظام للمستخدم
+            if (!isRunning) {
+                if (modeRadioGroup.getCheckedRadioButtonId() == -1) { // التحقق إذا لم يتم اختيار أي نمط
+                    Toast.makeText(this, "Please choose a mode first", Toast.LENGTH_SHORT).show(); // عرض تنبيه للمستخدم
+                    return; // التوقف عن التنفيذ
                 }
-            }
 
-            if (!isRunning) { // إذا كانت الخدمة متوقفة
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // التحقق مما إذا كان إصدار الأندرويد 13 أو أعلى
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                            != PackageManager.PERMISSION_GRANTED) { // التأكد مما إذا كانت صلاحية الإشعارات غير ممنوحة
+                        requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+                        return;
+                    }
+                }
                 startInspiration(); // استدعاء دالة التشغيل
             } else { // إذا كانت الخدمة تعمل
                 stopInspiration(); // استدعاء دالة الإيقاف
@@ -150,6 +165,7 @@ public class StayInspired extends AppCompatActivity { // تعريف الكلاس
         getSharedPreferences("InspirationPrefs", MODE_PRIVATE)
                 .edit()
                 .putBoolean("isRunning", true)
+                .putBoolean("isMotivational", rbMotivational.isChecked())
                 .apply();
 
         isRunning = true; // تغيير الحالة إلى "يعمل"

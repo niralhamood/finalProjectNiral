@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
      * يتم تعريفه هنا كمتغير على مستوى الفئة (Class Level) ليتم الوصول إليه في أي مكان داخل الأكتيفيتي.
      */
     private TextView tvLoading;
+    private ImageView imageView3;
 
     /**
      * دالة onPointerCaptureChanged:
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         // ربط متغير tvLoading بالعنصر الموجود في ملف activity_main.xml عبر المعرف (ID).
         tvLoading = findViewById(R.id.tvLoading);
+        imageView3 = findViewById(R.id.imageView3);
 
 
         /**
